@@ -9,11 +9,12 @@
     :root {
       --bg-dark: #0b0b0c;
       --card-bg: #141417;
+      --card-hover: #1b1b20;
       --border: #2c2c34;
       --samhita-red: #f26d6d;
       --pada-white: #f0f0f5;
       --nirudatta-blue: #6fa8dc;
-      --pratika-purple: #b48ead;
+      --pratika-purple: #c695c6;
       --sutra-gold: #ebcb8b;
       --anvaya-green: #88c0d0;
       --hindi-amber: #d08770;
@@ -49,295 +50,204 @@
       max-width: 340px;
       width: 100%;
     }
-    .lock-box h2 {
-      color: var(--sutra-gold);
-      margin-top: 0;
-      font-size: 1.4rem;
-    }
+    .lock-box h2 { color: var(--sutra-gold); margin-top: 0; font-size: 1.4rem; }
     .lock-box input {
-      width: 100%;
-      padding: 12px;
-      font-size: 1.2rem;
-      text-align: center;
-      background: #0b0b0c;
-      border: 1px solid var(--border);
-      color: var(--pada-white);
-      border-radius: 6px;
-      margin: 14px 0;
-      letter-spacing: 4px;
+      width: 100%; padding: 12px; font-size: 1.2rem; text-align: center;
+      background: #0b0b0c; border: 1px solid var(--border); color: var(--pada-white);
+      border-radius: 6px; margin: 14px 0; letter-spacing: 4px;
     }
     .lock-box button {
-      width: 100%;
-      padding: 10px;
-      background: var(--sutra-gold);
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
+      width: 100%; padding: 10px; background: var(--sutra-gold); color: #000;
+      border: none; border-radius: 6px; font-size: 1rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
     }
-    #lock-error {
-      color: var(--samhita-red);
-      font-size: 0.9rem;
-      display: none;
-      margin-top: 8px;
+    #lock-error { color: var(--samhita-red); font-size: 0.9rem; display: none; margin-top: 8px; }
+
+    /* Top Header Bar */
+    .top-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(20, 20, 23, 0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border); padding: 10px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .menu-btn {
+      background: none; border: 1px solid var(--border); color: var(--sutra-gold);
+      font-size: 1.4rem; line-height: 1; padding: 6px 11px; border-radius: 6px; cursor: pointer;
+    }
+    .app-title { font-size: 1.15rem; font-weight: 700; color: var(--sutra-gold); }
+
+    /* Slide-Out Sidebar */
+    .sidebar-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 900; display: none;
+    }
+    .sidebar-backdrop.open { display: block; }
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 300px; max-width: 82vw;
+      background: var(--card-bg); border-right: 1px solid var(--border); z-index: 1000;
+      transform: translateX(-100%); transition: transform 0.25s ease;
+      overflow-y: auto; padding: 18px;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px;
+    }
+    .sidebar-header h2 { font-size: 1.2rem; color: var(--sutra-gold); margin: 0; }
+    .close-btn { background: none; border: none; color: #aaa; font-size: 1.4rem; cursor: pointer; }
+
+    /* Syllabus Tree Navigation */
+    .cat-btn {
+      width: 100%; background: #1c1c21; border: 1px solid var(--border); color: var(--sutra-gold);
+      padding: 10px 12px; margin-top: 8px; border-radius: 6px; text-align: left;
+      font-family: inherit; font-size: 1.02rem; font-weight: 600; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .subcat-list { display: none; padding-left: 12px; margin-top: 4px; border-left: 2px solid var(--border); }
+    .subcat-list.open { display: block; }
+    .subcat-btn {
+      width: 100%; background: none; border: none; color: var(--anvaya-green);
+      padding: 8px 10px; text-align: left; font-family: inherit; font-size: 0.96rem;
+      font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;
+    }
+    .topic-list { display: none; padding-left: 14px; }
+    .topic-list.open { display: block; }
+    .topic-item {
+      padding: 6px 10px; border-radius: 5px; cursor: pointer;
+      font-size: 0.94rem; color: var(--pada-white); margin-bottom: 3px;
+    }
+    .topic-item.active, .topic-item:hover { background: #272730; color: var(--sutra-gold); }
+
+    /* Main Content Area */
+    .main-content { max-width: 860px; margin: 0 auto; padding: 20px 18px 60px; }
+    .sukta-title { margin-top: 4px; margin-bottom: 4px; color: var(--sutra-gold); font-size: 1.45rem; }
+    .sukta-subtitle { color: #999; font-size: 0.95rem; margin-bottom: 18px; }
+
+    /* Controls & Toggles */
+    .toggle-bar {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 14px; margin-bottom: 22px; display: flex; flex-wrap: wrap;
+      gap: 12px; align-items: center; justify-content: space-between; font-size: 0.88rem;
+    }
+    .toggle-group { display: flex; flex-wrap: wrap; gap: 12px; }
+    .toggle-bar label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .action-btn {
+      background: #23232c; border: 1px solid var(--border); color: var(--sutra-gold);
+      padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.86rem;
     }
 
-    /* Top App Header Bar */
-    .top-header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(20, 20, 23, 0.95);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Vedic Mantra Formatting */
+    .bhumika-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 16px; margin-bottom: 24px; font-size: 1.05rem;
     }
-    .header-left {
+    .bhumika-title { color: var(--sutra-gold); font-weight: 700; margin-bottom: 8px; }
+    .mantra-card { border-top: 1px solid #444; padding: 24px 0; }
+    .samhita { color: var(--samhita-red); font-size: 1.28rem; font-weight: 600; margin-bottom: 16px; white-space: pre-line; }
+    .pada-sasvara { color: var(--pada-white); font-size: 1.14rem; margin-bottom: 16px; white-space: pre-line; }
+    .pada-nirudatta { color: var(--nirudatta-blue); font-size: 1.14rem; margin-bottom: 20px; white-space: pre-line; }
+    .bhashya { color: var(--pada-white); font-size: 1.1rem; margin-bottom: 16px; text-align: justify; }
+
+    /* Shared Highlighting Classes (Sayana & Mallinatha) */
+    .pratika { color: var(--pratika-purple); font-weight: 600; }
+    .citation-note { color: var(--sutra-gold); }
+    .vyakarana-note { color: var(--nirudatta-blue); }
+
+    .anvaya-box {
+      background: #161920; border-left: 3px solid var(--anvaya-green);
+      padding: 12px 14px; margin-bottom: 12px; font-size: 1rem;
+    }
+    .anvaya-label { color: var(--anvaya-green); font-weight: 700; }
+    .hindi-box {
+      background: #1a1615; border-left: 3px solid var(--hindi-amber);
+      padding: 12px 14px; margin-bottom: 12px; font-size: 1rem;
+    }
+    .hindi-label { color: var(--hindi-amber); font-weight: 700; }
+
+    /* NEW: Mahakavya Interactive Padyam Card */
+    .padya-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .padya-card:hover { border-color: #484856; }
+    .padya-header {
+      padding: 16px 20px;
+      cursor: pointer;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 14px;
     }
-    .menu-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--sutra-gold);
-      font-size: 1.4rem;
-      line-height: 1;
-      padding: 6px 11px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .app-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--sutra-gold);
-    }
-
-    /* Slide-out Off-Canvas Sidebar & Backdrop */
-    .sidebar-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.65);
-      z-index: 900;
-      display: none;
-    }
-    .sidebar-backdrop.open {
-      display: block;
-    }
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 300px;
-      max-width: 82vw;
-      background: var(--card-bg);
-      border-right: 1px solid var(--border);
-      z-index: 1000;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      overflow-y: auto;
-      padding: 18px;
-    }
-    .sidebar.open {
-      transform: translateX(0);
-    }
-    .sidebar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-    }
-    .sidebar-header h2 {
-      font-size: 1.2rem;
-      color: var(--sutra-gold);
-      margin: 0;
-    }
-    .close-btn {
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-
-    /* Nested Tree Navigation */
-    .cat-btn {
-      width: 100%;
-      background: #1c1c21;
-      border: 1px solid var(--border);
-      color: var(--sutra-gold);
-      padding: 10px 12px;
-      margin-top: 8px;
-      border-radius: 6px;
-      text-align: left;
-      font-family: inherit;
-      font-size: 1.02rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .subcat-list {
-      display: none;
-      padding-left: 12px;
-      margin-top: 4px;
-      border-left: 2px solid var(--border);
-    }
-    .subcat-list.open {
-      display: block;
-    }
-    .subcat-btn {
-      width: 100%;
-      background: none;
-      border: none;
-      color: var(--anvaya-green);
-      padding: 8px 10px;
-      text-align: left;
-      font-family: inherit;
-      font-size: 0.96rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-    }
-    .topic-list {
-      display: none;
-      padding-left: 14px;
-    }
-    .topic-list.open {
-      display: block;
-    }
-    .topic-item {
-      padding: 6px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.94rem;
-      color: var(--pada-white);
-      margin-bottom: 3px;
-    }
-    .topic-item.active, .topic-item:hover {
-      background: #272730;
-      color: var(--sutra-gold);
-    }
-
-    /* Main Content Container */
-    .main-content {
-      max-width: 840px;
-      margin: 0 auto;
-      padding: 20px 18px 60px;
-    }
-    .sukta-title {
-      margin-top: 4px;
-      margin-bottom: 14px;
-      color: var(--sutra-gold);
-      font-size: 1.45rem;
-    }
-
-    /* Layer Toggle Bar */
-    .toggle-bar {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      margin-bottom: 22px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 0.88rem;
-    }
-    .toggle-bar label {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    /* Intro Bhashya Box */
-    .bhumika-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
-      font-size: 1.05rem;
-    }
-    .bhumika-title {
-      color: var(--sutra-gold);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    /* Mantra Formatting */
-    .mantra-card {
-      border-top: 1px solid #444;
-      padding: 24px 0;
-    }
-    .samhita {
+    .padya-header:hover { background: var(--card-hover); }
+    .padya-mula {
       color: var(--samhita-red);
-      font-size: 1.28rem;
+      font-size: 1.24rem;
       font-weight: 600;
-      margin-bottom: 16px;
       white-space: pre-line;
+      flex: 1;
     }
-    .pada-sasvara {
-      color: var(--pada-white);
-      font-size: 1.14rem;
-      margin-bottom: 16px;
-      white-space: pre-line;
+    .padya-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
     }
-    .pada-nirudatta {
+    .badge {
+      background: #23232c;
+      border: 1px solid var(--border);
+      color: var(--sutra-gold);
+      font-size: 0.78rem;
+      padding: 2px 9px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+    .expand-hint {
+      color: #888;
+      font-size: 0.82rem;
+    }
+    .padya-details {
+      display: none;
+      border-top: 1px solid var(--border);
+      padding: 18px 20px;
+      background: #101013;
+    }
+    .padya-details.open { display: block; }
+    .padaccheda-box {
       color: var(--nirudatta-blue);
-      font-size: 1.14rem;
-      margin-bottom: 20px;
-      white-space: pre-line;
+      font-size: 1.04rem;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #2c2c34;
     }
-    .bhashya {
-      color: var(--pada-white);
-      font-size: 1.1rem;
-      margin-bottom: 16px;
+    .jivatu-box {
+      background: #151419;
+      border-left: 3px solid var(--pratika-purple);
+      padding: 14px 16px;
+      margin-top: 12px;
+      font-size: 1.06rem;
       text-align: justify;
     }
-    .pratika {
+    .jivatu-label {
       color: var(--pratika-purple);
-      font-weight: 600;
-    }
-    .citation-note {
-      color: var(--sutra-gold);
-    }
-    .anvaya-box {
-      background: #161920;
-      border-left: 3px solid var(--anvaya-green);
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      font-size: 1rem;
-    }
-    .anvaya-label {
-      color: var(--anvaya-green);
       font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
     }
-    .hindi-box {
-      background: #1a1615;
-      border-left: 3px solid var(--hindi-amber);
-      padding: 12px 14px;
-      font-size: 1rem;
+    .kavyashastra-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #2c2c34;
+      font-size: 0.9rem;
     }
-    .hindi-label {
-      color: var(--hindi-amber);
-      font-weight: 700;
-    }
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -353,7 +263,7 @@
     </div>
   </div>
 
-  <!-- 2. Top Header with Three-Line Hamburger Menu -->
+  <!-- 2. Top Header Bar -->
   <header class="top-header">
     <div class="header-left">
       <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
@@ -362,7 +272,7 @@
     <button onclick="lockApp()" style="background:none; border:1px solid #444; color:#aaa; border-radius:5px; padding:4px 10px; cursor:pointer; font-family:inherit; font-size:0.82rem;">Lock 🔒</button>
   </header>
 
-  <!-- 3. Slide-Out Sidebar with Syllabus Categories -->
+  <!-- 3. Slide-Out Syllabus Sidebar -->
   <div class="sidebar-backdrop" id="backdrop" onclick="toggleSidebar()"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -379,26 +289,8 @@
         <span>▸ वैदिक-सूक्तानि</span>
       </button>
       <div class="topic-list open" id="sub-sukta">
-        <div class="topic-item active" onclick="toggleSidebar()">पर्जन्यसूक्तम् (५.८३)</div>
+        <div class="topic-item" id="nav-parjanya" onclick="loadParjanya(true)">पर्जन्यसूक्तम् (५.८३)</div>
         <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">वरुणसूक्तम् (१.२५)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">पुरुषसूक्तम् (१०.९०)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">नासदीयसूक्तम् (१०.१२९)</div>
-      </div>
-
-      <button class="subcat-btn" onclick="toggleMenu('sub-brahmana')">
-        <span>▸ ब्राह्मण-उपनिषदः</span>
-      </button>
-      <div class="topic-list" id="sub-brahmana">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">शुनःशेपाख्यानम्</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">कठोपनिषद्</div>
-      </div>
-
-      <button class="subcat-btn" onclick="toggleMenu('sub-vedanga')">
-        <span>▸ वेदाङ्ग-निरुक्तम्</span>
-      </button>
-      <div class="topic-list" id="sub-vedanga">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">निरुक्तम् (अध्यायः १-२)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">ऋक्प्रातिशाख्यम्</div>
       </div>
     </div>
 
@@ -412,15 +304,6 @@
       </button>
       <div class="topic-list" id="sub-nyaya">
         <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">तर्कसङ्ग्रहः (प्रत्यक्ष-प्रकरणम्)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">तर्कभाषा (अनुमान-प्रकरणम्)</div>
-      </div>
-
-      <button class="subcat-btn" onclick="toggleMenu('sub-mimamsa')">
-        <span>▸ मीमांसा-वेदान्तौ</span>
-      </button>
-      <div class="topic-list" id="sub-mimamsa">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">अर्थसङ्ग्रहः</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">वेदान्तसारः</div>
       </div>
     </div>
 
@@ -434,105 +317,153 @@
       </button>
       <div class="topic-list" id="sub-panini">
         <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">महाभाष्यम् (पस्पशाह्निकम्)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">कारक-प्रकरणम्</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">निपात-उपसर्ग-गति-सञ्ज्ञाः</div>
       </div>
     </div>
 
-    <!-- Category 4: Sahityam -->
+    <!-- Category 4: Sahityam (Updated with Naishadhiyacaritam) -->
     <button class="cat-btn" onclick="toggleMenu('cat-sahitya')">
       <span>४. साहित्यं काव्यशास्त्रं च</span><span>▾</span>
     </button>
-    <div class="subcat-list" id="cat-sahitya">
-      <button class="subcat-btn" onclick="toggleMenu('sub-kavyashastra')">
-        <span>▸ काव्यशास्त्रम्</span>
+    <div class="subcat-list open" id="cat-sahitya">
+      <button class="subcat-btn" onclick="toggleMenu('sub-mahakavya')">
+        <span>▸ पद्यकाव्यम् (महाकाव्यानि)</span>
       </button>
-      <div class="topic-list" id="sub-kavyashastra">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">काव्यप्रकाशः</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">ध्वन्यालोकः</div>
-      </div>
-    </div>
-
-    <!-- Category 5: Purana-Itihasa-Dharmashastra -->
-    <button class="cat-btn" onclick="toggleMenu('cat-purana')">
-      <span>५. पुराणेतिहास-धर्मशास्त्राभिलेखाः</span><span>▾</span>
-    </button>
-    <div class="subcat-list" id="cat-purana">
-      <button class="subcat-btn" onclick="toggleMenu('sub-dharmashastra')">
-        <span>▸ अर्थशास्त्र-धर्मशास्त्रे</span>
-      </button>
-      <div class="topic-list" id="sub-dharmashastra">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">कौटिलीय-अर्थशास्त्रम् (विनयाधिकारिकम्)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">मनुस्मृतिः</div>
+      <div class="topic-list open" id="sub-mahakavya">
+        <div class="topic-item active" id="nav-naishadha" onclick="loadNaishadha(true)">नैषधीयचरितम् (प्रथमः सर्गः)</div>
+        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">किरातार्जुनीयम् (प्रथमः सर्गः)</div>
+        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">शिशुपालवधम् (प्रथमः सर्गः)</div>
       </div>
     </div>
   </aside>
 
-  <!-- 4. Main Reading Area -->
+  <!-- 4. Main Dynamic Study Area -->
   <main class="main-content">
-    <h1 class="sukta-title">अथ पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)</h1>
-
-    <!-- Layer Checkboxes -->
-    <div class="toggle-bar">
-      <label><input type="checkbox" checked onchange="toggleLayer('samhita')"> संहिता</label>
-      <label><input type="checkbox" checked onchange="toggleLayer('pada-sasvara')"> सस्वर-पदपाठः</label>
-      <label><input type="checkbox" checked onchange="toggleLayer('pada-nirudatta')"> निरुदात्त-पदपाठः</label>
-      <label><input type="checkbox" checked onchange="toggleLayer('bhashya')"> सायणभाष्यम्</label>
-      <label><input type="checkbox" checked onchange="toggleLayer('anvaya-box')"> अन्वय-शब्दार्थः</label>
-      <label><input type="checkbox" checked onchange="toggleLayer('hindi-box')"> हिन्दी-अनुवादः</label>
-    </div>
-
-    <!-- Sayana Bhumika -->
-    <div class="bhumika-card bhashya" id="bhumika-box"></div>
-
-    <!-- Mantras Container -->
-    <div id="sukta-container"></div>
+    <h1 class="sukta-title" id="view-title"></h1>
+    <div class="sukta-subtitle" id="view-subtitle"></div>
+    <div id="controls-container"></div>
+    <div id="content-container"></div>
   </main>
 
+  <!-- Load External Data File for Naishadhiyacaritam -->
+  <script src="naishadha_sarga1.js"></script>
+
   <script>
-    // CHANGE THIS PIN TO WHATEVER SECRET CODE YOU WANT TO SHARE WITH YOUR 1-2 FRIENDS
     const APP_PIN = "2525";
 
     function checkPin() {
-      const entered = document.getElementById('pin-input').value;
-      if (entered === APP_PIN) {
+      if (document.getElementById('pin-input').value === APP_PIN) {
         localStorage.setItem('svadhyaya_unlocked', 'true');
         document.getElementById('lock-screen').style.display = 'none';
       } else {
         document.getElementById('lock-error').style.display = 'block';
       }
     }
-
     function lockApp() {
       localStorage.removeItem('svadhyaya_unlocked');
       document.getElementById('pin-input').value = '';
       document.getElementById('lock-screen').style.display = 'flex';
     }
-
-    // Auto-unlock if already authenticated on this phone/browser
     if (localStorage.getItem('svadhyaya_unlocked') === 'true') {
       document.getElementById('lock-screen').style.display = 'none';
     }
-
-    // Allow pressing Enter on PIN input
-    document.getElementById('pin-input').addEventListener('keypress', function(e) {
+    document.getElementById('pin-input').addEventListener('keypress', e => {
       if (e.key === 'Enter') checkPin();
     });
 
-    // Sidebar & Accordion Controls
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('backdrop').classList.toggle('open');
     }
-
     function toggleMenu(id) {
       document.getElementById(id).classList.toggle('open');
     }
-
     function toggleLayer(className) {
-      document.querySelectorAll('.' + className).forEach(el => {
-        el.classList.toggle('hidden');
+      document.querySelectorAll('.' + className).forEach(el => el.classList.toggle('hidden'));
+    }
+
+    // Color-code Sayana & Mallinatha Jivatu Tika:
+    // 1. 'Citations' in Gold
+    // 2. [Samasa / Vyakarana notes] in Sky-Blue
+    // 3. "Pratika words in Purple
+    function formatCommentary(text) {
+      return text
+        .replace(/'([^']+)'(\s*\([^)]+\))?/g, '<span class="citation-note">‘$1’$2</span>')
+        .replace(/\[([^\]]+)\]/g, '<span class="vyakarana-note">[$1]</span>')
+        .replace(/[“"]([^\s"“]+)/g, '<span class="pratika">“$1</span>');
+    }
+
+    // Format bold Sanskrit words in Anvaya
+    function formatAnvaya(text) {
+      return text.replace(/([^\s=;]+)\s*=/g, '<strong style="color:#f0f0f5;">$1</strong> =');
+    }
+
+    // Render Naishadhiyacaritam Interactive Sarga View
+    let allExpanded = false;
+    function loadNaishadha(closeMenu) {
+      if (closeMenu) toggleSidebar();
+      document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('nav-naishadha').classList.add('active');
+
+      document.getElementById('view-title').textContent = naishadhaSarga1.title;
+      document.getElementById('view-subtitle').textContent = naishadhaSarga1.subtitle;
+
+      document.getElementById('controls-container').innerHTML = `
+        <div class="toggle-bar">
+          <div class="toggle-group">
+            <span style="color:#aaa;">सूचना — पद्यं स्पृष्ट्वा विस्तृत-व्याख्याम् उद्धाटयत (Touch any verse to expand)</span>
+          </div>
+          <button class="action-btn" onclick="toggleAllPadyas()" id="expand-all-btn">सर्वेषां विवरणम् उद्धाट्यताम् ▾</button>
+        </div>
+      `;
+
+      const container = document.getElementById('content-container');
+      container.innerHTML = naishadhaSarga1.verses.map((v, idx) => `
+        <div class="padya-card">
+          <div class="padya-header" onclick="togglePadya(${idx})">
+            <div class="padya-mula">${v.mula}</div>
+            <div class="padya-meta">
+              <span class="badge">श्लोकः ${v.num} • ${v.chandas}</span>
+              <span class="expand-hint" id="hint-${idx}">व्याख्या ▾</span>
+            </div>
+          </div>
+          <div class="padya-details" id="details-${idx}">
+            <div class="padaccheda-box">
+              <strong style="color:var(--sutra-gold);">पदच्छेदः — </strong>${v.padaccheda}
+            </div>
+            <div class="anvaya-box">
+              <span class="anvaya-label">अन्वयानुसारी शब्दानुवादः — </span>${formatAnvaya(v.anvaya)}
+            </div>
+            <div class="hindi-box">
+              <span class="hindi-label">हिन्दी-भावार्थः — </span>${v.hindi}
+            </div>
+            <div class="jivatu-box">
+              <span class="jivatu-label">मल्लिनाथसूरि-कृता ‘जीवातु’-टीका —</span>
+              ${formatCommentary(v.jivatu)}
+            </div>
+            <div class="kavyashastra-bar">
+              <span class="badge">छन्दः — ${v.chandas}</span>
+              <span class="badge">अलङ्कारः — ${v.alankara}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function togglePadya(idx) {
+      const box = document.getElementById('details-' + idx);
+      const hint = document.getElementById('hint-' + idx);
+      const isOpen = box.classList.toggle('open');
+      hint.textContent = isOpen ? 'संक्षिप्यताम् ▴' : 'व्याख्या ▾';
+    }
+
+    function toggleAllPadyas() {
+      allExpanded = !allExpanded;
+      document.querySelectorAll('.padya-details').forEach((el, idx) => {
+        el.classList.toggle('open', allExpanded);
+        document.getElementById('hint-' + idx).textContent = allExpanded ? 'संक्षिप्यताम् ▴' : 'व्याख्या ▾';
       });
+      document.getElementById('expand-all-btn').textContent =
+        allExpanded ? 'सर्वेषां विवरणं संक्षिप्यताम् ▴' : 'सर्वेषां विवरणम् उद्धाट्यताम् ▾';
     }
 
     // Sayana Bhumika Text
@@ -622,25 +553,39 @@
       }
     ];
 
-    function formatBhashya(text) {
-      return text
-        .replace(/'([^']+)'\s*\(([^)]+)\)/g, '<span class="citation-note">‘$1’ ($2)</span>')
-        .replace(/[“"]([^\s"“]+)/g, '<span class="pratika">“$1</span>');
-    }
+   function loadParjanya(closeMenu) {
+      if (closeMenu) toggleSidebar();
+      document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('nav-parjanya').classList.add('active');
 
-    function renderSukta() {
-      document.getElementById('bhumika-box').innerHTML =
-        '<div class="bhumika-title">सायणभाष्य-भूमिका</div>' + formatBhashya(bhumikaText);
+      document.getElementById('view-title').textContent = "अथ पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)";
+      document.getElementById('view-subtitle').textContent = "सायणभाष्यसमेतम् — अन्वयानुसार-हिन्दीशब्दार्थानुवादयुतम्";
 
-      const container = document.getElementById('sukta-container');
-      container.innerHTML = suktaData.map(m => `
+      document.getElementById('controls-container').innerHTML = `
+        <div class="toggle-bar">
+          <div class="toggle-group">
+            <label><input type="checkbox" checked onchange="toggleLayer('samhita')"> संहिता</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('pada-sasvara')"> सस्वर-पदपाठः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('pada-nirudatta')"> निरुदात्त-पदपाठः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('bhashya')"> सायणभाष्यम्</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('anvaya-box')"> अन्वय-शब्दार्थः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('hindi-box')"> हिन्दी-अनुवादः</label>
+          </div>
+        </div>
+        <div class="bhumika-card bhashya">
+          <div class="bhumika-title">सायणभाष्य-भूमिका</div>
+          ${formatCommentary(parjanyaBhumika)}
+        </div>
+      `;
+
+      document.getElementById('content-container').innerHTML = parjanyaData.map(m => `
         <div class="mantra-card">
           <div class="samhita">${m.samhita}</div>
           <div class="pada-sasvara">${m.padaSasvara}</div>
           <div class="pada-nirudatta">${m.padaNirudatta}</div>
-          <div class="bhashya">${formatBhashya(m.bhashya)}</div>
+          <div class="bhashya">${formatCommentary(m.bhashya)}</div>
           <div class="anvaya-box">
-            <span class="anvaya-label">अन्वयानुसार शब्दार्थः — </span>${m.anvaya}
+            <span class="anvaya-label">अन्वयानुसार शब्दार्थः — </span>${formatAnvaya(m.anvaya)}
           </div>
           <div class="hindi-box">
             <span class="hindi-label">हिन्दी अनुवादः — </span>${m.hindi}
@@ -649,7 +594,8 @@
       `).join('');
     }
 
-    renderSukta();
+    // Open Naishadhiyacaritam by default so you can test it immediately
+    loadNaishadha(false);
   </script>
 </body>
 </html>
