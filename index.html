@@ -124,9 +124,7 @@
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
       padding: 22px 20px; margin-bottom: 24px;
     }
-    .search-input-wrap {
-      display: flex; gap: 10px; margin-top: 10px;
-    }
+    .search-input-wrap { display: flex; gap: 10px; margin-top: 10px; }
     .search-input {
       flex: 1; padding: 12px 16px; font-size: 1.05rem; font-family: inherit;
       background: #0b0b0c; border: 1px solid var(--border); color: var(--pada-white);
@@ -134,7 +132,7 @@
     }
     .search-input:focus { border-color: var(--sutra-gold); }
     .grid-cards {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 14px; margin-bottom: 28px;
     }
     .Quick-card {
@@ -145,7 +143,7 @@
     .Quick-card h3 { margin: 0 0 6px; color: var(--sutra-gold); font-size: 1.15rem; }
     .Quick-card p { margin: 0; color: #aaa; font-size: 0.9rem; }
 
-    /* AI Tool Card on Home Page */
+    /* AI Tool Card */
     .ai-tool-card {
       background: #13151c; border: 1px solid #333a4d; border-radius: 12px;
       padding: 20px; margin-top: 18px;
@@ -168,12 +166,13 @@
       padding: 10px 14px; margin-bottom: 22px; display: flex; flex-wrap: wrap;
       gap: 12px; align-items: center; justify-content: space-between; font-size: 0.88rem;
     }
-    .toggle-group { display: flex; flex-wrap: wrap; gap: 12px; }
+    .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
     .toggle-bar label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
     .action-btn {
       background: #23232c; border: 1px solid var(--border); color: var(--sutra-gold);
       padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.86rem;
     }
+    .action-btn:hover { border-color: var(--sutra-gold); }
 
     /* Vedic Mantra Formatting */
     .bhumika-card {
@@ -242,6 +241,61 @@
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
       gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #2c2c34; font-size: 0.9rem;
     }
+
+    /* NIRUKTA DARK-MODE & INTERACTIVE STYLING OVERRIDES */
+    #nirukta-view-wrapper .nirukta-doc {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 28px 24px !important;
+      max-width: 100% !important;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    /* Dark Mode Adaptation for Nirukta (Default) */
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc {
+      background-color: var(--card-bg) !important;
+      color: var(--pada-white) !important;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc p.title {
+      color: var(--sutra-gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-top: 1.2em;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .hl-yellow {
+      background-color: rgba(235, 203, 139, 0.2) !important;
+      color: #fff !important;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-980000 {
+      color: #ff7b7b !important;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-b8860b {
+      color: #f0c674 !important;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-2e8b57 {
+      color: #7bd89f !important;
+    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-9900ff {
+      color: #d996ff !important;
+    }
+    /* Fix yellow-on-yellow in Paper Mode too */
+    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-ffff00 {
+      color: #8a6d00 !important;
+    }
+    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-00ffff {
+      color: #006680 !important;
+    }
+    .nirukta-interactive-p {
+      cursor: pointer;
+      border-radius: 6px;
+      padding: 4px 8px;
+      transition: background 0.15s;
+    }
+    .nirukta-interactive-p:hover {
+      background: rgba(235, 203, 139, 0.08);
+    }
+
     .hidden { display: none !important; }
   </style>
 </head>
@@ -283,9 +337,9 @@
       🏠 मुख्यपृष्ठम् (अन्वेषणं AI च)
     </div>
 
-    <!-- Category 1: Vedah -->
+    <!-- Category 1: Vedah & Vedanga -->
     <button class="cat-btn" onclick="toggleMenu('cat-veda')">
-      <span>१. वेदाः</span><span>▾</span>
+      <span>१. वेदाः वेदाङ्गानि च</span><span>▾</span>
     </button>
     <div class="subcat-list open" id="cat-veda">
       <button class="subcat-btn" onclick="toggleMenu('sub-sukta')">
@@ -294,6 +348,14 @@
       <div class="topic-list open" id="sub-sukta">
         <div class="topic-item" id="nav-parjanya" onclick="loadParjanya(true)">पर्जन्यसूक्तम् (५.८३)</div>
         <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">वरुणसूक्तम् (१.२५)</div>
+      </div>
+
+      <!-- NEW: Nirukta Subcategory -->
+      <button class="subcat-btn" onclick="toggleMenu('sub-nirukta')">
+        <span>▸ वेदाङ्ग-निरुक्तम्</span>
+      </button>
+      <div class="topic-list open" id="sub-nirukta">
+        <div class="topic-item" id="nav-nirukta" onclick="loadNirukta(true)">निरुक्तम् — प्रथमोऽध्यायः (पादाः १–६)</div>
       </div>
     </div>
 
@@ -346,8 +408,12 @@
     <div id="content-container"></div>
   </main>
 
-  <!-- Optional External Data File for Naishadhiyacaritam -->
+  <!-- Hidden Mount Target for Nirukta Script (Catches mountNirukta() automatically!) -->
+  <div id="nirukta-content" style="display:none;"></div>
+
+  <!-- External Data Scripts -->
   <script src="naishadha_sarga1.js"></script>
+  <script src="nirukta_adhyaya1.js"></script>
 
   <script>
     const APP_PIN = "2525";
@@ -388,7 +454,6 @@
       if (target) target.classList.add('active');
     }
 
-    // Color-code Sayana & Mallinatha Jivatu Tika
     function formatCommentary(text) {
       if (!text) return '';
       return text
@@ -402,7 +467,6 @@
       return text.replace(/([^\s=;]+)\s*=/g, '<strong style="color:#f0f0f5;">$1</strong> =');
     }
 
-    // Fallback Naishadha data in case naishadha_sarga1.js is not loaded yet
     const defaultNaishadha = {
       title: "नैषधीयचरितम् — प्रथमः सर्गः",
       subtitle: "श्रीहर्षविरचितम् • मल्लिनाथकृत-जीवातुटीका-अन्वयानुसारी-हिन्दीव्याख्यासमेतम्",
@@ -424,7 +488,6 @@
       return (typeof naishadhaSarga1 !== 'undefined') ? naishadhaSarga1 : defaultNaishadha;
     }
 
-    // Parjanya Suktam Data (Fixed variable names!)
     const parjanyaBhumika = `‘अच्छा वद' इति दशर्चमेकादशं सूक्तं भौमस्यात्रेरार्षम् । अत्रेयमनुक्रमणिका-- 'अच्छ दशात्रिः पार्जन्यमुपाद्यास्तिस्रो जगत्य उपान्त्यानुष्टुप्' (अनुक्रमणिका) इति । ‘यत्पर्जन्य' इत्येषा नवम्यनुष्टुप् ‘वि वृक्षान्' इत्याद्यास्तिस्रो जगत्यः शिष्टाः षट् त्रिष्टुभः । पर्जन्यो देवता । अनेन सूक्तेन प्रत्यृचं वा दिशः उपस्थेयाः । सूत्रितं च-- 'संस्थितायां सर्वा दिश उपतिष्ठेताच्छा वद तवसं गीर्भिराभिरिति चतसृभिः प्रत्यृचं सूक्तेन वा' (आश्व. श्रौ. २. १३) इति ॥`;
 
     const parjanyaData = [
@@ -526,17 +589,17 @@
       setActiveNav('nav-home');
 
       document.getElementById('view-title').textContent = "स्वाध्याय-कोशः — मुख्यपृष्ठम्";
-      document.getElementById('view-subtitle').textContent = "वैदिक-वाङ्मय-दर्शन-साहित्य-व्याकरणानां वैयक्तिक-अध्ययन-केन्द्रम्";
+      document.getElementById('view-subtitle').textContent = "वैदिक-वाङ्मय-निरुक्त-दर्शन-साहित्य-व्याकरणानां वैयक्तिक-अध्ययन-केन्द्रम्";
       document.getElementById('controls-container').innerHTML = '';
 
       const nData = getNaishadhaData();
       document.getElementById('content-container').innerHTML = `
         <!-- Global Search Box -->
         <div class="search-hero">
-          <strong style="color:var(--sutra-gold); font-size:1.1rem;">🔍 समग्र-कोश-अन्वेषणम् (Search Across All Texts & Commentaries)</strong>
+          <strong style="color:var(--sutra-gold); font-size:1.1rem;">🔍 समग्र-कोश-अन्वेषणम् (Search Across Suktas, Nirukta & Mahakavya)</strong>
           <div class="search-input-wrap">
             <input type="text" id="global-search" class="search-input"
-              placeholder="शब्दं, मन्त्रं, प्रतीकम् अथवा हिन्दी-अर्थं लिखत (उदा. जीरदानुः, सितच्छत्रित, चतुर्दशत्वम्)..."
+              placeholder="शब्दं, मन्त्रं, निरुक्त-पंक्तिम् अथवा अर्थं लिखत (उदा. जीरदानुः, षड्भावविकारा, शाकटायनः, सितच्छत्रित)..."
               oninput="runGlobalSearch(this.value)">
           </div>
           <div id="search-results" style="margin-top:14px;"></div>
@@ -548,8 +611,12 @@
             <h3>१. पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)</h3>
             <p>१० मन्त्राः • सस्वर-संहिता, पदपाठौ, सायणभाष्यं, अन्वयानुसार-हिन्दीव्याख्या च</p>
           </div>
+          <div class="Quick-card" onclick="loadNirukta(false)">
+            <h3>२. निरुक्तम् (प्रथमोऽध्यायः)</h3>
+            <p>षट् पादाः (१.१–१.२०) • वर्ण-चिह्नित-मूलपाठः, निपात-निर्वचन-विमर्शः, प्रत्यक्ष-AI-व्याख्या च</p>
+          </div>
           <div class="Quick-card" onclick="loadNaishadha(false)">
-            <h3>२. नैषधीयचरितम् (प्रथमः सर्गः)</h3>
+            <h3>३. नैषधीयचरितम् (प्रथमः सर्गः)</h3>
             <p>${nData.verses.length} पद्यानि • पदच्छेदः, मल्लिनाथीया जीवातु-टीका, अन्वयानुसारी शब्दानुवादश्च</p>
           </div>
         </div>
@@ -557,20 +624,20 @@
         <!-- Built-in AI Meaning & Anvaya Generator Tool -->
         <div class="ai-tool-card">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <strong style="color:var(--sutra-gold); font-size:1.15rem;">✨ प्रत्यक्ष-AI-व्याख्या-यन्त्रम् (Live AI Shloka / Mantra Analyzer)</strong>
+            <strong style="color:var(--sutra-gold); font-size:1.15rem;">✨ प्रत्यक्ष-AI-व्याख्या-यन्त्रम् (Live AI Shloka / Nirukta / Mantra Analyzer)</strong>
             <button class="header-btn" onclick="configureApiKey()">⚙️ Set Free Gemini Key</button>
           </div>
           <p style="color:#aaa; font-size:0.9rem; margin:6px 0;">
-            कस्यापि संस्कृत-श्लोकस्य, मन्त्रस्य, टीकापङ्क्तेर्वा पदच्छेदं, अन्वयानुसारी-शब्दानुवादं, हिन्दी-भावार्थं व्याकरण-टिप्पणीं च तत्क्षणं जनयितुं अत्र स्थापयत—
+            कस्यापि संस्कृत-श्लोकस्य, निरुक्त-पङ्क्तेः, मन्त्रस्य वा पदच्छेदं, अन्वयानुसारी-शब्दानुवादं, हिन्दी-भावार्थं व्याकरण-टिप्पणीं च तत्क्षणं जनयितुं अत्र स्थापयत—
           </p>
-          <textarea id="ai-custom-input" class="ai-textarea" placeholder="अत्र श्लोकं मन्त्रं वा स्थापयत (Paste any Sanskrit verse or mantra here)..."></textarea>
+          <textarea id="ai-custom-input" class="ai-textarea" placeholder="अत्र श्लोकं, निरुक्त-वाक्यं मन्त्रं वा स्थापयत..."></textarea>
           <button class="ai-btn" id="ai-analyze-btn" onclick="analyzeCustomVerse()">✨ विश्लेषणं करोतु (Generate Anvaya & Hindi Meaning)</button>
           <div id="ai-custom-output" style="margin-top:16px;"></div>
         </div>
       `;
     }
 
-    // Global Search Function
+    // Global Search Function (Now searches Parjanya, Naishadha, AND Nirukta!)
     function runGlobalSearch(query) {
       const out = document.getElementById('search-results');
       const q = query.trim().toLowerCase();
@@ -580,7 +647,7 @@
       }
 
       const matches = [];
-      // Search Parjanya Suktam
+      // 1. Search Parjanya Suktam
       parjanyaData.forEach((m, i) => {
         const hay = `${m.samhita} ${m.padaNirudatta} ${m.bhashya} ${m.anvaya} ${m.hindi}`.toLowerCase();
         if (hay.includes(q)) {
@@ -593,7 +660,24 @@
         }
       });
 
-      // Search Naishadhiyacaritam
+      // 2. Search Nirukta Adhyaya 1
+      const niruktaHolder = document.getElementById('nirukta-content');
+      if (niruktaHolder) {
+        const paragraphs = niruktaHolder.querySelectorAll('p');
+        paragraphs.forEach((p, idx) => {
+          const text = p.textContent.trim();
+          if (text && text.toLowerCase().includes(q)) {
+            matches.push({
+              source: `निरुक्तम् (अध्यायः १) • अनुच्छेदः ${idx + 1}`,
+              preview: text.length > 110 ? text.slice(0, 110) + '...' : text,
+              sub: 'क्लिक् कृत्वा निरुक्त-प्रकरणे पश्यत',
+              action: `loadNirukta(false); setTimeout(() => { const el = document.getElementById('nir-p-${idx}'); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 120);`
+            });
+          }
+        });
+      }
+
+      // 3. Search Naishadhiyacaritam
       const nData = getNaishadhaData();
       nData.verses.forEach((v, i) => {
         const hay = `${v.mula} ${v.padaccheda || ''} ${v.jivatu || ''} ${v.anvaya || ''} ${v.hindi || ''}`.toLowerCase();
@@ -621,11 +705,11 @@
       `).join('');
     }
 
-    // 2. BUILT-IN GEMINI AI INTEGRATION
+    // 2. BUILT-IN GEMINI AI INTEGRATION (Updated to gemini-3.8-flash with auto-fallback)
     function configureApiKey() {
       const current = localStorage.getItem('svadhyaya_gemini_key') || '';
       const entered = prompt(
-        "अत्र स्वकीयं निःशुल्कं Google Gemini API Key स्थापयत (Get it free at aistudio.google.com/app/apikey):\n\n(Key stays saved privately on your browser only)",
+        "अत्र स्वकीयं निःशुल्कं Google Gemini API Key स्थापयत (Get it free at aistudio.google.com/app/apikey):",
         current
       );
       if (entered !== null) {
@@ -635,41 +719,49 @@
     }
 
     async function callGeminiStructured(verseText, tikaText = "") {
-      const apiKey = localStorage.getItem('svadhyaya_gemini_key');
-      if (!apiKey) {
+      let key = localStorage.getItem('svadhyaya_gemini_key');
+      if (!key) {
         configureApiKey();
-        const retryKey = localStorage.getItem('svadhyaya_gemini_key');
-        if (!retryKey) throw new Error("API Key आवश्यकम्।");
+        key = localStorage.getItem('svadhyaya_gemini_key');
+        if (!key) throw new Error("API Key आवश्यकम्।");
       }
-      const key = localStorage.getItem('svadhyaya_gemini_key');
-      const promptText = `You are an expert Sanskrit Acharya specializing in Veda, Vyakarana, and Mahakavya (Mallinatha style).
-Analyze the following Sanskrit verse/mantra${tikaText ? ' and commentary' : ''}:
-Verse: ${verseText}
+
+      const promptText = `You are an expert Sanskrit Acharya specializing in Veda, Nirukta, Vyakarana, and Mahakavya (Mallinatha style).
+Analyze the following Sanskrit text/verse/mantra${tikaText ? ' and commentary' : ''}:
+Text: ${verseText}
 ${tikaText ? 'Commentary: ' + tikaText : ''}
 
 Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/Sanskrit):
 {
   "padaccheda": "Each word separated by ।",
   "anvaya": "Prose order Sanskrit word = Hindi meaning; separated by semicolons",
-  "hindi": "Complete, accurate literary Hindi translation",
-  "vyakarana": "Key samasa vigraha in [brackets], Paninian sutras in 'single quotes', and alankara/chandas notes"
+  "hindi": "Complete, accurate literary Hindi translation and philosophical/etymological explanation",
+  "vyakarana": "Key nirvacana / samasa vigraha in [brackets] and Paninian/Nirukta citations in 'single quotes'"
 }`;
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: promptText }] }],
-            generationConfig: { responseMimeType: "application/json" }
-          })
+      const models = ["gemini-3.8-flash", "gemini-3-flash", "gemini-2.5-pro"];
+      let lastError = "";
+
+      for (const model of models) {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }],
+              generationConfig: { responseMimeType: "application/json" }
+            })
+          }
+        );
+        const data = await response.json();
+        if (!data.error) {
+          const rawJson = data.candidates[0].content.parts[0].text;
+          return JSON.parse(rawJson);
         }
-      );
-      const data = await response.json();
-      if (data.error) throw new Error(data.error.message);
-      const rawJson = data.candidates[0].content.parts[0].text;
-      return JSON.parse(rawJson);
+        lastError = data.error.message;
+      }
+      throw new Error(lastError);
     }
 
     async function analyzeCustomVerse() {
@@ -685,7 +777,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
           <div class="padaccheda-box"><strong style="color:var(--sutra-gold);">पदच्छेदः — </strong>${res.padaccheda}</div>
           <div class="anvaya-box"><span class="anvaya-label">अन्वयानुसारी शब्दानुवादः — </span>${formatAnvaya(res.anvaya)}</div>
           <div class="hindi-box"><span class="hindi-label">हिन्दी-भावार्थः — </span>${res.hindi}</div>
-          <div class="jivatu-box"><span class="jivatu-label">व्याकरण-अलङ्कार-टिप्पणी —</span>${formatCommentary(res.vyakarana)}</div>
+          <div class="jivatu-box"><span class="jivatu-label">व्याकरण-निरुक्त-टिप्पणी —</span>${formatCommentary(res.vyakarana)}</div>
         `;
       } catch (err) {
         out.innerHTML = `<div style="color:var(--samhita-red);">त्रुटिः — ${err.message}</div>`;
@@ -695,33 +787,101 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       }
     }
 
-    // Generate/Refresh AI Anvaya & Hindi for a specific Sarga verse
-    async function generateVerseAI(idx) {
-      const nData = getNaishadhaData();
-      const v = nData.verses[idx];
-      const btn = document.getElementById(`ai-vbtn-${idx}`);
-      btn.disabled = true;
-      btn.textContent = "⏳ जनयति...";
-      try {
-        const res = await callGeminiStructured(v.mula, v.jivatu || "");
-        v.padaccheda = res.padaccheda || v.padaccheda;
-        v.anvaya = res.anvaya;
-        v.hindi = res.hindi;
-        localStorage.setItem(`naishadha_ai_v_${v.num}`, JSON.stringify(res));
-        document.getElementById(`anvaya-v-${idx}`).innerHTML =
-          `<span class="anvaya-label">अन्वयानुसारी शब्दानुवादः (AI) — </span>${formatAnvaya(v.anvaya)}`;
-        document.getElementById(`hindi-v-${idx}`).innerHTML =
-          `<span class="hindi-label">हिन्दी-भावार्थः (AI) — </span>${v.hindi}`;
-        btn.textContent = "✓ AI द्वारा अद्यतनीकृतम्";
-      } catch (err) {
-        alert("AI त्रुटिः: " + err.message);
-        btn.textContent = "✨ AI द्वारा पुनः जनयतु";
-      } finally {
-        btn.disabled = false;
+    // 3. NEW: LOAD NIRUKTA ADHYAYA 1 VIEW (With Pada Jumps, Dark/Paper Toggle & Tap-to-AI)
+    function loadNirukta(closeMenu) {
+      if (closeMenu) toggleSidebar();
+      setActiveNav('nav-nirukta');
+
+      document.getElementById('view-title').textContent = "यास्कमुनिविरचितं निरुक्तम् — प्रथमोऽध्यायः";
+      document.getElementById('view-subtitle').textContent = "षट् पादाः (१.१ – १.२०) • चतुष्पदजाति-भावविकार-उपसर्ग-निपात-निर्वचन-विमर्शः";
+
+      const rawHolder = document.getElementById('nirukta-content');
+      if (!rawHolder || !rawHolder.innerHTML.trim()) {
+        document.getElementById('controls-container').innerHTML = '';
+        document.getElementById('content-container').innerHTML = `
+          <div class="bhumika-card">
+            <strong style="color:var(--samhita-red);">सूचना — </strong>
+            कृपया स्वकीयं निरुक्त-सञ्चिकां <strong>nirukta_adhyaya1.js</strong> नाम्ना अस्मिन्नेव पुटे स्थापयत।
+          </div>`;
+        return;
+      }
+
+      document.getElementById('controls-container').innerHTML = `
+        <div class="toggle-bar">
+          <div class="toggle-group">
+            <button class="action-btn" onclick="scrollToNiruktaPada('प्रथम-पाद')">१. प्रथम-पादः</button>
+            <button class="action-btn" onclick="scrollToNiruktaPada('द्वितीय-पाद')">२. द्वितीय-पादः</button>
+            <button class="action-btn" onclick="scrollToNiruktaPada('तृतीय-पाद')">३. तृतीय-पादः</button>
+            <button class="action-btn" onclick="scrollToNiruktaPada('चतुर्थ-पाद')">४. चतुर्थ-पादः</button>
+            <button class="action-btn" onclick="scrollToNiruktaPada('पञ्चम-पाद')">५. पञ्चम-पादः</button>
+            <button class="action-btn" onclick="scrollToNiruktaPada('षष्ठ-पाद')">६. षष्ठ-पादः</button>
+          </div>
+          <button class="action-btn" onclick="toggleNiruktaTheme()">🌓 कृष्ण/श्वेत-पृष्ठम् (Theme)</button>
+        </div>
+        <div style="color:#aaa; font-size:0.88rem; margin-bottom:12px;">
+          💡 <strong>सूचनाः</strong> कमपि निरुक्त-अनुच्छेदं स्पृष्ट्वा तस्य अधः तत्क्षणं <strong>✨ AI-हिन्दी-व्याख्याम्</strong> उद्धाटयितुं शक्नुथ।
+        </div>
+      `;
+
+      const container = document.getElementById('content-container');
+      container.innerHTML = `<div id="nirukta-view-wrapper" class="nirukta-dark">${rawHolder.innerHTML}</div>`;
+
+      // Make every non-empty paragraph interactive for instant AI Hindi explanation
+      const wrapper = document.getElementById('nirukta-view-wrapper');
+      wrapper.querySelectorAll('p').forEach((p, idx) => {
+        p.id = 'nir-p-' + idx;
+        const text = p.textContent.trim();
+        if (text && !p.classList.contains('title') && text.length > 8) {
+          p.classList.add('nirukta-interactive-p');
+          p.title = "स्पृष्ट्वा AI-हिन्दी-व्याख्यां पश्यत (Click for AI Hindi Explanation)";
+          p.onclick = () => toggleNiruktaAI(idx, text);
+        }
+      });
+    }
+
+    function toggleNiruktaTheme() {
+      const w = document.getElementById('nirukta-view-wrapper');
+      if (w) w.classList.toggle('nirukta-dark');
+    }
+
+    function scrollToNiruktaPada(padaTitle) {
+      const wrapper = document.getElementById('nirukta-view-wrapper');
+      if (!wrapper) return;
+      const titles = wrapper.querySelectorAll('p.title');
+      for (const t of titles) {
+        if (t.textContent.includes(padaTitle)) {
+          t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          break;
+        }
       }
     }
 
-    // 3. LOAD NAISHADHIYACARITAM VIEW
+    async function toggleNiruktaAI(idx, text) {
+      const existing = document.getElementById('nir-ai-box-' + idx);
+      if (existing) {
+        existing.classList.toggle('hidden');
+        return;
+      }
+      const targetP = document.getElementById('nir-p-' + idx);
+      const box = document.createElement('div');
+      box.id = 'nir-ai-box-' + idx;
+      box.style.margin = '10px 0 18px 0';
+      box.innerHTML = `<div class="anvaya-box">⏳ AI निरुक्त-पङ्क्तेः हिन्दी-व्याख्यां जनयति...</div>`;
+      targetP.insertAdjacentElement('afterend', box);
+
+      try {
+        const res = await callGeminiStructured(text, "Yaska's Nirukta Adhyaya 1");
+        box.innerHTML = `
+          <div class="anvaya-box"><span class="anvaya-label">पदार्थः (AI) — </span>${formatAnvaya(res.anvaya)}</div>
+          <div class="hindi-box"><span class="hindi-label">हिन्दी-व्याख्या — </span>${res.hindi}</div>
+          <div class="jivatu-box"><span class="jivatu-label">निर्वचन-व्याकरण-टिप्पणी —</span>${formatCommentary(res.vyakarana)}</div>
+        `;
+      } catch (err) {
+        box.innerHTML = `<div class="hindi-box" style="color:var(--samhita-red);">त्रुटिः — ${err.message}</div>`;
+      }
+    }
+
+    // 4. LOAD NAISHADHIYACARITAM VIEW
     let allExpanded = false;
     function loadNaishadha(closeMenu) {
       if (closeMenu) toggleSidebar();
@@ -780,6 +940,31 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       `}).join('');
     }
 
+    async function generateVerseAI(idx) {
+      const nData = getNaishadhaData();
+      const v = nData.verses[idx];
+      const btn = document.getElementById(`ai-vbtn-${idx}`);
+      btn.disabled = true;
+      btn.textContent = "⏳ जनयति...";
+      try {
+        const res = await callGeminiStructured(v.mula, v.jivatu || "");
+        v.padaccheda = res.padaccheda || v.padaccheda;
+        v.anvaya = res.anvaya;
+        v.hindi = res.hindi;
+        localStorage.setItem(`naishadha_ai_v_${v.num}`, JSON.stringify(res));
+        document.getElementById(`anvaya-v-${idx}`).innerHTML =
+          `<span class="anvaya-label">अन्वयानुसारी शब्दानुवादः (AI) — </span>${formatAnvaya(v.anvaya)}`;
+        document.getElementById(`hindi-v-${idx}`).innerHTML =
+          `<span class="hindi-label">हिन्दी-भावार्थः (AI) — </span>${v.hindi}`;
+        btn.textContent = "✓ AI द्वारा अद्यतनीकृतम्";
+      } catch (err) {
+        alert("AI त्रुटिः: " + err.message);
+        btn.textContent = "✨ AI द्वारा पुनः जनयतु";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     function togglePadya(idx) {
       const box = document.getElementById('details-' + idx);
       const hint = document.getElementById('hint-' + idx);
@@ -798,7 +983,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         allExpanded ? 'सर्वेषां विवरणं संक्षिप्यताम् ▴' : 'सर्वेषां विवरणम् उद्धाट्यताम् ▾';
     }
 
-    // 4. LOAD PARJANYA SUKTAM VIEW
+    // 5. LOAD PARJANYA SUKTAM VIEW
     function loadParjanya(closeMenu) {
       if (closeMenu) toggleSidebar();
       setActiveNav('nav-parjanya');
