@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>स्वाध्याय-कोशः | Personal Sanskrit Study App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0b0c;
+      --card-bg: #141417;
+      --border: #2c2c34;
+      --samhita-red: #f26d6d;
+      --pada-white: #f0f0f5;
+      --nirudatta-blue: #6fa8dc;
+      --pratika-purple: #b48ead;
+      --sutra-gold: #ebcb8b;
+      --anvaya-green: #88c0d0;
+      --hindi-amber: #d08770;
+    }
+    body {
+      margin: 0;
+      background-color: var(--bg-dark);
+      color: var(--pada-white);
+      font-family: 'Noto Serif Devanagari', serif;
+      display: flex;
+      min-height: 100vh;
+      line-height: 1.85;
+    }
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 270px;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      flex-shrink: 0;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      color: var(--sutra-gold);
+      margin-top: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .nav-section {
+      font-size: 0.9rem;
+      color: #888;
+      margin: 16px 0 8px;
+      text-transform: uppercase;
+    }
+    .nav-item {
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      font-size: 1rem;
+    }
+    .nav-item.active, .nav-item:hover {
+      background: #23232a;
+      color: var(--sutra-gold);
+    }
+    /* Main Study Area */
+    .main-content {
+      flex: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 40px;
+    }
+    /* Layer Toggle Bar */
+    .toggle-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 0.92rem;
+    }
+    .toggle-bar label {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    /* Mantra Block Styling */
+    .mantra-card {
+      border-top: 1px solid #555;
+      padding: 28px 0;
+    }
+    .samhita {
+      color: var(--samhita-red);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      white-space: pre-line;
+    }
+    .pada-sasvara {
+      color: var(--pada-white);
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+      white-space: pre-line;
+    }
+    .pada-nirudatta {
+      color: var(--nirudatta-blue);
+      font-size: 1.2rem;
+      margin-bottom: 22px;
+      white-space: pre-line;
+    }
+    .bhashya {
+      color: var(--pada-white);
+      font-size: 1.15rem;
+      margin-bottom: 18px;
+      text-align: justify;
+    }
+    .pratika {
+      color: var(--pratika-purple);
+      font-weight: 600;
+    }
+    .citation-note {
+      color: var(--sutra-gold);
+    }
+    .anvaya-box {
+      background: #161920;
+      border-left: 3px solid var(--anvaya-green);
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      font-size: 1.05rem;
+    }
+    .anvaya-label {
+      color: var(--anvaya-green);
+      font-weight: 700;
+    }
+    .hindi-box {
+      background: #1a1615;
+      border-left: 3px solid var(--hindi-amber);
+      padding: 12px 16px;
+      font-size: 1.05rem;
+    }
+    .hindi-label {
+      color: var(--hindi-amber);
+      font-weight: 700;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <h2>स्वाध्याय-कोशः</h2>
+    <div class="nav-section">वैदिक-सूक्तानि</div>
+    <div class="nav-item active">पर्जन्यसूक्तम् (५.८३)</div>
+    <div class="nav-item">वरुणसूक्तम् (१.२५)</div>
+    <div class="nav-section">दर्शन-प्रकरणानि (Topic-wise)</div>
+    <div class="nav-item">प्रत्यक्ष-प्रकरणम् (न्यायः)</div>
+    <div class="nav-item">शब्दप्रामाण्यम् (मीमांसा)</div>
+  </aside>
+
+  <main class="main-content">
+    <h1 style="margin-top:0; color: var(--sutra-gold);">अथ पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)</h1>
+
+    <!-- Interactive Layer Toggles -->
+    <div class="toggle-bar">
+      <label><input type="checkbox" checked onchange="toggleLayer('samhita')"> संहितापाठः</label>
+      <label><input type="checkbox" checked onchange="toggleLayer('pada-sasvara')"> सस्वर-पदपाठः</label>
+      <label><input type="checkbox" checked onchange="toggleLayer('pada-nirudatta')"> निरुदात्त-पदपाठः</label>
+      <label><input type="checkbox" checked onchange="toggleLayer('bhashya')"> सायणभाष्यम्</label>
+      <label><input type="checkbox" checked onchange="toggleLayer('anvaya-box')"> अन्वयानुसार-शब्दार्थः</label>
+      <label><input type="checkbox" checked onchange="toggleLayer('hindi-box')"> हिन्दी-अनुवादः</label>
+    </div>
+
+    <div id="sukta-container"></div>
+  </main>
+
+  <script>
+    // Database array (Later we will load this automatically from JSON files)
+    const suktaData = [
+      {
+        num: "१",
+        samhita: "अच्छा॑ वद त॒वसं॑ गी॒र्भिरा॒भिः स्तु॒हि प॒र्जन्यं॒ नम॒सा वि॑वास ।\n\nकनि॑क्रदद्वृष॒भो जी॒रदा॑नू॒ रेतो॑ दधा॒त्योष॑धीषु॒ गर्भ॑म् ॥१",
+        padaSasvara: "अच्छ॑ । व॒द॒ । त॒वस॑म् । गीः॒ऽभिः । आ॒भिः । स्तु॒हि । प॒र्जन्य॑म् । नम॑सा । आ । वि॒वा॒स॒ ।\n\nकनि॑क्रदत् । वृ॒ष॒भः । जी॒रऽदा॑नुः । रेतः॑ । द॒धा॒ति॒ । ओष॑धीषु । गर्भ॑म् ॥१",
+        padaNirudatta: "अच्छ । वद । तवसम् । गीःऽभिः । आभिः । स्तुहि । पर्जन्यम् । नमसा । आ । विवास ।\n\nकनिक्रदत् । वृषभः । जीरऽदानुः । रेतः । दधाति । ओषधीषु । गर्भम् ॥ १ ॥",
+        bhashya: 'हे स्तोतः "तवसं बलवन्तं "पर्जन्यम् "अच्छ अभिप्राप्य "वद प्रार्थय । पर्जन्यशब्दो यास्केन बहुधा निरुक्तः -- \'पर्जन्यस्तृपेराद्यन्तविपरीतस्य तर्पयिता जन्यः परो जेता वा जनयिता वा प्रार्जयिता वा रसानाम्\' (निरु. १०. १०) इति । "आभिः "गीर्भिः स्तुतिवाग्भिः "स्तुहि । "नमसा अन्नेन हविर्लक्षणेन "आ "विवास सर्वतः परिचर । यः पर्जन्यः "वृषभः अपां वर्षिता "जीरदानुः क्षिप्रदानः "कनिक्रदत् गर्जनशब्दं कुर्वन् "ओषधीषु "गर्भं गर्भस्थानीयं "रेतः उदकं "दधाति स्थापयति तं स्तुहि ॥',
+        anvaya: "(हे स्तोतः!) तवसम् = बलवान्; पर्जन्यम् = पर्जन्यदेव को; अच्छ = संमुख प्राप्त करके; वद = प्रार्थना करो; आभिः = इन; गीर्भिः = स्तुतिरूप वाणियों से; स्तुहि = स्तुति करो; नमसा = हविर्लक्षण अन्न से; आ विवास = सब ओर से सेवा करो; वृषभः = जल बरसाने वाला; जीरदानुः = शीघ्र दान देने वाला; कनिक्रदत् = बार-बार गर्जना करता हुआ; ओषधीषु = वनस्पतियों में; गर्भम् = गर्भ के समान; रेतः = वीर्यरूप जल को; दधाति = स्थापित करता है।",
+        hindi: "हे स्तोता! तुम बलवान् पर्जन्यदेव के संमुख जाकर उनसे प्रार्थना करो। इन स्तुति-वाणियों के द्वारा उनकी स्तुति करो तथा हविष्य के द्वारा सब प्रकार से उनकी परिचर्या करो। जल की वर्षा करने वाले और शीघ्र दान देने वाले वे पर्जन्यदेव घोर गर्जना करते हुए वनस्पतियों में गर्भ के समान जीवनदायक जल स्थापित करते हैं।"
+      }
+    ];
+
+    // Automatically colors "pratika words in purple and 'citations' in gold
+    function formatBhashya(text) {
+      return text
+        .replace(/'([^']+)'\s*\(([^)]+)\)/g, '<span class="citation-note">‘$1’ ($2)</span>')
+        .replace(/[“"]([^\s"“]+)/g, '<span class="pratika">“$1</span>');
+    }
+
+    function renderSukta() {
+      const container = document.getElementById('sukta-container');
+      container.innerHTML = suktaData.map(m => `
+        <div class="mantra-card">
+          <div class="samhita">${m.samhita}</div>
+          <div class="pada-sasvara">${m.padaSasvara}</div>
+          <div class="pada-nirudatta">${m.padaNirudatta}</div>
+          <div class="bhashya">${formatBhashya(m.bhashya)}</div>
+          <div class="anvaya-box">
+            <span class="anvaya-label">अन्वयानुसार शब्दार्थः — </span>${m.anvaya}
+          </div>
+          <div class="hindi-box">
+            <span class="hindi-label">हिन्दी अनुवादः — </span>${m.hindi}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleLayer(className) {
+      document.querySelectorAll('.' + className).forEach(el => {
+        el.classList.toggle('hidden');
+      });
+    }
+
+    renderSukta();
+  </script>
+</body>
+</html>
