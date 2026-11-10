@@ -7,7 +7,7 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0d0b0c",
-  "theme_color": "#4a0e13",
+  "theme_color": "#14171d",
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%234a0e13'/><rect x='24' y='24' width='464' height='464' rx='76' fill='none' stroke='%23c9a24d' stroke-width='12'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='270' fill='%23ebcb8b'>ॐ</text></svg>",
