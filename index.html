@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4a0e13">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
   <title>स्वाध्याय-कोशः | बृहत्-संस्कृत-ग्रन्थालयः</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,7 +84,7 @@
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     }
-    .header-left, .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-left, .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .menu-btn {
       background: rgba(0, 0, 0, 0.25); border: 1px solid var(--gold-accent);
       color: var(--sutra-gold); font-size: 1.25rem; line-height: 1;
@@ -302,7 +306,7 @@
     .pada-nirudatta { color: var(--nirudatta-blue); font-size: 1.12rem; margin-bottom: 18px; white-space: pre-line; }
     .bhashya { color: var(--pada-white); font-size: 1.08rem; margin-bottom: 16px; text-align: justify; }
 
-/* Shared Highlighting Classes */
+    /* Shared Highlighting Classes */
     .pratika { color: var(--pratika-purple); font-weight: 600; }
     .citation-note {
       color: inherit;
@@ -421,7 +425,7 @@
     </div>
   </div>
 
-  <!-- 2. Classical Maroon Header Bar -->
+  <!-- 2. Classical Maroon Header Bar (With Install & Force-Update Buttons) -->
   <header class="top-header">
     <div class="header-left">
       <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
@@ -431,6 +435,10 @@
       </div>
     </div>
     <div class="header-right">
+      <button class="header-btn" id="install-app-btn" onclick="installPWA()" style="display:none; background:var(--gold-accent); color:#0d0b0c; font-weight:700;">
+        📲 इंस्टॉल करें
+      </button>
+      <button class="header-btn" onclick="forceRefreshData()" title="नवीनतम-श्लोकान् आनयत">अद्यतनम्</button>
       <button class="header-btn" onclick="loadHome(false)">मुख्यपृष्ठम्</button>
       <button class="header-btn" onclick="configureApiKey()">कुञ्चिका (API)</button>
       <button class="header-btn" onclick="lockApp()">रोधः</button>
@@ -588,16 +596,13 @@
     <div id="content-container"></div>
   </main>
 
-  <!-- Hidden Mount Target for Nirukta Script -->
+  <!-- Hidden Mount Target for Nirukta Script (Must exist BEFORE scripts load) -->
   <div id="nirukta-content" style="display:none;"></div>
 
-  <!-- External Modular Data Scripts -->
-  <script src="parjanya_sukta.js"></script>
-  <script src="naishadha_sarga1.js"></script>
-  <script src="nirukta_adhyaya1.js"></script>
-
+  <!-- Main App & Dynamic Cache-Busting Script -->
   <script>
     const APP_PIN = "2525";
+    const DATA_VERSION = localStorage.getItem('svadhyaya_data_ver') || '2026.11.51';
 
     function checkPin() {
       if (document.getElementById('pin-input').value === APP_PIN) {
@@ -617,6 +622,62 @@
     }
     document.getElementById('pin-input').addEventListener('keypress', e => {
       if (e.key === 'Enter') checkPin();
+    });
+
+    // Dynamic Cache-Busting Loader for External JS Data Files
+    function loadDataScripts(cb) {
+      const files = ['parjanya_sukta.js', 'naishadha_sarga1.js', 'nirukta_adhyaya1.js'];
+      let loaded = 0;
+      files.forEach((file) => {
+        const s = document.createElement('script');
+        s.src = `${file}?v=${DATA_VERSION}`;
+        s.onload = s.onerror = () => {
+          loaded++;
+          if (loaded === files.length && cb) cb();
+        };
+        document.body.appendChild(s);
+      });
+    }
+
+    // One-tap button for mobile to clear cache and fetch latest GitHub files
+    async function forceRefreshData() {
+      localStorage.setItem('svadhyaya_data_ver', Date.now().toString());
+      if ('caches' in window) {
+        const names = await caches.keys();
+        await Promise.all(names.map(n => caches.delete(n)));
+      }
+      location.reload(true);
+    }
+
+    // Register Service Worker & Handle "📲 इंस्टॉल करें" Button
+    let deferredInstallPrompt = null;
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const btn = document.getElementById('install-app-btn');
+      if (btn) btn.style.display = 'inline-block';
+    });
+
+    async function installPWA() {
+      if (!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      const { outcome } = await deferredInstallPrompt.userChoice;
+      if (outcome === 'accepted') {
+        document.getElementById('install-app-btn').style.display = 'none';
+      }
+      deferredInstallPrompt = null;
+    }
+
+    window.addEventListener('appinstalled', () => {
+      const btn = document.getElementById('install-app-btn');
+      if (btn) btn.style.display = 'none';
     });
 
     function toggleSidebar() {
@@ -1209,8 +1270,10 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       `).join('');
     }
 
-    loadHome(false);
+    // Load external data scripts with cache-buster first, then render Home
+    loadDataScripts(() => {
+      loadHome(false);
+    });
   </script>
 </body>
 </html>
-<script src="naishadha_sarga1.js?v=51"></script>
