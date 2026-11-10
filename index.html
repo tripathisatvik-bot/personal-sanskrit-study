@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4a0e13">
+  <meta name="theme-color" content="#14171d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.json">
@@ -12,25 +12,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
   <style>
-    :root {
-      /* Core Dark & Royal Maroon Theme */
-      --bg-dark: #0d0b0c;
-      --card-bg: #161214;
-      --card-hover: #211a1d;
-      --border: #38282b;
-      --maroon-deep: #4a0e13;
-      --maroon-primary: #6e161d;
-      --maroon-light: #8f242c;
-      --gold-accent: #c9a24d;
+:root {
+      /* Cool Aesthetic Slate-Grey & Antique Gold Theme */
+      --bg-dark: #0e1014;
+      --card-bg: #161920;
+      --card-hover: #1e222b;
+      --border: #2a303c;
+      --maroon-deep: #181c24;
+      --maroon-primary: #252b37;
+      --maroon-light: #c5a059;
+      --gold-accent: #d4af37;
 
-      /* Text & Commentary Highlighting Palette */
-      --samhita-red: #c0aa3c;
-      --pada-white: #f2ece4;
-      --nirudatta-blue: #6fa8dc;
-      --pratika-purple: #d49cd4;
-      --sutra-gold: #ebcb8b;
-      --anvaya-green: #88c0d0;
-      --hindi-amber: #df957d;
+      /* Soothing Text & Commentary Highlighting Palette */
+      --samhita-red: #e57a7a;
+      --pada-white: #e8eaed;
+      --nirudatta-blue: #7ab0e0;
+      --pratika-purple: #c795e0;
+      --sutra-gold: #e6c875;
+      --anvaya-green: #82c4d4;
+      --hindi-amber: #df9b7d;
     }
 
     * { box-sizing: border-box; }
@@ -46,7 +46,7 @@
     /* 1. Passcode Lock Screen */
     #lock-screen {
       position: fixed; inset: 0;
-      background: radial-gradient(circle at center, #240b0e 0%, #0d0b0c 100%);
+      background: radial-gradient(circle at center, #1c212b 0%, #0e1014 100%);
       z-index: 9999; display: flex; flex-direction: column;
       align-items: center; justify-content: center; padding: 20px; text-align: center;
     }
@@ -78,7 +78,7 @@
     /* 2. Classical Maroon Top Header */
     .top-header {
       position: sticky; top: 0; z-index: 100;
-      background: linear-gradient(90deg, #3b0b10 0%, #5c131a 50%, #3b0b10 100%);
+      background: linear-gradient(90deg, #12151b 0%, #1c212b 50%, #12151b 100%);
       border-bottom: 2px solid var(--gold-accent);
       padding: 12px 20px;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -146,7 +146,7 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .topic-item.active, .topic-item:hover {
-      background: linear-gradient(90deg, rgba(110, 22, 29, 0.55), transparent);
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.16), transparent);
       color: var(--sutra-gold); border-left: 2px solid var(--gold-accent);
     }
     .topic-pending { color: #887a7d; font-size: 0.85rem; }
@@ -155,7 +155,7 @@
     /* 4. Main Content Container */
     .main-content { max-width: 940px; margin: 0 auto; padding: 24px 18px 70px; }
     .grantha-banner {
-      background: linear-gradient(135deg, #2a0c10 0%, #171113 100%);
+      background: linear-gradient(135deg, #1b2029 0%, #13161c 100%);
       border: 1px solid var(--border); border-top: 3px solid var(--maroon-light);
       border-radius: 10px; padding: 20px 24px; margin-bottom: 22px;
     }
@@ -167,7 +167,7 @@
 
     /* 5. Classical Front Page (Granthalaya Interface) */
     .hero-panel {
-      background: linear-gradient(135deg, #3d0d13 0%, #1d1114 100%);
+      background: linear-gradient(135deg, #1d222c 0%, #13161d 100%);
       border: 1px solid var(--gold-accent); border-radius: 12px;
       padding: 28px 24px; margin-bottom: 28px; text-align: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
@@ -213,7 +213,7 @@
     }
     .grantha-unit-tag {
       display: inline-block; font-size: 0.76rem; color: var(--sutra-gold);
-      background: rgba(110, 22, 29, 0.45); border: 1px solid var(--maroon-light);
+      background: rgba(212, 175, 55, 0.14); border: 1px solid var(--maroon-light);
       padding: 2px 9px; border-radius: 4px; margin-bottom: 10px; width: fit-content;
     }
     .grantha-card h3 {
@@ -246,7 +246,7 @@
       background: #1c1618; border: 1px solid var(--border); color: #bbb;
     }
     .unit-pill.ready {
-      background: rgba(110, 22, 29, 0.4); border-color: var(--gold-accent);
+      background: rgba(212, 175, 55, 0.14); border-color: var(--gold-accent);
       color: var(--sutra-gold); cursor: pointer; font-weight: 600;
     }
     .unit-pill.ready:hover { background: var(--maroon-primary); color: #fff; }
@@ -426,9 +426,12 @@
   </div>
 
   <!-- 2. Classical Maroon Header Bar (With Install & Force-Update Buttons) -->
-  <header class="top-header">
+<header class="top-header">
     <div class="header-left">
       <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+      <button class="header-btn" id="back-nav-btn" onclick="goBackView()" style="display:none; font-weight:700; color:var(--sutra-gold); border-color:var(--gold-accent);">
+        ← पूर्वपृष्ठम्
+      </button>
       <div class="brand-wrap" onclick="loadHome(false)">
         <span class="app-title">स्वाध्याय-कोशः</span>
         <span class="app-subtitle-bar">यू.जी.सी.-नेट् (संस्कृतम् – २५) मूलग्रन्थ-सङ्ग्रहः</span>
@@ -692,11 +695,59 @@
     function toggleLayer(className) {
       document.querySelectorAll('.' + className).forEach(el => el.classList.toggle('hidden'));
     }
+let isPopStateNavigation = false;
+
     function setActiveNav(id) {
       document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
       const target = document.getElementById(id);
       if (target) target.classList.add('active');
+
+      // Automatically show '← पूर्वपृष्ठम्' button when inside any Grantha, hide on Home
+      const backBtn = document.getElementById('back-nav-btn');
+      if (backBtn) {
+        backBtn.style.display = (id === 'nav-home') ? 'none' : 'inline-block';
+      }
+
+      // Push state to browser history so phone/browser Back button doesn't close the app
+      if (!isPopStateNavigation) {
+        if (id === 'nav-home') {
+          if (!window.location.hash) {
+            history.replaceState({ navId: 'nav-home' }, '', '#home');
+          } else if (window.location.hash !== '#home') {
+            history.pushState({ navId: 'nav-home' }, '', '#home');
+          }
+        } else {
+          const targetHash = '#' + id.replace('nav-', '');
+          if (window.location.hash !== targetHash) {
+            history.pushState({ navId: id }, '', targetHash);
+          }
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function goBackView() {
+      if (window.location.hash && window.location.hash !== '#home') {
+        history.back();
+      } else {
+        loadHome(false);
+      }
+    }
+
+    window.addEventListener('popstate', (event) => {
+      isPopStateNavigation = true;
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('open')) {
+        toggleSidebar();
+      }
+      const navId = (event.state && event.state.navId) ? event.state.navId : 'nav-home';
+      if (navId === 'nav-parjanya') loadParjanya(false);
+      else if (navId === 'nav-nirukta') loadNirukta(false);
+      else if (navId === 'nav-naishadha') loadNaishadha(false);
+      else if (navId === 'nav-shishupala' && typeof loadShishupala === 'function') loadShishupala(false);
+      else loadHome(false);
+      isPopStateNavigation = false;
+    });
     function notifyPending(title) {
       alert(`‘${title}’ इत्यस्य मूलपाठ-सञ्चिका (.js) शीघ्रमेव अस्मिन् कोशे संयोजयिष्यते।`);
     }
