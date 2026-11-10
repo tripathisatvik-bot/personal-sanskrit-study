@@ -1,0 +1,19 @@
+{
+  "name": "स्वाध्याय-कोशः | बृहत्-संस्कृत-ग्रन्थालयः",
+  "short_name": "स्वाध्याय-कोशः",
+  "description": "यू.जी.सी.-नेट् (संस्कृतम् – २५) मूलग्रन्थ-सङ्ग्रहः",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d0b0c",
+  "theme_color": "#4a0e13",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%234a0e13'/><rect x='24' y='24' width='464' height='464' rx='76' fill='none' stroke='%23c9a24d' stroke-width='12'/><text x='50%25' y='56%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-weight='bold' font-size='270' fill='%23ebcb8b'>ॐ</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
