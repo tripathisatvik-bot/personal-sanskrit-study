@@ -437,10 +437,16 @@
         <span class="app-subtitle-bar">यू.जी.सी.-नेट् (संस्कृतम् – २५) मूलग्रन्थ-सङ्ग्रहः</span>
       </div>
     </div>
-    <div class="header-right">
+<div class="header-right">
       <button class="header-btn" id="install-app-btn" onclick="installPWA()" style="display:none; background:var(--gold-accent); color:#0d0b0c; font-weight:700;">
         📲 इंस्टॉल करें
       </button>
+      <!-- Font Size Controls (अ- / अ+) -->
+      <div style="display:inline-flex; align-items:center; background:rgba(13,11,12,0.45); border:1px solid rgba(201,162,77,0.45); border-radius:6px; overflow:hidden;">
+        <button class="header-btn" onclick="changeFontSize(-10)" title="अक्षराकारं ह्रस्वीकरोतु" style="border:none; border-radius:0; padding:6px 9px;">अ−</button>
+        <span id="font-size-label" onclick="resetFontSize()" title="मूल-आकारः (Reset to 100%)" style="font-size:0.78rem; color:var(--sutra-gold); padding:0 6px; cursor:pointer; user-select:none;">१००%</span>
+        <button class="header-btn" onclick="changeFontSize(10)" title="अक्षराकारं वर्धयतु" style="border:none; border-radius:0; padding:6px 9px;">अ+</button>
+      </div>
       <button class="header-btn" onclick="forceRefreshData()" title="नवीनतम-श्लोकान् आनयत">अद्यतनम्</button>
       <button class="header-btn" onclick="loadHome(false)">मुख्यपृष्ठम्</button>
       <button class="header-btn" onclick="configureApiKey()">कुञ्चिका (API)</button>
@@ -607,6 +613,43 @@
   <!-- Main App & Dynamic Cache-Busting Script -->
   <script>
     const APP_PIN = "2525";
+    // Font Size Controller (Scales all rem text + Nirukta view & saves in localStorage)
+    let currentFontScale = parseInt(localStorage.getItem('svadhyaya_font_scale') || '100', 10);
+
+    function toDevanagariNum(n) {
+      const digits = ['०','१','२','३','४','५','६','७','८','९'];
+      return String(n).replace(/[0-9]/g, d => digits[d]);
+    }
+
+    function applyFontSize() {
+      // 1. Scale root HTML font size (scales all Shlokas, Mantras, Bhashya, Anvaya, Hindi)
+      document.documentElement.style.fontSize = currentFontScale + '%';
+
+      // 2. Also scale Nirukta document container if open
+      const niruktaDoc = document.querySelector('#nirukta-view-wrapper .nirukta-doc');
+      if (niruktaDoc) {
+        niruktaDoc.style.zoom = (currentFontScale / 100).toString();
+      }
+
+      // 3. Update the Devanagari percentage badge in the header
+      const lbl = document.getElementById('font-size-label');
+      if (lbl) lbl.textContent = toDevanagariNum(currentFontScale) + '%';
+    }
+
+    function changeFontSize(delta) {
+      currentFontScale = Math.min(150, Math.max(80, currentFontScale + delta));
+      localStorage.setItem('svadhyaya_font_scale', currentFontScale);
+      applyFontSize();
+    }
+
+    function resetFontSize() {
+      currentFontScale = 100;
+      localStorage.setItem('svadhyaya_font_scale', currentFontScale);
+      applyFontSize();
+    }
+
+    // Apply saved font size immediately on load
+    applyFontSize();
     const DATA_VERSION = localStorage.getItem('svadhyaya_data_ver') || '2026.11.51';
 
     function checkPin() {
@@ -1154,6 +1197,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       container.innerHTML = `<div id="nirukta-view-wrapper" class="nirukta-dark">${rawHolder.innerHTML}</div>`;
 
       const wrapper = document.getElementById('nirukta-view-wrapper');
+      applyFontSize();
       wrapper.querySelectorAll('p').forEach((p, idx) => {
         p.id = 'nir-p-' + idx;
         const text = p.textContent.trim();
