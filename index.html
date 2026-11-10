@@ -3,188 +3,304 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>स्वाध्याय-कोशः | Personal Sanskrit App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>स्वाध्याय-कोशः | बृहत्-संस्कृत-ग्रन्थालयः</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #0b0b0c;
-      --card-bg: #141417;
-      --card-hover: #1b1b20;
-      --border: #2c2c34;
+      /* Core Dark & Royal Maroon Theme */
+      --bg-dark: #0d0b0c;
+      --card-bg: #161214;
+      --card-hover: #211a1d;
+      --border: #38282b;
+      --maroon-deep: #4a0e13;
+      --maroon-primary: #6e161d;
+      --maroon-light: #8f242c;
+      --gold-accent: #c9a24d;
+
+      /* Text & Commentary Highlighting Palette */
       --samhita-red: #f26d6d;
-      --pada-white: #f0f0f5;
+      --pada-white: #f2ece4;
       --nirudatta-blue: #6fa8dc;
-      --pratika-purple: #c695c6;
+      --pratika-purple: #d49cd4;
       --sutra-gold: #ebcb8b;
       --anvaya-green: #88c0d0;
-      --hindi-amber: #d08770;
+      --hindi-amber: #df957d;
     }
+
     * { box-sizing: border-box; }
     body {
       margin: 0;
       background-color: var(--bg-dark);
       color: var(--pada-white);
-      font-family: 'Noto Serif Devanagari', serif;
+      font-family: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
       line-height: 1.85;
       overflow-x: hidden;
     }
 
-    /* Passcode Lock Screen */
+    /* 1. Passcode Lock Screen */
     #lock-screen {
-      position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center;
+      position: fixed; inset: 0;
+      background: radial-gradient(circle at center, #240b0e 0%, #0d0b0c 100%);
+      z-index: 9999; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px; text-align: center;
     }
     .lock-box {
-      background: var(--card-bg); border: 1px solid var(--border);
-      padding: 30px 24px; border-radius: 12px; max-width: 340px; width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--gold-accent);
+      border-top: 4px solid var(--maroon-primary);
+      padding: 34px 28px; border-radius: 10px; max-width: 360px; width: 100%;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
     }
-    .lock-box h2 { color: var(--sutra-gold); margin-top: 0; font-size: 1.4rem; }
+    .lock-mangala { color: var(--gold-accent); font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 6px; }
+    .lock-box h2 { color: var(--sutra-gold); margin: 0 0 6px; font-size: 1.55rem; font-family: 'Tiro Devanagari Sanskrit', serif; }
     .lock-box input {
-      width: 100%; padding: 12px; font-size: 1.2rem; text-align: center;
-      background: #0b0b0c; border: 1px solid var(--border); color: var(--pada-white);
-      border-radius: 6px; margin: 14px 0; letter-spacing: 4px;
+      width: 100%; padding: 12px; font-size: 1.25rem; text-align: center;
+      background: #090708; border: 1px solid var(--border); color: var(--pada-white);
+      border-radius: 6px; margin: 16px 0; letter-spacing: 6px; outline: none;
     }
+    .lock-box input:focus { border-color: var(--gold-accent); }
     .lock-box button {
-      width: 100%; padding: 10px; background: var(--sutra-gold); color: #000;
-      border: none; border-radius: 6px; font-size: 1rem; font-weight: 700;
-      cursor: pointer; font-family: inherit;
+      width: 100%; padding: 11px;
+      background: linear-gradient(135deg, var(--maroon-primary), var(--maroon-deep));
+      color: var(--sutra-gold); border: 1px solid var(--gold-accent);
+      border-radius: 6px; font-size: 1.02rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: filter 0.2s;
     }
-    #lock-error { color: var(--samhita-red); font-size: 0.9rem; display: none; margin-top: 8px; }
+    .lock-box button:hover { filter: brightness(1.15); }
+    #lock-error { color: var(--samhita-red); font-size: 0.9rem; display: none; margin-top: 10px; }
 
-    /* Top Header Bar */
+    /* 2. Classical Maroon Top Header */
     .top-header {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(20, 20, 23, 0.95); backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border); padding: 10px 16px;
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: linear-gradient(90deg, #3b0b10 0%, #5c131a 50%, #3b0b10 100%);
+      border-bottom: 2px solid var(--gold-accent);
+      padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
     }
-    .header-left, .header-right { display: flex; align-items: center; gap: 10px; }
+    .header-left, .header-right { display: flex; align-items: center; gap: 12px; }
     .menu-btn {
-      background: none; border: 1px solid var(--border); color: var(--sutra-gold);
-      font-size: 1.35rem; line-height: 1; padding: 6px 11px; border-radius: 6px; cursor: pointer;
+      background: rgba(0, 0, 0, 0.25); border: 1px solid var(--gold-accent);
+      color: var(--sutra-gold); font-size: 1.25rem; line-height: 1;
+      padding: 7px 12px; border-radius: 6px; cursor: pointer;
     }
+    .brand-wrap { cursor: pointer; display: flex; flex-direction: column; }
     .app-title {
-      font-size: 1.15rem; font-weight: 700; color: var(--sutra-gold); cursor: pointer;
+      font-size: 1.3rem; font-weight: 700; color: var(--sutra-gold);
+      font-family: 'Tiro Devanagari Sanskrit', serif; line-height: 1.2;
     }
+    .app-subtitle-bar { font-size: 0.76rem; color: #e0cbb0; letter-spacing: 0.5px; }
     .header-btn {
-      background: #1c1c22; border: 1px solid var(--border); color: var(--pada-white);
-      border-radius: 6px; padding: 5px 10px; cursor: pointer; font-family: inherit; font-size: 0.84rem;
+      background: rgba(13, 11, 12, 0.45); border: 1px solid rgba(201, 162, 77, 0.45);
+      color: var(--pada-white); border-radius: 6px; padding: 6px 12px;
+      cursor: pointer; font-family: inherit; font-size: 0.86rem; transition: all 0.2s;
     }
-    .header-btn:hover { border-color: var(--sutra-gold); color: var(--sutra-gold); }
+    .header-btn:hover { border-color: var(--sutra-gold); color: var(--sutra-gold); background: rgba(0, 0, 0, 0.65); }
 
-    /* Slide-Out Sidebar */
+    /* 3. Slide-Out Syllabus Sidebar */
     .sidebar-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: 900; display: none;
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.72); z-index: 900; display: none;
     }
     .sidebar-backdrop.open { display: block; }
     .sidebar {
-      position: fixed; top: 0; left: 0; bottom: 0; width: 300px; max-width: 82vw;
-      background: var(--card-bg); border-right: 1px solid var(--border); z-index: 1000;
+      position: fixed; top: 0; left: 0; bottom: 0; width: 330px; max-width: 85vw;
+      background: var(--card-bg); border-right: 2px solid var(--maroon-primary); z-index: 1000;
       transform: translateX(-100%); transition: transform 0.25s ease;
-      overflow-y: auto; padding: 18px;
+      overflow-y: auto; padding: 18px 16px 40px;
     }
     .sidebar.open { transform: translateX(0); }
     .sidebar-header {
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 14px;
     }
-    .sidebar-header h2 { font-size: 1.2rem; color: var(--sutra-gold); margin: 0; }
-    .close-btn { background: none; border: none; color: #aaa; font-size: 1.4rem; cursor: pointer; }
+    .sidebar-header h2 { font-size: 1.18rem; color: var(--sutra-gold); margin: 0; font-family: 'Tiro Devanagari Sanskrit', serif; }
+    .close-btn { background: none; border: none; color: #bbb; font-size: 1.35rem; cursor: pointer; }
 
     /* Syllabus Tree Navigation */
     .cat-btn {
-      width: 100%; background: #1c1c21; border: 1px solid var(--border); color: var(--sutra-gold);
-      padding: 10px 12px; margin-top: 8px; border-radius: 6px; text-align: left;
-      font-family: inherit; font-size: 1.02rem; font-weight: 600; cursor: pointer;
+      width: 100%; background: #1f171a; border: 1px solid var(--border);
+      border-left: 3px solid var(--maroon-light); color: var(--sutra-gold);
+      padding: 9px 12px; margin-top: 8px; border-radius: 6px; text-align: left;
+      font-family: inherit; font-size: 0.96rem; font-weight: 600; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .subcat-list { display: none; padding-left: 12px; margin-top: 4px; border-left: 2px solid var(--border); }
+    .cat-btn:hover { background: var(--card-hover); border-color: var(--gold-accent); }
+    .subcat-list { display: none; padding-left: 10px; margin-top: 4px; border-left: 1px dashed var(--border); }
     .subcat-list.open { display: block; }
     .subcat-btn {
       width: 100%; background: none; border: none; color: var(--anvaya-green);
-      padding: 8px 10px; text-align: left; font-family: inherit; font-size: 0.96rem;
+      padding: 7px 8px; text-align: left; font-family: inherit; font-size: 0.92rem;
       font-weight: 600; cursor: pointer; display: flex; justify-content: space-between;
     }
-    .topic-list { display: none; padding-left: 14px; }
+    .topic-list { display: none; padding-left: 12px; }
     .topic-list.open { display: block; }
     .topic-item {
       padding: 6px 10px; border-radius: 5px; cursor: pointer;
-      font-size: 0.94rem; color: var(--pada-white); margin-bottom: 3px;
+      font-size: 0.9rem; color: var(--pada-white); margin-bottom: 3px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .topic-item.active, .topic-item:hover { background: #272730; color: var(--sutra-gold); }
-
-    /* Main Content Area */
-    .main-content { max-width: 860px; margin: 0 auto; padding: 20px 18px 60px; }
-    .sukta-title { margin-top: 4px; margin-bottom: 4px; color: var(--sutra-gold); font-size: 1.45rem; }
-    .sukta-subtitle { color: #999; font-size: 0.95rem; margin-bottom: 18px; }
-
-    /* HOME PAGE: Search Bar, Quick Cards & AI Analyzer */
-    .search-hero {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
-      padding: 22px 20px; margin-bottom: 24px;
+    .topic-item.active, .topic-item:hover {
+      background: linear-gradient(90deg, rgba(110, 22, 29, 0.55), transparent);
+      color: var(--sutra-gold); border-left: 2px solid var(--gold-accent);
     }
-    .search-input-wrap { display: flex; gap: 10px; margin-top: 10px; }
+    .topic-pending { color: #887a7d; font-size: 0.85rem; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold-accent); display: inline-block; }
+
+    /* 4. Main Content Container */
+    .main-content { max-width: 940px; margin: 0 auto; padding: 24px 18px 70px; }
+    .grantha-banner {
+      background: linear-gradient(135deg, #2a0c10 0%, #171113 100%);
+      border: 1px solid var(--border); border-top: 3px solid var(--maroon-light);
+      border-radius: 10px; padding: 20px 24px; margin-bottom: 22px;
+    }
+    .sukta-title {
+      margin: 0 0 4px; color: var(--sutra-gold); font-size: 1.55rem;
+      font-family: 'Tiro Devanagari Sanskrit', serif;
+    }
+    .sukta-subtitle { color: #cbbba8; font-size: 0.95rem; margin: 0; }
+
+    /* 5. Classical Front Page (Granthalaya Interface) */
+    .hero-panel {
+      background: linear-gradient(135deg, #3d0d13 0%, #1d1114 100%);
+      border: 1px solid var(--gold-accent); border-radius: 12px;
+      padding: 28px 24px; margin-bottom: 28px; text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .hero-mangala { color: var(--gold-accent); font-size: 0.95rem; letter-spacing: 1.5px; margin-bottom: 6px; }
+    .hero-title {
+      font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 1.85rem;
+      color: var(--pada-white); margin: 0 0 8px;
+    }
+    .hero-desc { color: #d6c6b8; font-size: 0.98rem; max-width: 680px; margin: 0 auto 20px; }
+    .search-input-wrap { max-width: 680px; margin: 0 auto; position: relative; }
     .search-input {
-      flex: 1; padding: 12px 16px; font-size: 1.05rem; font-family: inherit;
-      background: #0b0b0c; border: 1px solid var(--border); color: var(--pada-white);
-      border-radius: 8px; outline: none;
+      width: 100%; padding: 13px 18px; font-size: 1.02rem; font-family: inherit;
+      background: #0d0a0b; border: 1px solid var(--gold-accent); color: var(--pada-white);
+      border-radius: 8px; outline: none; box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
     }
-    .search-input:focus { border-color: var(--sutra-gold); }
-    .grid-cards {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px; margin-bottom: 28px;
-    }
-    .Quick-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
-      padding: 18px; cursor: pointer; transition: border-color 0.2s, transform 0.15s;
-    }
-    .Quick-card:hover { border-color: var(--sutra-gold); transform: translateY(-2px); }
-    .Quick-card h3 { margin: 0 0 6px; color: var(--sutra-gold); font-size: 1.15rem; }
-    .Quick-card p { margin: 0; color: #aaa; font-size: 0.9rem; }
+    .search-input:focus { border-color: #fff; }
 
-    /* AI Tool Card */
-    .ai-tool-card {
-      background: #13151c; border: 1px solid #333a4d; border-radius: 12px;
-      padding: 20px; margin-top: 18px;
+    .section-heading {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 28px 0 16px;
+    }
+    .section-heading h2 {
+      margin: 0; font-size: 1.25rem; color: var(--sutra-gold);
+      font-family: 'Tiro Devanagari Sanskrit', serif;
+    }
+    .section-heading span { font-size: 0.85rem; color: #a89699; }
+
+    /* Active Grantha Cards */
+    .grid-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+    .grantha-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-top: 4px solid var(--maroon-primary); border-radius: 10px;
+      padding: 20px; cursor: pointer; transition: all 0.2s ease;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .grantha-card:hover {
+      border-color: var(--gold-accent); border-top-color: var(--gold-accent);
+      transform: translateY(-3px); background: var(--card-hover);
+    }
+    .grantha-unit-tag {
+      display: inline-block; font-size: 0.76rem; color: var(--sutra-gold);
+      background: rgba(110, 22, 29, 0.45); border: 1px solid var(--maroon-light);
+      padding: 2px 9px; border-radius: 4px; margin-bottom: 10px; width: fit-content;
+    }
+    .grantha-card h3 {
+      margin: 0 0 8px; color: var(--pada-white); font-size: 1.2rem;
+      font-family: 'Tiro Devanagari Sanskrit', serif;
+    }
+    .grantha-card p { margin: 0 0 14px; color: #b8a9ac; font-size: 0.9rem; line-height: 1.6; }
+    .grantha-footer {
+      font-size: 0.84rem; color: var(--gold-accent); font-weight: 600;
+      border-top: 1px dashed var(--border); padding-top: 10px;
+      display: flex; justify-content: space-between;
+    }
+
+    /* 10-Unit Syllabus Grid on Home Page */
+    .unit-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px; margin-bottom: 30px;
+    }
+    .unit-box {
+      background: #130f11; border: 1px solid var(--border);
+      border-left: 3px solid var(--maroon-primary); border-radius: 8px; padding: 14px 16px;
+    }
+    .unit-box-title {
+      color: var(--sutra-gold); font-weight: 700; font-size: 0.98rem;
+      margin-bottom: 8px; display: flex; justify-content: space-between;
+    }
+    .unit-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+    .unit-pill {
+      font-size: 0.82rem; padding: 3px 9px; border-radius: 4px;
+      background: #1c1618; border: 1px solid var(--border); color: #bbb;
+    }
+    .unit-pill.ready {
+      background: rgba(110, 22, 29, 0.4); border-color: var(--gold-accent);
+      color: var(--sutra-gold); cursor: pointer; font-weight: 600;
+    }
+    .unit-pill.ready:hover { background: var(--maroon-primary); color: #fff; }
+
+    /* Scholarly Text Analyzer Drawer */
+    .analyzer-panel {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-top: 3px solid var(--gold-accent); border-radius: 10px;
+      padding: 20px; margin-top: 24px;
     }
     .ai-textarea {
-      width: 100%; min-height: 95px; background: #0b0b0c; border: 1px solid var(--border);
-      color: var(--pada-white); border-radius: 8px; padding: 12px; font-family: inherit;
-      font-size: 1.02rem; margin: 10px 0; resize: vertical;
+      width: 100%; min-height: 90px; background: #0b090a; border: 1px solid var(--border);
+      color: var(--pada-white); border-radius: 6px; padding: 12px; font-family: inherit;
+      font-size: 1rem; margin: 10px 0; resize: vertical; outline: none;
     }
-    .ai-btn {
-      background: linear-gradient(135deg, #d4af37, #ebcb8b); color: #000;
-      border: none; padding: 8px 16px; border-radius: 6px; font-family: inherit;
-      font-weight: 700; font-size: 0.92rem; cursor: pointer;
+    .ai-textarea:focus { border-color: var(--gold-accent); }
+    .scholar-btn {
+      background: linear-gradient(135deg, var(--maroon-primary), var(--maroon-deep));
+      color: var(--sutra-gold); border: 1px solid var(--gold-accent);
+      padding: 8px 18px; border-radius: 6px; font-family: inherit;
+      font-weight: 600; font-size: 0.92rem; cursor: pointer;
     }
-    .ai-btn:disabled { opacity: 0.6; cursor: wait; }
+    .scholar-btn:disabled { opacity: 0.6; cursor: wait; }
 
     /* Controls & Toggles */
     .toggle-bar {
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 10px 14px; margin-bottom: 22px; display: flex; flex-wrap: wrap;
-      gap: 12px; align-items: center; justify-content: space-between; font-size: 0.88rem;
+      padding: 12px 16px; margin-bottom: 22px; display: flex; flex-wrap: wrap;
+      gap: 12px; align-items: center; justify-content: space-between; font-size: 0.9rem;
     }
-    .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
+    .toggle-group { display: flex; flex-wrap: wrap; gap: 12px; }
     .toggle-bar label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
     .action-btn {
-      background: #23232c; border: 1px solid var(--border); color: var(--sutra-gold);
-      padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.86rem;
+      background: #24191c; border: 1px solid var(--border); color: var(--sutra-gold);
+      padding: 6px 13px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.86rem;
     }
-    .action-btn:hover { border-color: var(--sutra-gold); }
+    .action-btn:hover { border-color: var(--gold-accent); background: var(--maroon-deep); }
 
     /* Vedic Mantra Formatting */
     .bhumika-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 16px; margin-bottom: 24px; font-size: 1.05rem;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-left: 4px solid var(--gold-accent); border-radius: 8px;
+      padding: 18px 20px; margin-bottom: 24px; font-size: 1.05rem;
     }
     .bhumika-title { color: var(--sutra-gold); font-weight: 700; margin-bottom: 8px; }
-    .mantra-card { border-top: 1px solid #444; padding: 24px 0; }
-    .samhita { color: var(--samhita-red); font-size: 1.28rem; font-weight: 600; margin-bottom: 16px; white-space: pre-line; }
-    .pada-sasvara { color: var(--pada-white); font-size: 1.14rem; margin-bottom: 16px; white-space: pre-line; }
-    .pada-nirudatta { color: var(--nirudatta-blue); font-size: 1.14rem; margin-bottom: 20px; white-space: pre-line; }
-    .bhashya { color: var(--pada-white); font-size: 1.1rem; margin-bottom: 16px; text-align: justify; }
+    .mantra-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-top: 3px solid var(--maroon-primary); border-radius: 10px;
+      padding: 22px; margin-bottom: 20px;
+    }
+    .mantra-num-badge {
+      display: inline-block; background: var(--maroon-primary); color: var(--sutra-gold);
+      font-size: 0.84rem; font-weight: 700; padding: 2px 10px; border-radius: 4px; margin-bottom: 12px;
+    }
+    .samhita { color: var(--samhita-red); font-size: 1.3rem; font-weight: 600; margin-bottom: 14px; white-space: pre-line; font-family: 'Tiro Devanagari Sanskrit', serif; }
+    .pada-sasvara { color: var(--pada-white); font-size: 1.12rem; margin-bottom: 12px; white-space: pre-line; }
+    .pada-nirudatta { color: var(--nirudatta-blue); font-size: 1.12rem; margin-bottom: 18px; white-space: pre-line; }
+    .bhashya { color: var(--pada-white); font-size: 1.08rem; margin-bottom: 16px; text-align: justify; }
 
     /* Shared Highlighting Classes */
     .pratika { color: var(--pratika-purple); font-weight: 600; }
@@ -192,111 +308,93 @@
     .vyakarana-note { color: var(--nirudatta-blue); }
 
     .anvaya-box {
-      background: #161920; border-left: 3px solid var(--anvaya-green);
-      padding: 12px 14px; margin-bottom: 12px; font-size: 1rem;
+      background: #14191f; border-left: 3px solid var(--anvaya-green);
+      padding: 12px 15px; margin-bottom: 12px; font-size: 1rem; border-radius: 0 6px 6px 0;
     }
     .anvaya-label { color: var(--anvaya-green); font-weight: 700; }
     .hindi-box {
-      background: #1a1615; border-left: 3px solid var(--hindi-amber);
-      padding: 12px 14px; margin-bottom: 12px; font-size: 1rem;
+      background: #1c1514; border-left: 3px solid var(--hindi-amber);
+      padding: 12px 15px; margin-bottom: 12px; font-size: 1rem; border-radius: 0 6px 6px 0;
     }
     .hindi-label { color: var(--hindi-amber); font-weight: 700; }
 
     /* Mahakavya Interactive Padyam Card */
     .padya-card {
       background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: 10px; margin-bottom: 14px; overflow: hidden;
+      border-left: 4px solid var(--maroon-primary);
+      border-radius: 10px; margin-bottom: 16px; overflow: hidden;
     }
     .padya-header {
-      padding: 16px 20px; cursor: pointer; display: flex;
+      padding: 18px 20px; cursor: pointer; display: flex;
       justify-content: space-between; align-items: center; gap: 14px;
     }
     .padya-header:hover { background: var(--card-hover); }
     .padya-mula {
-      color: var(--samhita-red); font-size: 1.22rem; font-weight: 600;
-      white-space: pre-line; flex: 1;
+      color: var(--samhita-red); font-size: 1.24rem; font-weight: 600;
+      white-space: pre-line; flex: 1; font-family: 'Tiro Devanagari Sanskrit', serif;
     }
     .padya-meta {
       display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0;
     }
     .badge {
-      background: #23232c; border: 1px solid var(--border); color: var(--sutra-gold);
-      font-size: 0.78rem; padding: 2px 9px; border-radius: 12px; white-space: nowrap;
+      background: #24191c; border: 1px solid var(--border); color: var(--sutra-gold);
+      font-size: 0.8rem; padding: 3px 10px; border-radius: 6px; white-space: nowrap;
     }
-    .expand-hint { color: #888; font-size: 0.82rem; }
+    .expand-hint { color: #a89699; font-size: 0.82rem; }
     .padya-details {
-      display: none; border-top: 1px solid var(--border); padding: 18px 20px; background: #101013;
+      display: none; border-top: 1px solid var(--border); padding: 18px 20px; background: #110d0f;
     }
     .padya-details.open { display: block; }
     .padaccheda-box {
       color: var(--nirudatta-blue); font-size: 1.04rem; margin-bottom: 14px;
-      padding-bottom: 10px; border-bottom: 1px dashed #2c2c34;
+      padding-bottom: 10px; border-bottom: 1px dashed var(--border);
     }
     .jivatu-box {
-      background: #151419; border-left: 3px solid var(--pratika-purple);
+      background: #18131a; border-left: 3px solid var(--pratika-purple);
       padding: 14px 16px; margin-top: 12px; font-size: 1.06rem; text-align: justify;
+      border-radius: 0 6px 6px 0;
     }
     .jivatu-label { color: var(--pratika-purple); font-weight: 700; display: block; margin-bottom: 6px; }
     .kavyashastra-bar {
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
-      gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #2c2c34; font-size: 0.9rem;
+      gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.9rem;
     }
 
     /* NIRUKTA DARK-MODE & INTERACTIVE STYLING OVERRIDES */
     #nirukta-view-wrapper .nirukta-doc {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 28px 24px !important;
-      max-width: 100% !important;
+      border-radius: 10px; border: 1px solid var(--border);
+      padding: 28px 24px !important; max-width: 100% !important;
       transition: background-color 0.2s, color 0.2s;
     }
-    /* Dark Mode Adaptation for Nirukta (Default) */
     #nirukta-view-wrapper.nirukta-dark .nirukta-doc {
-      background-color: var(--card-bg) !important;
-      color: var(--pada-white) !important;
+      background-color: var(--card-bg) !important; color: var(--pada-white) !important;
     }
     #nirukta-view-wrapper.nirukta-dark .nirukta-doc p.title {
-      color: var(--sutra-gold);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 6px;
-      margin-top: 1.2em;
+      color: var(--sutra-gold); border-bottom: 1px solid var(--border);
+      padding-bottom: 6px; margin-top: 1.2em;
     }
     #nirukta-view-wrapper.nirukta-dark .nirukta-doc .hl-yellow {
-      background-color: rgba(235, 203, 139, 0.2) !important;
-      color: #fff !important;
-      padding: 1px 5px;
-      border-radius: 4px;
+      background-color: rgba(235, 203, 139, 0.2) !important; color: #fff !important;
+      padding: 1px 5px; border-radius: 4px;
     }
-    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-980000 {
-      color: #ff7b7b !important;
-    }
-    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-b8860b {
-      color: #f0c674 !important;
-    }
-    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-2e8b57 {
-      color: #7bd89f !important;
-    }
-    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-9900ff {
-      color: #d996ff !important;
-    }
-    /* Fix yellow-on-yellow in Paper Mode too */
-    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-ffff00 {
-      color: #8a6d00 !important;
-    }
-    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-00ffff {
-      color: #006680 !important;
-    }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-980000 { color: #ff7b7b !important; }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-b8860b { color: #f0c674 !important; }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-2e8b57 { color: #7bd89f !important; }
+    #nirukta-view-wrapper.nirukta-dark .nirukta-doc .c-9900ff { color: #d996ff !important; }
+    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-ffff00 { color: #8a6d00 !important; }
+    #nirukta-view-wrapper:not(.nirukta-dark) .nirukta-doc .c-00ffff { color: #006680 !important; }
     .nirukta-interactive-p {
-      cursor: pointer;
-      border-radius: 6px;
-      padding: 4px 8px;
-      transition: background 0.15s;
+      cursor: pointer; border-radius: 6px; padding: 4px 8px; transition: background 0.15s;
     }
-    .nirukta-interactive-p:hover {
-      background: rgba(235, 203, 139, 0.08);
-    }
+    .nirukta-interactive-p:hover { background: rgba(235, 203, 139, 0.08); }
 
     .hidden { display: none !important; }
+
+    @media (max-width: 640px) {
+      .hero-title { font-size: 1.45rem; }
+      .padya-header { flex-direction: column; align-items: flex-start; }
+      .padya-meta { flex-direction: row; width: 100%; justify-content: space-between; align-items: center; }
+    }
   </style>
 </head>
 <body>
@@ -304,114 +402,187 @@
   <!-- 1. Private Passcode Screen -->
   <div id="lock-screen">
     <div class="lock-box">
+      <div class="lock-mangala">॥ सा विद्या या विमुक्तये ॥</div>
       <h2>स्वाध्याय-कोशः</h2>
-      <p style="font-size:0.95rem; color:#aaa; margin:0;">प्रवेशाय गूढसङ्केतं (PIN) लिखत</p>
+      <p style="font-size:0.92rem; color:#b8a9ac; margin:0;">ग्रन्थालय-प्रवेशाय गूढसङ्केतं लिखत</p>
       <input type="password" id="pin-input" placeholder="••••" inputmode="numeric">
-      <button onclick="checkPin()">प्रवेशः (Unlock)</button>
+      <button onclick="checkPin()">ग्रन्थालय-प्रवेशः</button>
       <div id="lock-error">अशुद्धः सङ्केतः! पुनः प्रयतताम्।</div>
     </div>
   </div>
 
-  <!-- 2. Top Header Bar -->
+  <!-- 2. Classical Maroon Header Bar -->
   <header class="top-header">
     <div class="header-left">
       <button class="menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
-      <span class="app-title" onclick="loadHome(false)">स्वाध्याय-कोशः</span>
+      <div class="brand-wrap" onclick="loadHome(false)">
+        <span class="app-title">स्वाध्याय-कोशः</span>
+        <span class="app-subtitle-bar">यू.जी.सी.-नेट् (संस्कृतम् – २५) मूलग्रन्थ-सङ्ग्रहः</span>
+      </div>
     </div>
     <div class="header-right">
-      <button class="header-btn" onclick="loadHome(false)">🏠 मुख्यपृष्ठम्</button>
-      <button class="header-btn" onclick="configureApiKey()">⚙️ AI Key</button>
-      <button class="header-btn" onclick="lockApp()">🔒</button>
+      <button class="header-btn" onclick="loadHome(false)">मुख्यपृष्ठम्</button>
+      <button class="header-btn" onclick="configureApiKey()">कुञ्चिका (API)</button>
+      <button class="header-btn" onclick="lockApp()">रोधः</button>
     </div>
   </header>
 
-  <!-- 3. Slide-Out Syllabus Sidebar -->
+  <!-- 3. Slide-Out 10-Unit UGC NET Syllabus Sidebar -->
   <div class="sidebar-backdrop" id="backdrop" onclick="toggleSidebar()"></div>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <h2>पाठ्यक्रम-सूची</h2>
+      <h2>दश-इकाई-पाठ्यक्रमः</h2>
       <button class="close-btn" onclick="toggleSidebar()">✕</button>
     </div>
 
     <div class="topic-item active" id="nav-home" onclick="loadHome(true)" style="margin-bottom:10px; font-weight:700;">
-      🏠 मुख्यपृष्ठम् (अन्वेषणं AI च)
+      <span>❖ मुख्यपृष्ठम् (समग्र-ग्रन्थालयः)</span>
     </div>
 
-    <!-- Category 1: Vedah & Vedanga -->
-    <button class="cat-btn" onclick="toggleMenu('cat-veda')">
-      <span>१. वेदाः वेदाङ्गानि च</span><span>▾</span>
+    <!-- Unit 1 & 2: Veda & Vedanga -->
+    <button class="cat-btn" onclick="toggleMenu('cat-unit12')">
+      <span>इकाई १–२ : वैदिक-वाङ्मयम्</span><span>▾</span>
     </button>
-    <div class="subcat-list open" id="cat-veda">
+    <div class="subcat-list open" id="cat-unit12">
       <button class="subcat-btn" onclick="toggleMenu('sub-sukta')">
-        <span>▸ वैदिक-सूक्तानि</span>
+        <span>▸ ऋग्वेद-यजुर्वेद-अथर्ववेद-सूक्तानि</span>
       </button>
       <div class="topic-list open" id="sub-sukta">
-        <div class="topic-item" id="nav-parjanya" onclick="loadParjanya(true)">पर्जन्यसूक्तम् (५.८३)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">वरुणसूक्तम् (१.२५)</div>
+        <div class="topic-item" id="nav-parjanya" onclick="loadParjanya(true)">
+          <span>पर्जन्यसूक्तम् (ऋ. ५.८३)</span><span class="status-dot"></span>
+        </div>
+        <div class="topic-item topic-pending" onclick="notifyPending('अग्निसूक्तम् (१.१)')">अग्निसूक्तम् (ऋ. १.१)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('वरुणसूक्तम् (१.२५)')">वरुणसूक्तम् (ऋ. १.२५)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('सूर्यसूक्तम् (१.११५)')">सूर्यसूक्तम् (ऋ. १.११५)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('इन्द्रसूक्तम् (२.१२)')">इन्द्रसूक्तम् (ऋ. २.१२)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('उषस्सूक्तम् (३.६१)')">उषस्सूक्तम् (ऋ. ३.६१)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('पुरुषसूक्तम् (१०.९०)')">पुरुषसूक्तम् (ऋ. १०.९०)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('नासदीयसूक्तम् (१०.१२९)')">नासदीयसूक्तम् (ऋ. १०.१२९)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('शिवसङ्कल्पसूक्तम्')">शिवसङ्कल्पसूक्तम् (यजु. ३४)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('पृथिवीसूक्तम् (अथर्व. १२.१)')">पृथिवीसूक्तम् (अथर्व. १२.१)</div>
       </div>
 
-      <!-- NEW: Nirukta Subcategory -->
       <button class="subcat-btn" onclick="toggleMenu('sub-nirukta')">
-        <span>▸ वेदाङ्ग-निरुक्तम्</span>
+        <span>▸ वेदाङ्गम् — यास्ककृतं निरुक्तम्</span>
       </button>
       <div class="topic-list open" id="sub-nirukta">
-        <div class="topic-item" id="nav-nirukta" onclick="loadNirukta(true)">निरुक्तम् — प्रथमोऽध्यायः (पादाः १–६)</div>
+        <div class="topic-item" id="nav-nirukta" onclick="loadNirukta(true)">
+          <span>निरुक्तम् — प्रथमोऽध्यायः</span><span class="status-dot"></span>
+        </div>
+        <div class="topic-item topic-pending" onclick="notifyPending('निरुक्तम् — द्वितीयोऽध्यायः')">निरुक्तम् — द्वितीयोऽध्यायः</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('निरुक्तम् — सप्तमोऽध्यायः (दैवतकाण्डम्)')">निरुक्तम् — सप्तमोऽध्यायः</div>
       </div>
-    </div>
 
-    <!-- Category 2: Darshanani -->
-    <button class="cat-btn" onclick="toggleMenu('cat-darshana')">
-      <span>२. दर्शनानि</span><span>▾</span>
-    </button>
-    <div class="subcat-list" id="cat-darshana">
-      <button class="subcat-btn" onclick="toggleMenu('sub-nyaya')">
-        <span>▸ न्याय-वैशेषिकम्</span>
+      <button class="subcat-btn" onclick="toggleMenu('sub-upanishad')">
+        <span>▸ ब्राह्मण-उपनिषत्-साहित्यम्</span>
       </button>
-      <div class="topic-list" id="sub-nyaya">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">तर्कसङ्ग्रहः (प्रत्यक्ष-प्रकरणम्)</div>
+      <div class="topic-list" id="sub-upanishad">
+        <div class="topic-item topic-pending" onclick="notifyPending('ईशावास्योपनिषत्')">ईशावास्योपनिषत्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('कठोपनिषत्')">कठोपनिषत्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('केनोपनिषत्')">केनोपनिषत्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('तैत्तिरीयोपनिषत्')">तैत्तिरीयोपनिषत्</div>
       </div>
     </div>
 
-    <!-- Category 3: Vyakaranam -->
-    <button class="cat-btn" onclick="toggleMenu('cat-vyakarana')">
-      <span>३. व्याकरणं भाषाविज्ञानं च</span><span>▾</span>
+    <!-- Unit 3 & 4: Darshana -->
+    <button class="cat-btn" onclick="toggleMenu('cat-unit34')">
+      <span>इकाई ३–४ : दर्शन-साहित्यम्</span><span>▾</span>
     </button>
-    <div class="subcat-list" id="cat-vyakarana">
-      <button class="subcat-btn" onclick="toggleMenu('sub-panini')">
-        <span>▸ पाणिनीय-व्याकरणम्</span>
-      </button>
-      <div class="topic-list" id="sub-panini">
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">महाभाष्यम् (पस्पशाह्निकम्)</div>
+    <div class="subcat-list" id="cat-unit34">
+      <div class="topic-list open">
+        <div class="topic-item topic-pending" onclick="notifyPending('ईश्वरकृष्णकृत-साङ्ख्यकारिका')">साङ्ख्यकारिका (ईश्वरकृष्णः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('सदानन्दकृत-वेदान्तसारः')">वेदान्तसारः (सदानन्दः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('अन्नम्भट्टकृत-तर्कसङ्ग्रहः')">तर्कसङ्ग्रहः (अन्नम्भट्टः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('केशवमिश्रकृत-तर्कभाषा')">तर्कभाषा (केशवमिश्रः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('लौगाक्षिभास्करकृत-अर्थसङ्ग्रहः')">अर्थसङ्ग्रहः (लौगाक्षिभास्करः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('पातञ्जल-योगसूत्रम् (व्यासभाष्यम्)')">योगसूत्रम् (व्यासभाष्यसमेतम्)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('बादरायण-ब्रह्मसूत्रम् (शाङ्करभाष्यम्)')">ब्रह्मसूत्रम् (शाङ्करभाष्यम् १.१)</div>
       </div>
     </div>
 
-    <!-- Category 4: Sahityam -->
-    <button class="cat-btn" onclick="toggleMenu('cat-sahitya')">
-      <span>४. साहित्यं काव्यशास्त्रं च</span><span>▾</span>
+    <!-- Unit 5 & 6: Vyakarana & Bhashavijnana -->
+    <button class="cat-btn" onclick="toggleMenu('cat-unit56')">
+      <span>इकाई ५–६ : व्याकरणं भाषाविज्ञानं च</span><span>▾</span>
     </button>
-    <div class="subcat-list open" id="cat-sahitya">
+    <div class="subcat-list" id="cat-unit56">
+      <div class="topic-list open">
+        <div class="topic-item topic-pending" onclick="notifyPending('महाभाष्यम् (पस्पशाह्निकम्)')">महाभाष्यम् (पस्पशाह्निकम्)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('वैयाकरणसिद्धान्तकौमुदी')">सिद्धान्तकौमुदी (संज्ञा-परिभाषा-कारक-समासाः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('वाक्यपदीयम् (ब्रह्मकाण्डम्)')">वाक्यपदीयम् (ब्रह्मकाण्डम्)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('भारोपीय-भाषाविज्ञानम्')">भारोपीय-भाषाविज्ञानं ध्वनिनियमश्च</div>
+      </div>
+    </div>
+
+    <!-- Unit 7 & 8: Sahitya, Kavyashastra & Natya -->
+    <button class="cat-btn" onclick="toggleMenu('cat-unit78')">
+      <span>इकाई ७–८ : साहित्यं काव्यशास्त्रं च</span><span>▾</span>
+    </button>
+    <div class="subcat-list open" id="cat-unit78">
       <button class="subcat-btn" onclick="toggleMenu('sub-mahakavya')">
         <span>▸ पद्यकाव्यम् (महाकाव्यानि)</span>
       </button>
       <div class="topic-list open" id="sub-mahakavya">
-        <div class="topic-item" id="nav-naishadha" onclick="loadNaishadha(true)">नैषधीयचरितम् (प्रथमः सर्गः)</div>
-        <div class="topic-item" onclick="alert('शीघ्रं योज्यते!')">किरातार्जुनीयम् (प्रथमः सर्गः)</div>
+        <div class="topic-item" id="nav-naishadha" onclick="loadNaishadha(true)">
+          <span>नैषधीयचरितम् (प्रथमः सर्गः)</span><span class="status-dot"></span>
+        </div>
+        <div class="topic-item topic-pending" onclick="notifyPending('रघुवंशम् (प्रथमः सर्गः)')">रघुवंशम् (प्रथमः सर्गः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('किरातार्जुनीयम् (प्रथमः सर्गः)')">किरातार्जुनीयम् (प्रथमः सर्गः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('शिशुपालवधम् (प्रथमः सर्गः)')">शिशुपालवधम् (प्रथमः सर्गः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('मेघदूतम्')">मेघदूतम् (कालिदासः)</div>
+      </div>
+
+      <button class="subcat-btn" onclick="toggleMenu('sub-natya')">
+        <span>▸ रूपकम् गद्यकाव्यं च</span>
+      </button>
+      <div class="topic-list" id="sub-natya">
+        <div class="topic-item topic-pending" onclick="notifyPending('अभिज्ञानशाकुन्तलम्')">अभिज्ञानशाकुन्तलम्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('उत्तररामचरितम्')">उत्तररामचरितम्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('मृच्छकटिकम्')">मृच्छकटिकम्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('मुद्राराक्षसम्')">मुद्राराक्षसम्</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('कादम्बरी (शुकनासोपदेशः)')">कादम्बरी (शुकनासोपदेशः)</div>
+      </div>
+
+      <button class="subcat-btn" onclick="toggleMenu('sub-alankara')">
+        <span>▸ काव्यशास्त्रं छन्दःशास्त्रं च</span>
+      </button>
+      <div class="topic-list" id="sub-alankara">
+        <div class="topic-item topic-pending" onclick="notifyPending('काव्यप्रकाशः (मम्मटः)')">काव्यप्रकाशः (मम्मटः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('साहित्यदर्पणः (विश्वनाथः)')">साहित्यदर्पणः (विश्वनाथः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('ध्वन्यालोकः (प्रथम उद्योतः)')">ध्वन्यालोकः (आनन्दवर्धनः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('दशरूपकम् (धनञ्जयः)')">दशरूपकम् (धनञ्जयः)</div>
+      </div>
+    </div>
+
+    <!-- Unit 9 & 10: Purana, Dharmashastra, Arthashastra & Epigraphy -->
+    <button class="cat-btn" onclick="toggleMenu('cat-unit910')">
+      <span>इकाई ९–१० : धर्मशास्त्र-अर्थशास्त्र-अभिलेखाः</span><span>▾</span>
+    </button>
+    <div class="subcat-list" id="cat-unit910">
+      <div class="topic-list open">
+        <div class="topic-item topic-pending" onclick="notifyPending('रामायणं महाभारतं श्रीमद्भगवद्गीता च')">रामायणं महाभारतं भगवद्गीता च</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('कौटिलीय-अर्थशास्त्रम् (विनयाधिकारिकम्)')">कौटिलीय-अर्थशास्त्रम् (प्रथममधिकरणम्)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('मनुस्मृतिः (१, २, ७ अध्यायाः)')">मनुस्मृतिः (१, २, ७ अध्यायाः)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('याज्ञवल्क्यस्मृतिः (व्यवहारकाण्डम्)')">याज्ञवल्क्यस्मृतिः (व्यवहारकाण्डम्)</div>
+        <div class="topic-item topic-pending" onclick="notifyPending('अशोक-रुद्रदाम-समुद्रगुप्त-अभिलेखाः')">पुरालिपिः अभिलेखशास्त्रं च</div>
       </div>
     </div>
   </aside>
 
   <!-- 4. Main Dynamic Study Area -->
   <main class="main-content">
-    <h1 class="sukta-title" id="view-title"></h1>
-    <div class="sukta-subtitle" id="view-subtitle"></div>
+    <div class="grantha-banner" id="grantha-header-banner" style="display:none;">
+      <h1 class="sukta-title" id="view-title"></h1>
+      <div class="sukta-subtitle" id="view-subtitle"></div>
+    </div>
     <div id="controls-container"></div>
     <div id="content-container"></div>
   </main>
 
-  <!-- Hidden Mount Target for Nirukta Script (Catches mountNirukta() automatically!) -->
+  <!-- Hidden Mount Target for Nirukta Script -->
   <div id="nirukta-content" style="display:none;"></div>
 
-  <!-- External Data Scripts -->
+  <!-- External Modular Data Scripts -->
+  <script src="parjanya_sukta.js"></script>
   <script src="naishadha_sarga1.js"></script>
   <script src="nirukta_adhyaya1.js"></script>
 
@@ -453,6 +624,9 @@
       const target = document.getElementById(id);
       if (target) target.classList.add('active');
     }
+    function notifyPending(title) {
+      alert(`‘${title}’ इत्यस्य मूलपाठ-सञ्चिका (.js) शीघ्रमेव अस्मिन् कोशे संयोजयिष्यते।`);
+    }
 
     function formatCommentary(text) {
       if (!text) return '';
@@ -464,180 +638,178 @@
 
     function formatAnvaya(text) {
       if (!text) return '';
-      return text.replace(/([^\s=;]+)\s*=/g, '<strong style="color:#f0f0f5;">$1</strong> =');
+      return text.replace(/([^\s=;]+)\s*=/g, '<strong style="color:#f2ece4;">$1</strong> =');
     }
 
-    const defaultNaishadha = {
-      title: "नैषधीयचरितम् — प्रथमः सर्गः",
-      subtitle: "श्रीहर्षविरचितम् • मल्लिनाथकृत-जीवातुटीका-अन्वयानुसारी-हिन्दीव्याख्यासमेतम्",
-      verses: [
-        {
-          num: "१",
-          chandas: "वंशस्थम्",
-          alankara: "व्यतिरेकः, रूपकम्, अनुप्रासश्च",
-          mula: "निपीय यस्य क्षितिरक्षिणः कथां तथाद्रियन्ते न बुधाः सुधामपि ।\nनलः सितच्छत्रितकीर्तिमण्डलः स राशिरासीन्महसां महोज्ज्वलः ॥ १ ॥",
-          padaccheda: "निपीय । यस्य । क्षितिऽरक्षिणः । कथाम् । तथा । आद्रियन्ते । न । बुधाः । सुधाम् । अपि । नलः । सितऽछत्रितऽकीर्तिऽमण्डलः । सः । राशिः । आसीत् । महसाम् । महाऽउज्ज्वलः ॥",
-          anvaya: "बुधाः = विद्वज्जन (या देवता); यस्य = जिस; क्षितिरक्षिणः = पृथ्वी के रक्षक (राजा) की; कथाम् = लोकोत्तर चरित-कथा को; निपीय = भली-भाँति पान करके; सुधाम् अपि = अमृत का भी; तथा = वैसा; न आद्रियन्ते = आदर नहीं करते हैं; सितच्छत्रितकीर्तिमण्डलः = श्वेत राजछत्र के समान उज्ज्वल यशोमण्डल वाले; महोज्ज्वलः = उत्सवों अथवा महान् तेज से उज्ज्वल; महसाम् = तेजों के; राशिः = पुञ्ज; सः = वह प्रसिद्ध; नलः = नल नामक राजा; आसीत् = हुआ।",
-          hindi: "जिस पृथ्वीपति के चरित-कथा-रस का सादर पान कर लेने के पश्चात् विद्वज्जन (अथवा देवगण) अमृत का भी वैसा आदर नहीं करते; श्वेत राजछत्र के समान उज्ज्वल कीर्तिमण्डल को धारण करने वाले, उत्सवों से समुज्ज्वल तथा तेजों के पुञ्ज-स्वरूप वे प्रसिद्ध राजा नल हुए।",
-          jivatu: `"निपीयेति । "बुधाः पण्डिताः, पक्षे देवाश्च "यस्य "क्षितिरक्षिणः भूपालस्य [क्षितिं रक्षतीति क्षितिरक्षी तस्य, 'रक्ष् पालने' णिनिः] "कथां प्रबन्धम्, आदरातिशयेन "निपीय पीत्वा, श्रुत्वेत्यर्थः । 'पा पाने' ल्यप् । "सुधाम् अमृतम् "अपि "तथा तेन प्रकारेण, कथावत् "न "आद्रियन्ते न सेवन्ते, कथायाः सुधापेक्षयापि रसवत्त्वादिति भावः । "सितच्छत्रितकीर्तिमण्डलः [सितं श्वेतं छत्रमिव आचरितं सितच्छत्रितं कीर्तिमण्डलं यशोमण्डलं यस्य सः, 'तत्करोति तदाचष्टे' इति णिच्] । "महोज्ज्वलः [महेन उत्सवेन उज्ज्वलः] "महसां तेजसां "राशिः समूहः "सः प्रसिद्धः "नलः नाम राजा "आसीत् बभूव ॥ १ ॥`
-        }
-      ]
-    };
+    function getParjanyaObj() {
+      if (typeof parjanyaSuktaData !== 'undefined') return parjanyaSuktaData;
+      return { bhumika: "", mantras: [] };
+    }
 
     function getNaishadhaData() {
-      return (typeof naishadhaSarga1 !== 'undefined') ? naishadhaSarga1 : defaultNaishadha;
+      if (typeof naishadhaSarga1 !== 'undefined') return naishadhaSarga1;
+      return { title: "नैषधीयचरितम् — प्रथमः सर्गः", subtitle: "जीवातु-टीकासमेतम्", verses: [] };
     }
 
-    const parjanyaBhumika = `‘अच्छा वद' इति दशर्चमेकादशं सूक्तं भौमस्यात्रेरार्षम् । अत्रेयमनुक्रमणिका-- 'अच्छ दशात्रिः पार्जन्यमुपाद्यास्तिस्रो जगत्य उपान्त्यानुष्टुप्' (अनुक्रमणिका) इति । ‘यत्पर्जन्य' इत्येषा नवम्यनुष्टुप् ‘वि वृक्षान्' इत्याद्यास्तिस्रो जगत्यः शिष्टाः षट् त्रिष्टुभः । पर्जन्यो देवता । अनेन सूक्तेन प्रत्यृचं वा दिशः उपस्थेयाः । सूत्रितं च-- 'संस्थितायां सर्वा दिश उपतिष्ठेताच्छा वद तवसं गीर्भिराभिरिति चतसृभिः प्रत्यृचं सूक्तेन वा' (आश्व. श्रौ. २. १३) इति ॥`;
-
-    const parjanyaData = [
-      {
-        num: "१",
-        samhita: "अच्छा॑ वद त॒वसं॑ गी॒र्भिरा॒भिः स्तु॒हि प॒र्जन्यं॒ नम॒सा वि॑वास ।\nकनि॑क्रदद्वृष॒भो जी॒रदा॑नू॒ रेतो॑ दधा॒त्योष॑धीषु॒ गर्भ॑म् ॥१",
-        padaSasvara: "अच्छ॑ । व॒द॒ । त॒वस॑म् । गीः॒ऽभिः । आ॒भिः । स्तु॒हि । प॒र्जन्य॑म् । नम॑सा । आ । वि॒वा॒स॒ ।\nकनि॑क्रदत् । वृ॒ष॒भः । जी॒रऽदा॑नुः । रेतः॑ । द॒धा॒ति॒ । ओष॑धीषु । गर्भ॑म् ॥१",
-        padaNirudatta: "अच्छ । वद । तवसम् । गीःऽभिः । आभिः । स्तुहि । पर्जन्यम् । नमसा । आ । विवास ।\nकनिक्रदत् । वृषभः । जीरऽदानुः । रेतः । दधाति । ओषधीषु । गर्भम् ॥ १ ॥",
-        bhashya: `हे स्तोतः "तवसं बलवन्तं "पर्जन्यम् "अच्छ अभिप्राप्य "वद प्रार्थय । पर्जन्यशब्दो यास्केन बहुधा निरुक्तः -- 'पर्जन्यस्तृपेराद्यन्तविपरीतस्य तर्पयिता जन्यः परो जेता वा जनयिता वा प्रार्जयिता वा रसानाम्' (निरु. १०. १०) इति । "आभिः "गीर्भिः स्तुतिवाग्भिः "स्तुहि । "नमसा अन्नेन हविर्लक्षणेन "आ "विवास सर्वतः परिचर । यः पर्जन्यः "वृषभः अपां वर्षिता "जीरदानुः क्षिप्रदानः "कनिक्रदत् गर्जनशब्दं कुर्वन् "ओषधीषु "गर्भं गर्भस्थानीयं "रेतः उदकं "दधाति स्थापयति तं स्तुहि ॥`,
-        anvaya: "(हे स्तोतः!) तवसम् = बलवान्; पर्जन्यम् = पर्जन्यदेव को; अच्छ = संमुख प्राप्त करके; वद = प्रार्थना करो; आभिः = इन; गीर्भिः = स्तुतिरूप वाणियों से; स्तुहि = स्तुति करो; नमसा = हविर्लक्षण अन्न से; आ विवास = सब ओर से परिचर्या करो; वृषभः = जल बरसाने वाला; जीरदानुः = शीघ्र दान देने वाला; कनिक्रदत् = बार-बार गर्जना करता हुआ; ओषधीषु = ओषधियों में; गर्भम् = गर्भ के समान; रेतः = वीर्यरूप जल को; दधाति = स्थापित करता है।",
-        hindi: "हे स्तोता! तुम बलवान् पर्जन्यदेव के संमुख जाकर उनसे प्रार्थना करो। इन स्तुति-वाणियों के द्वारा उनकी स्तुति करो तथा हविष्य के द्वारा सब प्रकार से उनकी परिचर्या करो। जल की वर्षा करने वाले और शीघ्र दान देने वाले वे पर्जन्यदेव घोर गर्जना करते हुए वनस्पतियों में गर्भ के समान जीवनदायक जल स्थापित करते हैं।"
-      },
-      {
-        num: "२",
-        samhita: "वि वृ॒क्षान्ह॑न्त्यु॒त ह॑न्ति र॒क्षसो॒ विश्वं॑ बिभाय॒ भुव॑नं म॒हाव॑धात् ।\nउ॒ताना॑गा ईषते॒ वृष्ण्या॑वतो॒ यत्प॒र्जन्यः॑ स्त॒नय॒न्हन्ति॑ दु॒ष्कृतः॑ ॥२",
-        padaSasvara: "वि । वृ॒क्षान् । ह॒न्ति॒ । उ॒त । ह॒न्ति॒ । र॒क्षसः॑ । विश्व॑म् । बि॒भा॒य॒ । भुव॑नम् । म॒हाऽव॑धात् ।\nउ॒त । अना॑गाः । ई॒ष॒ते॒ । वृष्ण्य॑ऽवतः । यत् । प॒र्जन्यः॑ । स्त॒नय॑न् । हन्ति॑ । दुः॒ऽकृतः॑ ॥२",
-        padaNirudatta: "वि । वृक्षान् । हन्ति । उत । हन्ति । रक्षसः । विश्वम् । बिभाय । भुवनम् । महाऽवधात् ।\nउत । अनागाः । ईषते । वृष्ण्यऽवतः । यत् । पर्जन्यः । स्तनयन् । हन्ति । दुःऽकृतः ॥ २ ॥",
-        bhashya: `अयं मन्त्रो निरुक्ते स्पष्टं व्याख्यातः । तदेवात्र लिख्यते -- 'पर्जन्यो विहन्ति वृक्षान्विहन्ति च रक्षांसि सर्वाणि चास्माद्भूतानि बिभ्यति महावधात् महान् ह्यस्य वधः । अप्यनपराधो भीतः पलायते वर्षकर्मवतो यत्पर्जन्यः स्तनयन् हन्ति दुष्कृतः पापकृतः' (निरु. १०. ११) इति ॥`,
-        anvaya: "(पर्जन्यः) वृक्षान् = वृक्षों को; वि हन्ति = तोड़-फोड़ देता है; उत = और; रक्षसः = राक्षसों को; हन्ति = मारता है; महावधात् = महान् वज्रप्रहार से; विश्वम् भुवनम् = समस्त संसार; बिभाय = डरता है; यत् = जब; स्तनयन् = गरजता हुआ; पर्जन्यः = पर्जन्यदेव; दुष्कृतः = पाप करने वालों को; हन्ति = मारता है; उत = तब; अनागाः = निरपराध प्राणी भी; वृष्ण्यावतः = वर्षण-सामर्थ्य से युक्त पर्जन्य से; ईषते = भयभीत होकर भागता है।",
-        hindi: "पर्जन्यदेव वृक्षों को उखाड़ फेंकते हैं और राक्षसों का संहार करते हैं। उनके महान् प्रहार से सम्पूर्ण भुवन भयभीत हो उठता है। जब गर्जना करते हुए पर्जन्यदेव पापियों का विनाश करते हैं, तब महान् वर्षण-बल से युक्त उन पर्जन्यदेव से निरपराध प्राणी भी डरकर भागता है।"
-      },
-      {
-        num: "३",
-        samhita: "र॒थीव॒ कश॒याश्वाँ॑ अभिक्षि॒पन्ना॒विर्दू॒तान्कृ॑णुते व॒र्ष्याँ॒३॒॑ अह॑ ।\nदू॒रात्सिं॒हस्य॑ स्त॒नथा॒ उदी॑रते॒ यत्प॒र्जन्यः॑ कृणु॒ते व॒र्ष्यं१॒॑ नभः॑ ॥३",
-        padaSasvara: "र॒थीऽइ॑व । कश॑या । अश्वा॑न् । अ॒भि॒ऽक्षि॒पन् । आ॒विः । दू॒तान् । कृ॒णु॒ते॒ । व॒र्ष्या॑न् । अह॑ ।\nदू॒रात् । सिं॒हस्य॑ । स्त॒नथाः॑ । उत् । ई॒र॒ते॒ । यत् । प॒र्जन्यः॑ । कृ॒णु॒ते । व॒र्ष्य॑म् । नभः॑ ॥३",
-        padaNirudatta: "रथीऽइव । कशया । अश्वान् । अभिऽक्षिपन् । आविः । दूतान् । कृणुते । वर्ष्यान् । अह ।\nदूरात् । सिंहस्य । स्तनथाः । उत् । ईरते । यत् । पर्जन्यः । कृणुते । वर्ष्यम् । नभः ॥ ३ ॥",
-        bhashya: `"रथीव रथस्वामीव । स यथा कशया अश्वानभिक्षिपन् दूतान् भटान् आविष्करोति तद्वदसौ पर्जन्योऽपि "कशया "अश्वान् मेघान् "अभिक्षिपन् अभिप्रेरयन् "वर्ष्यान् वर्षकान् "दूतान् दूतवत् वृष्टिप्रेरकान् मेघान् मरुतो वा "आविः "कृणुते प्रकटयति । "अह इति पूरणः । एवं सति "सिंहस्य । सहतेर्हिंसतेर्वा शब्दकर्मणः सिंहशब्दः । अवर्षणेनाभिभवितुः शब्दयितुर्वा मेघस्य "स्तनथाः गर्जनशब्दाः "दूरात् "उदीरते उद्गच्छन्ति । कदा । "यत् यदा "पर्जन्यः "नभः अन्तरिक्षं "वर्ष्यं वर्षोपेतं "कृणुते करोति तदा ॥`,
-        anvaya: "रथी इव = रथ के स्वामी के समान; कशया = चाबुक से; अश्वान् = मेघ-रूपी अश्वों को; अभिक्षिपन् = प्रेरित करता हुआ; वर्ष्यान् दूतान् = वर्षा के दूतों (मेघों या मरुतों) को; आविः कृणुते = प्रकट करता है; अह = निश्चय ही; यत् = जब; पर्जन्यः = पर्जन्यदेव; नभः = अन्तरिक्ष को; वर्ष्यम् = वर्षा-युक्त; कृणुते = बनाते हैं; (तदा) दूरात् = दूर से ही; सिंहस्य = सिंह के समान मेघ के; स्तनथाः = गर्जन-शब्द; उत् ईरते = गूँज उठते हैं।",
-        hindi: "जिस प्रकार रथ का स्वामी चाबुक से घोड़ों को हाँकता हुआ अपने दूतों को प्रकट करता है, उसी प्रकार पर्जन्यदेव भी कशा से मेघ-रूपी अश्वों को प्रेरित करते हुए वर्षा के दूतों को प्रकट करते हैं। जब पर्जन्यदेव आकाश को वर्षा-युक्त बनाते हैं, तब दूर से ही सिंह के समान मेघों की गंभीर गर्जनाएँ सुनाई देती हैं।"
-      },
-      {
-        num: "४",
-        samhita: "प्र वाता॒ वान्ति॑ प॒तय॑न्ति वि॒द्युत॒ उदोष॑धी॒र्जिह॑ते॒ पिन्व॑ते॒ स्वः॑ ।\nइरा॒ विश्व॑स्मै॒ भुव॑नाय जायते॒ यत्प॒र्जन्यः॑ पृथि॒वीं रेत॒साव॑ति ॥४",
-        padaSasvara: "प्र । वाताः॑ । वान्ति॑ । प॒तय॑न्ति । वि॒ऽद्युतः॑ । उत् । ओष॑धीः । जिह॑ते । पिन्व॑ते । स्वः॑ ।\nइरा॑ । विश्व॑स्मै । भुव॑नाय । जा॒य॒ते॒ । यत् । प॒र्जन्यः॑ । पृ॒थि॒वीम् । रेत॑सा । अव॑ति ॥४",
-        padaNirudatta: "प्र । वाताः । वान्ति । पतयन्ति । विऽद्युतः । उत् । ओषधीः । जिहते । पिन्वते । स्वरिति स्वः ।\nइरा । विश्वस्मै । भुवनाय । जायते । यत् । पर्जन्यः । पृथिवीम् । रेतसा । अवति ॥ ४ ॥",
-        bhashya: `‘प्र वाताः’ इति चतुर्थी पर्जन्यस्य चरोर्याज्या । सूत्रितं च -- 'प्र वाता वान्ति पतयन्ति विद्युत इत्यग्न्याधेयप्रभृति' (आश्व. श्रौ. २. १५) इति ॥ "प्र "वान्ति "वाताः वृष्ट्यर्थम् । "पतयन्ति गच्छन्ति समन्तात् संचरन्ति "विद्युतः । "ओषधीः ओषधयः "उत् "जिहते उद्गच्छन्ति प्रवर्धन्ते । "स्वः अन्तरिक्षं "पिन्वते क्षरति । "इरा भूमिः "विश्वस्मै सर्वस्मै "भुवनाय सर्वजगद्धिताय "जायते समर्था भवति । कदैवमिति । "यत् यदा "पर्जन्यः देवः "पृथिवीं "रेतसा उदकेन "अवति रक्षति अभिगच्छति वा तदैवं भवति ॥`,
-        anvaya: "वाताः = पवन; प्र वान्ति = वेग से बहते हैं; विद्युतः = बिजलियाँ; पतयन्ति = चारों ओर चमकती हैं; ओषधीः = वनस्पतियाँ; उत् जिहते = ऊपर बढ़ती हैं; स्वः = अन्तरिक्ष; पिन्वते = जल बरसाता है; विश्वस्मै भुवनाय = समस्त जगत् के कल्याण के लिए; इरा = अन्न (या भूमि); जायते = समर्थ होती है; यत् = जब; पर्जन्यः = पर्जन्यदेव; पृथिवीम् = पृथ्वी को; रेतसा = जल से; अवति = रक्षित एवं तृप्त करते हैं।",
-        hindi: "जब पर्जन्यदेव पृथ्वी को अपने जल से सींचकर रक्षित करते हैं, तब वर्षा के लिए पवन वेग से बहने लगते हैं, बिजलियाँ चारों ओर कौंधने लगती हैं, ओषधियाँ अंकुरित होकर बढ़ने लगती हैं, अन्तरिक्ष जल बरसाता है और सम्पूर्ण जगत् के कल्याण के लिए अन्न उत्पन्न होता है।"
-      },
-      {
-        num: "५",
-        samhita: "यस्य॑ व्र॒ते पृ॑थि॒वी नन्न॑मीति॒ यस्य॑ व्र॒ते श॒फव॒ज्जर्भु॑रीति ।\nयस्य॑ व्र॒त ओष॑धीर्वि॒श्वरू॑पा॒ः स नः॑ पर्जन्य॒ महि॒ शर्म॑ यच्छ ॥५",
-        padaSasvara: "यस्य॑ । व्र॒ते । पृ॒थि॒वी । नम्न॑मीति । यस्य॑ । व्र॒ते । श॒फऽव॑त् । जर्भु॑रीति ।\nयस्य॑ । व्र॒ते । ओष॑धीः । वि॒श्वऽरू॑पाः । सः । नः॒ । प॒र्ज॒न्य॒ । महि॑ । शर्म॑ । य॒च्छ॒ ॥५",
-        padaNirudatta: "यस्य । व्रते । पृथिवी । नन्नमीति । यस्य । व्रते । शफऽवत् । जर्भुरीति ।\nयस्य । व्रते । ओषधीः । विश्वऽरूपाः । सः । नः । पर्जन्य । महि । शर्म । यच्छ ॥ ५ ॥",
-        bhashya: `"यस्य पर्जन्यस्य "व्रते कर्मणि "पृथिवी "नन्नमीति अत्यर्थं नमति सर्वेषामधो भवति । "यस्य "व्रते "शफवत् पादोपेतं गवादिकं "जर्भुरीति भ्रियते पूर्यते गच्छतीति वा । "यस्य "व्रते कर्मणि "ओषधीः ओषध्यः "विश्वरूपाः नानारूपा भवन्ति हे "पर्जन्य "सः महांस्त्वं "नः अस्मभ्यं "महि "शर्म महत् सुखं "यच्छ प्रयच्छ ॥`,
-        anvaya: "यस्य व्रते = जिस पर्जन्य के कर्म में; पृथिवी = पृथ्वी; नन्नमीति = अत्यन्त नम्र (तृप्त) हो जाती है; यस्य व्रते = जिसके नियम में; शफवत् = खुर वाले पशु-समुदाय; जर्भुरीति = पुष्ट होकर विचरते हैं; यस्य व्रते = जिसके नियम में; ओषधीः = वनस्पतियाँ; विश्वरूपाः = नाना रूपों वाली होती हैं; हे पर्जन्य = हे पर्जन्यदेव!; सः (त्वम्) = वे आप; नः = हमें; महि शर्म = महान् सुख; यच्छ = प्रदान करें।",
-        hindi: "जिनके नियम और कर्म में यह पृथ्वी अत्यन्त नम्र हो जाती है, जिनके कर्म से खुरों वाले समस्त प्राणी पुष्ट होकर विचरते हैं, और जिनके नियम में वनस्पतियाँ नाना रूपों से शोभित होती हैं—हे पर्जन्यदेव! वे आप हमें महान् सुख और आश्रय प्रदान करें।"
-      },
-      {
-        num: "६",
-        samhita: "दि॒वो नो॑ वृ॒ष्टिं म॑रुतो ररीध्वं॒ प्र पि॑न्वत॒ वृष्णो॒ अश्व॑स्य॒ धाराः॑ ।\nअ॒र्वाङे॒तेन॑ स्तनयि॒त्नुनेह्य॒पो नि॑षि॒ञ्चन्नसु॑रः पि॒ता नः॑ ॥६",
-        padaSasvara: "दि॒वः । नः॒ । वृ॒ष्टिम् । म॒रु॒तः॒ । र॒री॒ध्व॒म् । प्र । पि॒न्व॒त॒ । वृष्णः॑ । अश्व॑स्य । धाराः॑ ।\nअ॒र्वाङ् । ए॒तेन॑ । स्त॒न॒यि॒त्नुना॑ । आ । इ॒हि॒ । अ॒पः । नि॒ऽसि॒ञ्चन् । असु॑रः । पि॒ता । नः॒ ॥६",
-        padaNirudatta: "दिवः । नः । वृष्टिम् । मरुतः । ररीध्वम् । प्र । पिन्वत । वृष्णः । अश्वस्य । धाराः ।\nअर्वाङ् । एतेन । स्तनयित्नुना । आ । इहि । अपः । निऽसिञ्चन् । असुरः । पिता । नः ॥ ६ ॥",
-        bhashya: `हे "मरुतः यूयं "दिवः अन्तरिक्षसकाशात् "नः अस्मदर्थं "वृष्टिं "ररीध्वं दत्त । "वृष्णः वर्षकस्य "अश्वस्य व्यापकस्य मेघस्य संबन्धिन्यः "धाराः उदकधाराः "प्र "पिन्वत प्रक्षरत । हे पर्जन्य त्वम् "एतेन "स्तनयित्नुना गर्जता मेघेन सह "अर्वाङ् अस्मदभिमुखम् "एहि आगच्छ । किं कुर्वन् । "अपः अम्भांसि "निषिञ्चन् स देवः "असुरः उदकानां निरसितापि सन् "नः अस्माकं "पिता पालकश्च ॥`,
-        anvaya: "हे मरुतः = हे मरुद्गण!; दिवः = अन्तरिक्ष से; नः = हमारे लिए; वृष्टिम् ररीध्वम् = वर्षा प्रदान करो; वृष्णः अश्वस्य = वर्षणशील व्यापक मेघ की; धाराः = जलधाराओं को; प्र पिन्वत = प्रवाहित करो; (हे पर्जन्य!) नः पिता = हमारे पालक पिता; असुरः = जल के प्रेरक आप; अपः निषिञ्चन् = जल सींचते हुए; एतेन स्तनयित्नुना = इस गरजते मेघ के साथ; अर्वाङ् आ इहि = हमारे अभिमुख आओ।",
-        hindi: "हे मरुद्गणो! आप अन्तरिक्ष से हमारे लिए वर्षा प्रदान करें और वर्षणशील व्यापक मेघ की जलधाराओं को प्रवाहित करें। हे पर्जन्यदेव! आप हमारे पालक पिता और प्राणदाता हैं; जल की वर्षा करते हुए इस गर्जनशील मेघ के साथ हमारे संमुख पधारें।"
-      },
-      {
-        num: "७",
-        samhita: "अ॒भि क्र॑न्द स्त॒नय॒ गर्भ॒मा धा॑ उद॒न्वता॒ परि॑ दीया॒ रथे॑न ।\nदृतिं॒ सु क॑र्ष॒ विषि॑तं॒ न्य॑ञ्चं स॒मा भ॑वन्तू॒द्वतो॑ निपा॒दाः ॥७",
-        padaSasvara: "अ॒भि । क्र॒न्द॒ । स्त॒नय॑ । गर्भ॑म् । आ । धाः॒ । उ॒द॒न्ऽवता॑ । परि॑ । दी॒य॒ । रथे॑न ।\nदृति॑म् । सु । क॒र्ष॒ । विऽसि॑तम् । न्य॑ञ्चम् । स॒माः । भ॒व॒न्तु॒ । उ॒त्ऽवतः॑ । नि॒ऽपा॒दाः ॥७",
-        padaNirudatta: "अभि । क्रन्द । स्तनय । गर्भम् । आ । धाः । उदन्ऽवता । परि । दीय । रथेन ।\nदृतिम् । सु । कर्ष । विऽसितम् । न्यञ्चम् । समाः । भवन्तु । उत्ऽवतः । निऽपादाः ॥ ७ ॥",
-        bhashya: `"अभि भूम्यभिमुखं "क्रन्द शब्दय । तदेव पुनरुच्यते दार्ढ्याय । "स्तनय गर्ज । "गर्भं गर्भस्थानीयमुदकम् ओषधीषु "आ "धाः आधेहि । तदर्थम् "उदन्वता उदकवता "रथेन "परि "दीय परितो गच्छ । "दृतिं दृतिवदुदकधारकं मेघं "विषितं विशेषेण सितं बद्धं "न्यञ्चं न्यक् अधोमुखं "सु सुष्ठु "कर्ष आकर्ष वृष्ट्यर्थम् । यद्वा । विषितं विमुक्तबन्धनमेवं कर्ष । एवं कृते "उद्वतः ऊर्ध्ववन्तः उन्नतप्रदेशाः "निपादाः न्यग्भूतपादा निकृष्टपादा वा निम्नोन्नतप्रदेशाः "समाः एकस्थाः "भवन्तु उदकपूर्णा भवन्त्वित्यर्थः ॥`,
-        anvaya: "(हे पर्जन्य!) अभि क्रन्द = भूमि की ओर पुकारो; स्तनय = गर्जना करो; गर्भम् आ धाः = गर्भ-स्थानीय जल स्थापित करो; उदन्वता रथेन = जलपूर्ण रथ से; परि दीय = सब ओर विचरण करो; विषितम् = बन्धन-मुक्त; न्यञ्चम् = अधोमुख; दृतिम् = मशक के समान जलधारक मेघ को; सु कर्ष = भली-भाँति खींचो; उद्वतः = ऊँचे स्थल; निपादाः = और नीचे प्रदेश; समाः भवन्तु = जल से भरकर एक समान हो जाएँ।",
-        hindi: "हे पर्जन्यदेव! आप पृथ्वी की ओर अभिमुख होकर गर्जना करें, घोर नाद करें और वनस्पतियों में जीवनदायक जल स्थापित करें। अपने जलपूर्ण रथ से चारों ओर विचरण करें। बन्धन-मुक्त तथा अधोमुख जल-मशक रूपी मेघ को भली-भाँति खींचकर उंडेल दें, जिससे ऊँची और नीची सभी भूमियाँ जल से भरकर एक समान हो जाएँ।"
-      },
-      {
-        num: "८",
-        samhita: "म॒हान्तं॒ कोश॒मुद॑चा॒ नि षि॑ञ्च॒ स्यन्द॑न्तां कु॒ल्या विषि॑ताः पु॒रस्ता॑त् ।\nघृ॒तेन॒ द्यावा॑पृथि॒वी व्यु॑न्धि सुप्रपा॒णं भ॑वत्व॒घ्न्याभ्यः॑ ॥८",
-        padaSasvara: "म॒हान्त॑म् । कोश॑म् । उत् । अ॒च॒ । नि । सि॒ञ्च॒ । स्यन्द॑न्ताम् । कु॒ल्याः । विऽसि॑ताः । पु॒रस्ता॑त् ।\nघृ॒तेन॑ । द्यावा॑पृथि॒वी इति॑ । वि । उ॒न्धि॒ । सु॒ऽप्र॒पा॒नम् । भ॒व॒तु॒ । अ॒घ्न्याभ्यः॑ ॥८",
-        padaNirudatta: "महान्तम् । कोशम् । उत् । अच । नि । सिञ्च । स्यन्दन्ताम् । कुल्याः । विऽसिताः । पुरस्तात् ।\nघृतेन । द्यावापृथिवी इति । वि । उन्धि । सुऽप्रपानम् । भवतु । अघ्न्याभ्यः ॥ ८ ॥",
-        bhashya: `हे पर्जन्य त्वं "महान्तं प्रवृद्धं "कोशं कोशस्थानीयं मेघम् "उदच उद्गच्छ । उद्गमय वा । तथा कृत्वा "नि "षिञ्च नीचैः क्षारय । "कुल्याः नद्यः "विषिताः विष्यूताः सत्यः "स्यन्दन्तां प्रवहन्तु "पुरस्तात् पूर्वाभिमुखम् । प्रायेण नद्यः प्राच्यः स्यन्दन्ते । "घृतेन उदकेन "द्यावापृथिवी दिवं च पृथिवीं च "व्युन्धि क्लेदय अत्यधिकम् । "अघ्न्याभ्यः गोभ्यः "सुप्रपाणं सुष्ठु प्रकर्षेण पातव्यमुदकं "भवतु ॥`,
-        anvaya: "(हे पर्जन्य!) महान्तम् कोशम् = विशाल जल-कोश रूप मेघ को; उत् अच = ऊपर उठाओ; नि सिञ्च = नीचे बरसाओ; विषिताः कुल्याः = बन्धन-मुक्त नदियाँ; पुरस्तात् = पूर्व (आगे) की ओर; स्यन्दन्ताम् = प्रवाहित हों; घृतेन = जल से; द्यावापृथिवी = द्युलोक और पृथिवीलोक को; वि उन्धि = भली-भाँति भिगो दो; अघ्न्याभ्यः = गौओं के लिए; सुप्रपाणम् भवतु = उत्तम पेयजल सुलभ हो।",
-        hindi: "हे पर्जन्यदेव! आप विशाल जल-कोश रूपी मेघ को ऊपर उठाएँ और पृथ्वी पर जल बरसाएँ। बन्धन-मुक्त हुई नदियाँ आगे की ओर प्रवाहित हों। अपने जल से आकाश और पृथ्वी को भली-भाँति तर कर दें, जिससे गौओं के लिए उत्तम पेयजल सुलभ हो जाए।"
-      },
-      {
-        num: "९",
-        samhita: "यत्प॑र्जन्य॒ कनि॑क्रदत्स्त॒नय॒न्हंसि॑ दु॒ष्कृतः॑ ।\nप्रती॒दं विश्वं॑ मोदते॒ यत्किं च॑ पृथि॒व्यामधि॑ ॥९",
-        padaSasvara: "यत् । प॒र्ज॒न्य॒ । कनि॑क्रदत् । स्त॒नय॑न् । हंसि॑ । दुः॒ऽकृतः॑ ।\nप्रति॑ । इ॒दम् । विश्व॑म् । मो॒द॒ते॒ । यत् । किम् । च॒ । पृ॒थि॒व्याम् । अधि॑ ॥९",
-        padaNirudatta: "यत् । पर्जन्य । कनिक्रदत् । स्तनयन् । हंसि । दुःऽकृतः ।\nप्रति । इदम् । विश्वम् । मोदते । यत् । किम् । च । पृथिव्याम् । अधि ॥ ९ ॥",
-        bhashya: `हे "पर्जन्य "यत् यदा त्वं "कनिक्रदत् अत्यर्थं शब्दयन् "स्तनयन् "दुष्कृतः पापकृतो मेघान् "हंसि विदारयसि तदानीम् "इदं "विश्वं जगत् "प्रति मोदते । विश्वं विशेष्यते । "यत्किं "च "पृथिव्यामधि भूम्यामधिष्ठितं यच्चराचरात्मकं तदिदं विश्वं मोदते हृष्यति । वृष्टेः सर्वजगत्प्रीतिकारणत्वं प्रसिद्धम् ॥`,
-        anvaya: "हे पर्जन्य = हे पर्जन्यदेव!; यत् = जब; कनिक्रदत् = बार-बार कड़कते हुए; स्तनयन् = गर्जना करते हुए; दुष्कृतः = पाप करने वालों (या अवरोधक मेघों) को; हंसि = मारते हो; (तदा) पृथिव्याम् अधि = पृथ्वी पर स्थित; यत् किम् च = जो कुछ भी चराचर जगत् है; इदम् विश्वम् = वह यह सारा संसार; प्रति मोदते = अत्यन्त हर्षित होता है।",
-        hindi: "हे पर्जन्यदेव! जब आप बार-बार कड़कते और घोर गर्जना करते हुए दुष्कर्मियों (अथवा अवरोधक मेघों) का नाश करते हैं, तब पृथ्वी पर स्थित जो कुछ भी चराचर जगत् है, वह सारा संसार आनन्दित हो उठता है।"
-      },
-      {
-        num: "१०",
-        samhita: "अव॑र्षीर्व॒र्षमुदु॒ षू गृ॑भा॒याक॒र्धन्वा॒न्यत्ये॑त॒वा उ॑ ।\nअजी॑जन॒ ओष॑धी॒र्भोज॑नाय॒ कमु॒त प्र॒जाभ्यो॑ऽविदो मनी॒षाम् ॥१०",
-        padaSasvara: "अव॑र्षीः । व॒र्षम् । उत् । ऊं॒ इति॑ । सु । गृ॒भा॒य॒ । अकः॑ । धन्वा॑नि । अति॑ऽए॒त॒वै । ऊं॒ इति॑ ।\nअजी॑जनः । ओष॑धीः । भोज॑नाय । कम् । उ॒त । प्र॒ऽजाभ्यः॑ । अ॒वि॒दः॒ । म॒नी॒षाम् ॥१०",
-        padaNirudatta: "अवर्षीः । वर्षम् । उत् । ऊँ इति । सु । गृभाय । अकः । धन्वानि । अतिऽएतवै । ऊँ इति ।\nअजीजनः । ओषधीः । भोजनाय । कम् । उत । प्रऽजाभ्यः । अविदः । मनीषाम् ॥ १० ॥",
-        bhashya: `इयमतिवृष्टिविमोचनी । हे पर्जन्य त्वम् "अवर्षीः वृष्टवानसि । "वर्षमुदु "षू "गृभाय उत्कृष्टं सु सुष्ठु गृभाय गृहाण । परिहरेत्यर्थः । "धन्वानि निरुदकप्रदेशान् "अकः जलवतः कृतवानसि । किमर्थम् । "अत्येतवा "उ अतिक्रम्य गन्तुम् । "ओषधीः "अजीजनः उदपादयः । किमर्थम् । "भोजनाय धनाय भोगाय वा । "कम् इत्ययं 'शिशिरं जीवनाय कम्' (निरु. १. १०) इतिवत्पादपूरणः । "उत अपि च "प्रजाभ्यः सकाशात् "मनीषां स्तुतिम् "अविदः प्राप्तवानसि ॥`,
-        anvaya: "(हे पर्जन्य!) वर्षम् अवर्षीः = आपने वर्षा कर दी है; ऊँ सु उत् गृभाय = अब इस वर्षा को भली-भाँति समेट लो; धन्वानि = निर्जल मरुस्थलों को भी; अत्येतवै उ अकः = पार करने योग्य बना दिया है; भोजनाय कम् = प्राणियों के भोजन के लिए; ओषधीः अजीजनः = वनस्पतियों को उत्पन्न किया है; उत = और; प्रजाभ्यः = प्रजाओं से; मनीषाम् अविदः = स्तुति प्राप्त की है।",
-        hindi: "हे पर्जन्यदेव! आपने पर्याप्त वर्षा कर दी है, अब कृपया अतिवृष्टि को भली-भाँति रोक लें। आपने निर्जल मरुभूमि को भी पार करने योग्य बना दिया है। आपने प्राणियों के भोजन के लिए ओषधियों को उत्पन्न किया है तथा प्रजाजनों से कृतज्ञतापूर्ण स्तुति प्राप्त की है।"
-      }
-    ];
-
-    // 1. MAIN HOME PAGE WITH GLOBAL SEARCH & LIVE AI TOOL
+    // 1. CLASSICAL GRANTHALAYA FRONT INTERFACE
     function loadHome(closeMenu) {
       if (closeMenu) toggleSidebar();
       setActiveNav('nav-home');
 
-      document.getElementById('view-title').textContent = "स्वाध्याय-कोशः — मुख्यपृष्ठम्";
-      document.getElementById('view-subtitle').textContent = "वैदिक-वाङ्मय-निरुक्त-दर्शन-साहित्य-व्याकरणानां वैयक्तिक-अध्ययन-केन्द्रम्";
+      document.getElementById('grantha-header-banner').style.display = 'none';
       document.getElementById('controls-container').innerHTML = '';
 
+      const pObj = getParjanyaObj();
       const nData = getNaishadhaData();
+
       document.getElementById('content-container').innerHTML = `
-        <!-- Global Search Box -->
-        <div class="search-hero">
-          <strong style="color:var(--sutra-gold); font-size:1.1rem;">🔍 समग्र-कोश-अन्वेषणम् (Search Across Suktas, Nirukta & Mahakavya)</strong>
+        <!-- Hero Banner with Global Search -->
+        <div class="hero-panel">
+          <div class="hero-mangala">॥ ॐ तत्सत् • सरस्वत्यै नमः ॥</div>
+          <h1 class="hero-title">बृहत्-स्वाध्याय-ग्रन्थालयः</h1>
+          <p class="hero-desc">
+            वैदिक-संहिता-निरुक्त-दर्शन-व्याकरण-महाकाव्यानां मूलपाठः, प्राचीनाचार्य-टीका, पदच्छेदः, अन्वयानुसारी-भाष्यं च
+          </p>
           <div class="search-input-wrap">
             <input type="text" id="global-search" class="search-input"
-              placeholder="शब्दं, मन्त्रं, निरुक्त-पंक्तिम् अथवा अर्थं लिखत (उदा. जीरदानुः, षड्भावविकारा, शाकटायनः, सितच्छत्रित)..."
+              placeholder="समग्र-ग्रन्थालये शब्दं, मन्त्रं, सूत्रं, पद्यं वा अन्विष्यताम् (उदा. जीरदानुः, षड्भावविकाराः, सितच्छत्रित)..."
               oninput="runGlobalSearch(this.value)">
           </div>
-          <div id="search-results" style="margin-top:14px;"></div>
+          <div id="search-results" style="margin-top:16px; text-align:left;"></div>
         </div>
 
-        <!-- Quick Study Cards -->
+        <!-- Section 1: Active Granthas -->
+        <div class="section-heading">
+          <h2>सद्यः उपलब्ध-मूलग्रन्थाः</h2>
+          <span>स्पृष्ट्वा अध्ययनं प्रारभ्यताम्</span>
+        </div>
+
         <div class="grid-cards">
-          <div class="Quick-card" onclick="loadParjanya(false)">
-            <h3>१. पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)</h3>
-            <p>१० मन्त्राः • सस्वर-संहिता, पदपाठौ, सायणभाष्यं, अन्वयानुसार-हिन्दीव्याख्या च</p>
+          <div class="grantha-card" onclick="loadParjanya(false)">
+            <div>
+              <div class="grantha-unit-tag">इकाई १–२ • वैदिक-सूक्तम्</div>
+              <h3>पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)</h3>
+              <p>भौमात्रि-दृष्टम् • सायणभाष्य-भूमिका, सस्वर-संहितापाठः, पदपाठद्वयम्, सायणभाष्यं हिन्दी-अन्वयश्च।</p>
+            </div>
+            <div class="grantha-footer">
+              <span>मन्त्राः — ${pObj.mantras.length || 10}</span>
+              <span>अध्ययनं क्रियताम् ▸</span>
+            </div>
           </div>
-          <div class="Quick-card" onclick="loadNirukta(false)">
-            <h3>२. निरुक्तम् (प्रथमोऽध्यायः)</h3>
-            <p>षट् पादाः (१.१–१.२०) • वर्ण-चिह्नित-मूलपाठः, निपात-निर्वचन-विमर्शः, प्रत्यक्ष-AI-व्याख्या च</p>
+
+          <div class="grantha-card" onclick="loadNirukta(false)">
+            <div>
+              <div class="grantha-unit-tag">इकाई २ • वेदाङ्ग-निरुक्तम्</div>
+              <h3>निरुक्तम् (प्रथमोऽध्यायः)</h3>
+              <p>यास्कमुनिप्रणीतम् • चतुष्पदजाति-षड्भावविकार-उपसर्ग-निपात-निर्वचनसिद्धान्ताः (पादाः १–६)।</p>
+            </div>
+            <div class="grantha-footer">
+              <span>षट् पादाः (१.१ – १.२०)</span>
+              <span>अध्ययनं क्रियताम् ▸</span>
+            </div>
           </div>
-          <div class="Quick-card" onclick="loadNaishadha(false)">
-            <h3>३. नैषधीयचरितम् (प्रथमः सर्गः)</h3>
-            <p>${nData.verses.length} पद्यानि • पदच्छेदः, मल्लिनाथीया जीवातु-टीका, अन्वयानुसारी शब्दानुवादश्च</p>
+
+          <div class="grantha-card" onclick="loadNaishadha(false)">
+            <div>
+              <div class="grantha-unit-tag">इकाई ८ • महाकाव्यम्</div>
+              <h3>नैषधीयचरितम् (प्रथमः सर्गः)</h3>
+              <p>श्रीहर्षप्रणीतम् • मल्लिनाथसूरि-विरचिता ‘जीवातु’-टीका, पदच्छेदः, अलङ्कार-निर्देशः, अन्वयानुवादश्च।</p>
+            </div>
+            <div class="grantha-footer">
+              <span>पद्यानि — ${nData.verses.length}</span>
+              <span>अध्ययनं क्रियताम् ▸</span>
+            </div>
           </div>
         </div>
 
-        <!-- Built-in AI Meaning & Anvaya Generator Tool -->
-        <div class="ai-tool-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <strong style="color:var(--sutra-gold); font-size:1.15rem;">✨ प्रत्यक्ष-AI-व्याख्या-यन्त्रम् (Live AI Shloka / Nirukta / Mantra Analyzer)</strong>
-            <button class="header-btn" onclick="configureApiKey()">⚙️ Set Free Gemini Key</button>
+        <!-- Section 2: Complete 10-Unit UGC NET Syllabus Map -->
+        <div class="section-heading">
+          <h2>यू.जी.सी.-नेट् (कोड् २५) दश-इकाई-संरचना</h2>
+          <span>क्रमशः संयोज्यमानाः पाठ्यग्रन्थाः</span>
+        </div>
+
+        <div class="unit-grid">
+          <div class="unit-box">
+            <div class="unit-box-title"><span>इकाई १–२ : वैदिक-साहित्यम्</span><span>वेदाङ्गानि च</span></div>
+            <div class="unit-topics">
+              <span class="unit-pill ready" onclick="loadParjanya(false)">पर्जन्यसूक्तम् (५.८३)</span>
+              <span class="unit-pill ready" onclick="loadNirukta(false)">निरुक्तम् (अध्यायः १)</span>
+              <span class="unit-pill">अग्निः (१.१)</span>
+              <span class="unit-pill">वरुणः (१.२५)</span>
+              <span class="unit-pill">पुरुषसूक्तम् (१०.९०)</span>
+              <span class="unit-pill">नासदीयम् (१०.१२९)</span>
+              <span class="unit-pill">ईश-कठ-केन-तैत्तिरीयाः</span>
+            </div>
           </div>
-          <p style="color:#aaa; font-size:0.9rem; margin:6px 0;">
-            कस्यापि संस्कृत-श्लोकस्य, निरुक्त-पङ्क्तेः, मन्त्रस्य वा पदच्छेदं, अन्वयानुसारी-शब्दानुवादं, हिन्दी-भावार्थं व्याकरण-टिप्पणीं च तत्क्षणं जनयितुं अत्र स्थापयत—
+
+          <div class="unit-box">
+            <div class="unit-box-title"><span>इकाई ३–४ : दर्शन-साहित्यम्</span><span>आस्तिक-नास्तिकम्</span></div>
+            <div class="unit-topics">
+              <span class="unit-pill">साङ्ख्यकारिका</span>
+              <span class="unit-pill">वेदान्तसारः</span>
+              <span class="unit-pill">तर्कसङ्ग्रहः</span>
+              <span class="unit-pill">तर्कभाषा</span>
+              <span class="unit-pill">अर्थसङ्ग्रहः</span>
+              <span class="unit-pill">योगसूत्र-व्यासभाष्यम्</span>
+              <span class="unit-pill">शाङ्करभाष्यम् (१.१)</span>
+            </div>
+          </div>
+
+          <div class="unit-box">
+            <div class="unit-box-title"><span>इकाई ५–६ : व्याकरणं भाषाविज्ञानं च</span><span>पाणिनीयम्</span></div>
+            <div class="unit-topics">
+              <span class="unit-pill">महाभाष्यम् (पस्पशाह्निकम्)</span>
+              <span class="unit-pill">सिद्धान्तकौमुदी (संज्ञा-कारक-समास-तिङन्त-कृदन्ताः)</span>
+              <span class="unit-pill">वाक्यपदीयम् (ब्रह्मकाण्डम्)</span>
+              <span class="unit-pill">भारोपीय-भाषाविज्ञानम्</span>
+            </div>
+          </div>
+
+          <div class="unit-box">
+            <div class="unit-box-title"><span>इकाई ७–८ : साहित्यं काव्यशास्त्रं च</span><span>पद्य-गद्य-नाट्यम्</span></div>
+            <div class="unit-topics">
+              <span class="unit-pill ready" onclick="loadNaishadha(false)">नैषधीयचरितम् (सर्गः १)</span>
+              <span class="unit-pill">किरातार्जुनीयम् (१)</span>
+              <span class="unit-pill">शिशुपालवधम् (१)</span>
+              <span class="unit-pill">अभिज्ञानशाकुन्तलम्</span>
+              <span class="unit-pill">उत्तररामचरितम्</span>
+              <span class="unit-pill">काव्यप्रकाशः</span>
+              <span class="unit-pill">साहित्यदर्पणः</span>
+              <span class="unit-pill">ध्वन्यालोकः</span>
+            </div>
+          </div>
+
+          <div class="unit-box">
+            <div class="unit-box-title"><span>इकाई ९–१० : पुराण-धर्म-अर्थशास्त्राणि</span><span>अभिलेखशास्त्रं च</span></div>
+            <div class="unit-topics">
+              <span class="unit-pill">रामायणं महाभारतं च</span>
+              <span class="unit-pill">कौटिलीय-अर्थशास्त्रम् (१)</span>
+              <span class="unit-pill">मनुस्मृतिः (१, २, ७)</span>
+              <span class="unit-pill">याज्ञवल्क्यस्मृतिः</span>
+              <span class="unit-pill">अशोक-रुद्रदाम-अभिलेखाः</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Scholarly Text Analyzer -->
+        <div class="analyzer-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <strong style="color:var(--sutra-gold); font-size:1.12rem; font-family:'Tiro Devanagari Sanskrit', serif;">
+              पद-अन्वय-विश्लेषिणी (श्लोक-मन्त्र-निरुक्त-विमर्शः)
+            </strong>
+            <button class="header-btn" onclick="configureApiKey()">API कुञ्चिका-संयोजनम्</button>
+          </div>
+          <p style="color:#b8a9ac; font-size:0.9rem; margin:6px 0;">
+            कस्यापि संस्कृत-श्लोकस्य, निरुक्त-पङ्क्तेः, मन्त्रस्य वा पदच्छेदं, अन्वयानुसारी-शब्दानुवादं, व्याकरण-टिप्पणीं च द्रष्टुम् अत्र मूलपाठं लिखत—
           </p>
-          <textarea id="ai-custom-input" class="ai-textarea" placeholder="अत्र श्लोकं, निरुक्त-वाक्यं मन्त्रं वा स्थापयत..."></textarea>
-          <button class="ai-btn" id="ai-analyze-btn" onclick="analyzeCustomVerse()">✨ विश्लेषणं करोतु (Generate Anvaya & Hindi Meaning)</button>
+          <textarea id="ai-custom-input" class="ai-textarea" placeholder="अत्र श्लोकं, सूत्रं, निरुक्त-वाक्यं मन्त्रं वा स्थापयत..."></textarea>
+          <button class="scholar-btn" id="ai-analyze-btn" onclick="analyzeCustomVerse()">अन्वय-व्याख्या जन्यताम्</button>
           <div id="ai-custom-output" style="margin-top:16px;"></div>
         </div>
       `;
     }
 
-    // Global Search Function (Now searches Parjanya, Naishadha, AND Nirukta!)
+    // Global Search Function across Parjanya, Nirukta, and Naishadha
     function runGlobalSearch(query) {
       const out = document.getElementById('search-results');
       const q = query.trim().toLowerCase();
@@ -647,8 +819,10 @@
       }
 
       const matches = [];
+      const pObj = getParjanyaObj();
+
       // 1. Search Parjanya Suktam
-      parjanyaData.forEach((m, i) => {
+      pObj.mantras.forEach((m, i) => {
         const hay = `${m.samhita} ${m.padaNirudatta} ${m.bhashya} ${m.anvaya} ${m.hindi}`.toLowerCase();
         if (hay.includes(q)) {
           matches.push({
@@ -670,7 +844,7 @@
             matches.push({
               source: `निरुक्तम् (अध्यायः १) • अनुच्छेदः ${idx + 1}`,
               preview: text.length > 110 ? text.slice(0, 110) + '...' : text,
-              sub: 'क्लिक् कृत्वा निरुक्त-प्रकरणे पश्यत',
+              sub: 'स्पृष्ट्वा निरुक्त-प्रकरणे पश्यत',
               action: `loadNirukta(false); setTimeout(() => { const el = document.getElementById('nir-p-${idx}'); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 120);`
             });
           }
@@ -692,29 +866,29 @@
       });
 
       if (matches.length === 0) {
-        out.innerHTML = `<div style="color:#aaa; padding:8px;">किमपि न लब्धम् (No matches found for "${query}")</div>`;
+        out.innerHTML = `<div style="color:#b8a9ac; padding:8px;">किमपि न लब्धम् ("${query}")</div>`;
         return;
       }
 
       out.innerHTML = matches.map(item => `
-        <div onclick="${item.action}" style="background:#18181f; border:1px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:8px; cursor:pointer;">
-          <div style="color:var(--sutra-gold); font-size:0.85rem; font-weight:700;">${item.source}</div>
+        <div onclick="${item.action}" style="background:#161214; border:1px solid var(--border); border-left:3px solid var(--gold-accent); border-radius:8px; padding:12px 14px; margin-bottom:8px; cursor:pointer;">
+          <div style="color:var(--sutra-gold); font-size:0.84rem; font-weight:700;">${item.source}</div>
           <div style="color:var(--samhita-red); font-weight:600; margin:3px 0;">${item.preview}</div>
-          <div style="color:#bbb; font-size:0.9rem;">${item.sub}</div>
+          <div style="color:#cbbba8; font-size:0.9rem;">${item.sub}</div>
         </div>
       `).join('');
     }
 
-    // 2. BUILT-IN GEMINI AI INTEGRATION (Updated to gemini-3.8-flash with auto-fallback)
+    // 2. GEMINI API INTEGRATION
     function configureApiKey() {
       const current = localStorage.getItem('svadhyaya_gemini_key') || '';
       const entered = prompt(
-        "अत्र स्वकीयं निःशुल्कं Google Gemini API Key स्थापयत (Get it free at aistudio.google.com/app/apikey):",
+        "अत्र स्वकीयं Google Gemini API Key स्थापयत:",
         current
       );
       if (entered !== null) {
         localStorage.setItem('svadhyaya_gemini_key', entered.trim());
-        alert("API Key सुरक्षितम्! इदानीं AI-व्याख्या-यन्त्रं कार्यं करिष्यति।");
+        alert("API कुञ्चिका सुरक्षिता!");
       }
     }
 
@@ -739,7 +913,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
   "vyakarana": "Key nirvacana / samasa vigraha in [brackets] and Paninian/Nirukta citations in 'single quotes'"
 }`;
 
-      const models = ["gemini-3.8-flash", "gemini-3-flash", "gemini-2.5-pro"];
+      const models = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"];
       let lastError = "";
 
       for (const model of models) {
@@ -770,7 +944,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       const btn = document.getElementById('ai-analyze-btn');
       const out = document.getElementById('ai-custom-output');
       btn.disabled = true;
-      btn.textContent = "⏳ AI विश्लेषणं करोति... कृपया प्रतीक्षताम्";
+      btn.textContent = "विश्लेषणं प्रचलति... कृपया प्रतीक्षताम्";
       try {
         const res = await callGeminiStructured(text);
         out.innerHTML = `
@@ -783,15 +957,16 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         out.innerHTML = `<div style="color:var(--samhita-red);">त्रुटिः — ${err.message}</div>`;
       } finally {
         btn.disabled = false;
-        btn.textContent = "✨ विश्लेषणं करोतु (Generate Anvaya & Hindi Meaning)";
+        btn.textContent = "अन्वय-व्याख्या जन्यताम्";
       }
     }
 
-    // 3. NEW: LOAD NIRUKTA ADHYAYA 1 VIEW (With Pada Jumps, Dark/Paper Toggle & Tap-to-AI)
+    // 3. LOAD NIRUKTA ADHYAYA 1 VIEW
     function loadNirukta(closeMenu) {
       if (closeMenu) toggleSidebar();
       setActiveNav('nav-nirukta');
 
+      document.getElementById('grantha-header-banner').style.display = 'block';
       document.getElementById('view-title').textContent = "यास्कमुनिविरचितं निरुक्तम् — प्रथमोऽध्यायः";
       document.getElementById('view-subtitle').textContent = "षट् पादाः (१.१ – १.२०) • चतुष्पदजाति-भावविकार-उपसर्ग-निपात-निर्वचन-विमर्शः";
 
@@ -801,7 +976,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         document.getElementById('content-container').innerHTML = `
           <div class="bhumika-card">
             <strong style="color:var(--samhita-red);">सूचना — </strong>
-            कृपया स्वकीयं निरुक्त-सञ्चिकां <strong>nirukta_adhyaya1.js</strong> नाम्ना अस्मिन्नेव पुटे स्थापयत।
+            कृपया स्वकीयां निरुक्त-सञ्चिकां <strong>nirukta_adhyaya1.js</strong> नाम्ना अस्मिन्नेव पुटे स्थापयत।
           </div>`;
         return;
       }
@@ -816,24 +991,20 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
             <button class="action-btn" onclick="scrollToNiruktaPada('पञ्चम-पाद')">५. पञ्चम-पादः</button>
             <button class="action-btn" onclick="scrollToNiruktaPada('षष्ठ-पाद')">६. षष्ठ-पादः</button>
           </div>
-          <button class="action-btn" onclick="toggleNiruktaTheme()">🌓 कृष्ण/श्वेत-पृष्ठम् (Theme)</button>
-        </div>
-        <div style="color:#aaa; font-size:0.88rem; margin-bottom:12px;">
-          💡 <strong>सूचनाः</strong> कमपि निरुक्त-अनुच्छेदं स्पृष्ट्वा तस्य अधः तत्क्षणं <strong>✨ AI-हिन्दी-व्याख्याम्</strong> उद्धाटयितुं शक्नुथ।
+          <button class="action-btn" onclick="toggleNiruktaTheme()">कृष्ण / पत्र-पृष्ठम्</button>
         </div>
       `;
 
       const container = document.getElementById('content-container');
       container.innerHTML = `<div id="nirukta-view-wrapper" class="nirukta-dark">${rawHolder.innerHTML}</div>`;
 
-      // Make every non-empty paragraph interactive for instant AI Hindi explanation
       const wrapper = document.getElementById('nirukta-view-wrapper');
       wrapper.querySelectorAll('p').forEach((p, idx) => {
         p.id = 'nir-p-' + idx;
         const text = p.textContent.trim();
         if (text && !p.classList.contains('title') && text.length > 8) {
           p.classList.add('nirukta-interactive-p');
-          p.title = "स्पृष्ट्वा AI-हिन्दी-व्याख्यां पश्यत (Click for AI Hindi Explanation)";
+          p.title = "स्पृष्ट्वा विस्तृत-व्याख्यां पश्यत";
           p.onclick = () => toggleNiruktaAI(idx, text);
         }
       });
@@ -866,13 +1037,13 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       const box = document.createElement('div');
       box.id = 'nir-ai-box-' + idx;
       box.style.margin = '10px 0 18px 0';
-      box.innerHTML = `<div class="anvaya-box">⏳ AI निरुक्त-पङ्क्तेः हिन्दी-व्याख्यां जनयति...</div>`;
+      box.innerHTML = `<div class="anvaya-box">निरुक्त-पङ्क्तेः व्याख्या जन्यते...</div>`;
       targetP.insertAdjacentElement('afterend', box);
 
       try {
         const res = await callGeminiStructured(text, "Yaska's Nirukta Adhyaya 1");
         box.innerHTML = `
-          <div class="anvaya-box"><span class="anvaya-label">पदार्थः (AI) — </span>${formatAnvaya(res.anvaya)}</div>
+          <div class="anvaya-box"><span class="anvaya-label">पदार्थः — </span>${formatAnvaya(res.anvaya)}</div>
           <div class="hindi-box"><span class="hindi-label">हिन्दी-व्याख्या — </span>${res.hindi}</div>
           <div class="jivatu-box"><span class="jivatu-label">निर्वचन-व्याकरण-टिप्पणी —</span>${formatCommentary(res.vyakarana)}</div>
         `;
@@ -888,13 +1059,14 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       setActiveNav('nav-naishadha');
 
       const nData = getNaishadhaData();
+      document.getElementById('grantha-header-banner').style.display = 'block';
       document.getElementById('view-title').textContent = nData.title;
       document.getElementById('view-subtitle').textContent = nData.subtitle;
 
       document.getElementById('controls-container').innerHTML = `
         <div class="toggle-bar">
           <div class="toggle-group">
-            <span style="color:#aaa;">सूचना — पद्यं स्पृष्ट्वा विस्तृत-व्याख्याम् उद्धाटयत (Touch any verse to expand)</span>
+            <span style="color:#cbbba8;">पद्यं स्पृष्ट्वा पदच्छेदं, अन्वयं, मल्लिनाथीयां जीवातु-टीकां च उद्धाटयत</span>
           </div>
           <button class="action-btn" onclick="toggleAllPadyas()" id="expand-all-btn">सर्वेषां विवरणम् उद्धाट्यताम् ▾</button>
         </div>
@@ -933,7 +1105,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
                 <span class="badge">छन्दः — ${v.chandas || 'वंशस्थम्'}</span>
                 <span class="badge">अलङ्कारः — ${v.alankara || '—'}</span>
               </div>
-              <button class="action-btn" id="ai-vbtn-${idx}" onclick="generateVerseAI(${idx})">✨ AI अन्वय-हिन्दी-व्याख्या</button>
+              <button class="action-btn" id="ai-vbtn-${idx}" onclick="generateVerseAI(${idx})">अतिरिक्त-विमर्शः</button>
             </div>
           </div>
         </div>
@@ -945,7 +1117,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       const v = nData.verses[idx];
       const btn = document.getElementById(`ai-vbtn-${idx}`);
       btn.disabled = true;
-      btn.textContent = "⏳ जनयति...";
+      btn.textContent = "जनयति...";
       try {
         const res = await callGeminiStructured(v.mula, v.jivatu || "");
         v.padaccheda = res.padaccheda || v.padaccheda;
@@ -953,13 +1125,13 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         v.hindi = res.hindi;
         localStorage.setItem(`naishadha_ai_v_${v.num}`, JSON.stringify(res));
         document.getElementById(`anvaya-v-${idx}`).innerHTML =
-          `<span class="anvaya-label">अन्वयानुसारी शब्दानुवादः (AI) — </span>${formatAnvaya(v.anvaya)}`;
+          `<span class="anvaya-label">अन्वयानुसारी शब्दानुवादः — </span>${formatAnvaya(v.anvaya)}`;
         document.getElementById(`hindi-v-${idx}`).innerHTML =
-          `<span class="hindi-label">हिन्दी-भावार्थः (AI) — </span>${v.hindi}`;
-        btn.textContent = "✓ AI द्वारा अद्यतनीकृतम्";
+          `<span class="hindi-label">हिन्दी-भावार्थः — </span>${v.hindi}`;
+        btn.textContent = "✓ अद्यतनीकृतम्";
       } catch (err) {
-        alert("AI त्रुटिः: " + err.message);
-        btn.textContent = "✨ AI द्वारा पुनः जनयतु";
+        alert("त्रुटिः: " + err.message);
+        btn.textContent = "पुनः प्रयतताम्";
       } finally {
         btn.disabled = false;
       }
@@ -983,13 +1155,15 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         allExpanded ? 'सर्वेषां विवरणं संक्षिप्यताम् ▴' : 'सर्वेषां विवरणम् उद्धाट्यताम् ▾';
     }
 
-    // 5. LOAD PARJANYA SUKTAM VIEW
+    // 5. LOAD PARJANYA SUKTAM VIEW (Reads from external parjanya_sukta.js)
     function loadParjanya(closeMenu) {
       if (closeMenu) toggleSidebar();
       setActiveNav('nav-parjanya');
 
+      const pObj = getParjanyaObj();
+      document.getElementById('grantha-header-banner').style.display = 'block';
       document.getElementById('view-title').textContent = "अथ पर्जन्यसूक्तम् (ऋग्वेदः ५.८३)";
-      document.getElementById('view-subtitle').textContent = "सायणभाष्यसमेतम् — अन्वयानुसार-हिन्दीशब्दार्थानुवादयुतम्";
+      document.getElementById('view-subtitle').textContent = "सायणभाष्यसमेतम् • सस्वर-पदपाठद्वय-अन्वयानुसारी-हिन्दीव्याख्यायुतम्";
 
       document.getElementById('controls-container').innerHTML = `
         <div class="toggle-bar">
@@ -1004,12 +1178,13 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         </div>
         <div class="bhumika-card bhashya">
           <div class="bhumika-title">सायणभाष्य-भूमिका</div>
-          ${formatCommentary(parjanyaBhumika)}
+          ${formatCommentary(pObj.bhumika)}
         </div>
       `;
 
-      document.getElementById('content-container').innerHTML = parjanyaData.map((m, idx) => `
+      document.getElementById('content-container').innerHTML = pObj.mantras.map((m, idx) => `
         <div class="mantra-card" id="mantra-${idx}">
+          <div class="mantra-num-badge">मन्त्रः ${m.num}</div>
           <div class="samhita">${m.samhita}</div>
           <div class="pada-sasvara">${m.padaSasvara}</div>
           <div class="pada-nirudatta">${m.padaNirudatta}</div>
@@ -1024,7 +1199,6 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
       `).join('');
     }
 
-    // Open Main Home Page by default
     loadHome(false);
   </script>
 </body>
