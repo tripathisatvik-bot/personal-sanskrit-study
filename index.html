@@ -302,10 +302,20 @@
     .pada-nirudatta { color: var(--nirudatta-blue); font-size: 1.12rem; margin-bottom: 18px; white-space: pre-line; }
     .bhashya { color: var(--pada-white); font-size: 1.08rem; margin-bottom: 16px; text-align: justify; }
 
-    /* Shared Highlighting Classes */
+/* Shared Highlighting Classes */
     .pratika { color: var(--pratika-purple); font-weight: 600; }
-    .citation-note { color: var(--sutra-gold); }
-    .vyakarana-note { color: var(--nirudatta-blue); }
+    .citation-note {
+      color: inherit;
+      font-weight: 700;
+      font-style: italic;
+      background: rgba(235, 203, 139, 0.14);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .vyakarana-note {
+      color: inherit;
+      font-style: italic;
+    }
 
     .anvaya-box {
       background: #14191f; border-left: 3px solid var(--anvaya-green);
