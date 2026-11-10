@@ -545,7 +545,9 @@
         </div>
         <div class="topic-item topic-pending" onclick="notifyPending('रघुवंशम् (प्रथमः सर्गः)')">रघुवंशम् (प्रथमः सर्गः)</div>
         <div class="topic-item topic-pending" onclick="notifyPending('किरातार्जुनीयम् (प्रथमः सर्गः)')">किरातार्जुनीयम् (प्रथमः सर्गः)</div>
-        <div class="topic-item topic-pending" onclick="notifyPending('शिशुपालवधम् (प्रथमः सर्गः)')">शिशुपालवधम् (प्रथमः सर्गः)</div>
+        <div class="topic-item" id="nav-shishupala" onclick="loadShishupala(true)">
+          <span>शिशुपालवधम् (प्रथमः सर्गः)</span><span class="status-dot"></span>
+        </div>
         <div class="topic-item topic-pending" onclick="notifyPending('मेघदूतम्')">मेघदूतम् (कालिदासः)</div>
       </div>
 
@@ -626,7 +628,7 @@
 
     // Dynamic Cache-Busting Loader for External JS Data Files
     function loadDataScripts(cb) {
-      const files = ['parjanya_sukta.js', 'naishadha_sarga1.js', 'nirukta_adhyaya1.js'];
+      const files = ['parjanya_sukta.js', 'naishadha_sarga1.js', 'shishupala_sarga1.js', 'nirukta_adhyaya1.js'];
       let loaded = 0;
       files.forEach((file) => {
         const s = document.createElement('script');
@@ -722,6 +724,11 @@
       return { title: "नैषधीयचरितम् — प्रथमः सर्गः", subtitle: "जीवातु-टीकासमेतम्", verses: [] };
     }
 
+    function getShishupalaData() {
+      if (typeof shishupalaSarga1 !== 'undefined') return shishupalaSarga1;
+      return { title: "शिशुपालवधम् — प्रथमः सर्गः", subtitle: "सर्वङ्कषा-टीकासमेतम्", tikaName: "मल्लिनाथसूरि-कृता ‘सर्वङ्कषा’-टीका", verses: [] };
+    }
+
     // 1. CLASSICAL GRANTHALAYA FRONT INTERFACE
     function loadHome(closeMenu) {
       if (closeMenu) toggleSidebar();
@@ -792,6 +799,18 @@
             </div>
           </div>
         </div>
+
+        <div class="grantha-card" onclick="loadShishupala(false)">
+            <div>
+              <div class="grantha-unit-tag">इकाई ८ • महाकाव्यम्</div>
+              <h3>शिशुपालवधम् (प्रथमः सर्गः)</h3>
+              <p>महाकविमाघप्रणीतम् • मल्लिनाथसूरि-विरचिता ‘सर्वङ्कषा’-टीका, प्रसङ्गः, पदच्छेदः, अन्वयानुवादश्च।</p>
+            </div>
+            <div class="grantha-footer">
+              <span>पद्यानि — ${sData.verses.length}</span>
+              <span>अध्ययनं क्रियताम् ▸</span>
+            </div>
+          </div>
 
         <!-- Section 2: Complete 10-Unit UGC NET Syllabus Map -->
         <div class="section-heading">
@@ -949,6 +968,20 @@
         </div>
       `).join('');
     }
+
+    // 4. Search Shishupalavadham
+      const sData = getShishupalaData();
+      sData.verses.forEach((v, i) => {
+        const hay = `${v.mula} ${v.prasanga || ''} ${v.padaccheda || ''} ${v.jivatu || ''} ${v.anvaya || ''} ${v.hindi || ''}`.toLowerCase();
+        if (hay.includes(q)) {
+          matches.push({
+            source: `शिशुपालवधम् (सर्गः १) • श्लोकः ${v.num}`,
+            preview: v.mula.split('\n')[0],
+            sub: v.hindi || '',
+            action: `loadShishupala(false); setTimeout(() => { togglePadya(${i}); document.getElementById('padya-card-${i}').scrollIntoView({behavior:'smooth'}); }, 100);`
+          });
+        }
+      });
 
     // 2. GEMINI API INTEGRATION
     function configureApiKey() {
@@ -1124,34 +1157,64 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
     }
 
     // 4. LOAD NAISHADHIYACARITAM VIEW
+let currentMahakavyaKey = 'naishadha';
     let allExpanded = false;
-    function loadNaishadha(closeMenu) {
-      if (closeMenu) toggleSidebar();
-      setActiveNav('nav-naishadha');
 
-      const nData = getNaishadhaData();
+    function getActiveMahakavya() {
+      return currentMahakavyaKey === 'shishupala' ? getShishupalaData() : getNaishadhaData();
+    }
+
+    function loadNaishadha(closeMenu) {
+      currentMahakavyaKey = 'naishadha';
+      renderMahakavya(closeMenu, 'nav-naishadha');
+    }
+
+    function loadShishupala(closeMenu) {
+      currentMahakavyaKey = 'shishupala';
+      renderMahakavya(closeMenu, 'nav-shishupala');
+    }
+
+    function renderMahakavya(closeMenu, navId) {
+      if (closeMenu) toggleSidebar();
+      setActiveNav(navId);
+      allExpanded = false;
+
+      const mData = getActiveMahakavya();
+      const tikaTitle = mData.tikaName || "मल्लिनाथसूरि-कृता ‘जीवातु’-टीका";
+
       document.getElementById('grantha-header-banner').style.display = 'block';
-      document.getElementById('view-title').textContent = nData.title;
-      document.getElementById('view-subtitle').textContent = nData.subtitle;
+      document.getElementById('view-title').textContent = mData.title;
+      document.getElementById('view-subtitle').textContent = mData.subtitle;
 
       document.getElementById('controls-container').innerHTML = `
         <div class="toggle-bar">
           <div class="toggle-group">
-            <span style="color:#cbbba8;">पद्यं स्पृष्ट्वा पदच्छेदं, अन्वयं, मल्लिनाथीयां जीवातु-टीकां च उद्धाटयत</span>
+            <span style="color:#cbbba8;">पद्यं स्पृष्ट्वा पदच्छेदं, अन्वयं, मल्लिनाथीयां टीकां च उद्धाटयत</span>
           </div>
           <button class="action-btn" onclick="toggleAllPadyas()" id="expand-all-btn">सर्वेषां विवरणम् उद्धाट्यताम् ▾</button>
         </div>
       `;
 
       const container = document.getElementById('content-container');
-      container.innerHTML = nData.verses.map((v, idx) => {
-        const cached = JSON.parse(localStorage.getItem(`naishadha_ai_v_${v.num}`) || "null");
+      container.innerHTML = mData.verses.map((v, idx) => {
+        const cacheKey = `${currentMahakavyaKey}_ai_v_${v.num}`;
+        const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
         const anvayaText = cached ? cached.anvaya : v.anvaya;
         const hindiText = cached ? cached.hindi : v.hindi;
+        const prasangaHtml = v.prasanga
+          ? `<div style="color:var(--sutra-gold); font-size:0.92rem; margin-bottom:8px; border-bottom:1px dashed var(--border); padding-bottom:4px;">❖ <strong>प्रसङ्गः —</strong> ${v.prasanga}</div>`
+          : '';
+        const pathantaraHtml = v.pathantara
+          ? `<div style="color:#a89699; font-size:0.86rem; margin-top:8px;"><strong>पाठान्तरम् —</strong> ${v.pathantara}</div>`
+          : '';
+
         return `
         <div class="padya-card" id="padya-card-${idx}">
           <div class="padya-header" onclick="togglePadya(${idx})">
-            <div class="padya-mula">${v.mula}</div>
+            <div style="flex:1;">
+              ${prasangaHtml}
+              <div class="padya-mula">${v.mula}</div>
+            </div>
             <div class="padya-meta">
               <span class="badge">श्लोकः ${v.num} • ${v.chandas || 'वंशस्थम्'}</span>
               <span class="expand-hint" id="hint-${idx}">व्याख्या ▾</span>
@@ -1168,8 +1231,9 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
               <span class="hindi-label">हिन्दी-भावार्थः — </span>${hindiText || ''}
             </div>
             <div class="jivatu-box">
-              <span class="jivatu-label">मल्लिनाथसूरि-कृता ‘जीवातु’-टीका —</span>
-              ${formatCommentary(v.jivatu)}
+              <span class="jivatu-label">${tikaTitle} —</span>
+              ${formatCommentary(v.jivatu || v.tika)}
+              ${pathantaraHtml}
             </div>
             <div class="kavyashastra-bar">
               <div>
@@ -1184,17 +1248,17 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
     }
 
     async function generateVerseAI(idx) {
-      const nData = getNaishadhaData();
-      const v = nData.verses[idx];
+      const mData = getActiveMahakavya();
+      const v = mData.verses[idx];
       const btn = document.getElementById(`ai-vbtn-${idx}`);
       btn.disabled = true;
       btn.textContent = "जनयति...";
       try {
-        const res = await callGeminiStructured(v.mula, v.jivatu || "");
+        const res = await callGeminiStructured(v.mula, v.jivatu || v.tika || "");
         v.padaccheda = res.padaccheda || v.padaccheda;
         v.anvaya = res.anvaya;
         v.hindi = res.hindi;
-        localStorage.setItem(`naishadha_ai_v_${v.num}`, JSON.stringify(res));
+        localStorage.setItem(`${currentMahakavyaKey}_ai_v_${v.num}`, JSON.stringify(res));
         document.getElementById(`anvaya-v-${idx}`).innerHTML =
           `<span class="anvaya-label">अन्वयानुसारी शब्दानुवादः — </span>${formatAnvaya(v.anvaya)}`;
         document.getElementById(`hindi-v-${idx}`).innerHTML =
