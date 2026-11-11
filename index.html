@@ -726,13 +726,13 @@
       alert(`‘${title}’ इत्यस्य मूलपाठ-सञ्चिका (.js) शीघ्रमेव अस्मिन् कोशे संयोजयिष्यते।`);
     }
 
-    function formatCommentary(text) {
-      if (!text) return '';
-      return text
-        .replace(/'([^']+)'(\s*\\([^)]+\\))?/g, '<span class="citation-note">‘$1’$2</span>')
-        .replace(/\\[([^\\]]+)\]/g, '<span class="vyakarana-note">[$1]</span>')
-        .replace(/[“"]([^\s"“]+)/g, '<span class="pratika">“$1</span>');
-    }
+function formatCommentary(text) 
+  { if (!text) return ''; 
+  return text 
+    .replace(/'([^']+)'(\\s\*\\\\([^)]+\\\\))?/g, '<span>‘$1’$2</span>') 
+    .replace(/\\\\[([^\\\\]]+)\\]/g, '<span>[$1]</span>') 
+    .replace(/[“"]([^\\s"“]+)/g, '<span>“$1</span>'); 
+  }
 
     function formatAnvaya(text) {
       if (!text) return '';
