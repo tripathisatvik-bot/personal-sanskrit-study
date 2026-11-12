@@ -1183,59 +1183,7 @@ const meghadutaData = {
       hindi: "हे कामचारी मेघ! प्रेमी की गोद में बैठी हुई नायिका के समान उस कैलास की गोद में बसी हुई और खिसकते हुए गङ्गा रूपी रेशमी वस्त्र वाली अलका नगरी को देखकर तुम उसे न पहचान सको, ऐसा हो ही नहीं सकता; ऊँचे-ऊँचे सात खण्ड वाले महलों से युक्त जो अलका वर्षाकाल में जल की बूँदें टपकाते हुए मेघ-समूह को, मोतियों की जाली से गुँथे हुए केशपाश को धारण करने वाली कामिनी के समान धारण करती है।",
       jivatu: `तस्येति॥ प्रणयिनः प्रियतमस्येव तस्य कैलासस्योत्सङ्गे ऊर्ध्वभागे कटौ च गङ्गा दुकूलं शुभ्रवस्त्रमिव तत्स्रस्तं यस्यास्तामलकां कुबेरनगरीं दृष्ट्वा हे कामचारिन्, त्वं पुनः न ज्ञास्यस इति न, किंतु ज्ञास्यस एवेत्यर्थः॥ 'स्मृतिनिश्चयसिद्ध्यर्थेषु नञ्द्वयप्रयोगः' इति॥ उच्चैरुन्नतानि विमानानि सप्तभूमिकभवनानि यस्यां सा यालका वः युष्माकं काले मेघकाले सलिलोद्गारं स्रवत्सलिलधारमभ्रवृन्दं मेघकदम्बकं कामिनी स्त्री मुक्ताजालैर्मौक्तिकसरैर्ग्रथितमलकमिव चूर्णकुन्तलानीव वहति बिभर्ति॥ इति श्रीमहामहोपाध्यायमल्लिनाथसूरिविरचितया संजीविनीसमाख्यया व्याख्यया समेतो महाकविश्रीकालिदासविरचिते मेघदूते काव्ये पूर्वमेघः समाप्तः॥`,
       tika2: `वल्लभदेवः (पञ्जिका) — तस्येति। हे कामचारिन्! वल्लभस्येव तस्य कैलासस्योत्सङ्गे कटौ शिखरे च गलितगङ्गारूपसितवस्त्रामलकां नगरीं दृष्ट्वा त्वं न ज्ञास्यसे इति न, अपितु परिज्ञास्यस्येव। यालका उन्नतसप्तभूमिकप्रासादा सती युष्माकं प्रावृट्काले जलवर्षि मेघबृन्दं मुक्ताजालग्रथितं केशपाशं कामिनीव बिभर्ति। इति श्रीवल्लभदेवविरचितायां मेघदूतपञ्जिकायां पूर्वमेघः समाप्तः।`
-    }
-    // ============================================================================
-// AUTO-BRIDGE FOR index (4).html & 10-SHLOKA SEPARATE AUDIO FILES
-// ============================================================================
-// यदि आपकी ऑडियो फ़ाइलें १०-१० श्लोकों में अलग-अलग हैं (जैसे purva_01_10.mp3 आदि)
-// और प्रत्येक फ़ाइल 0.00 सेकंड से शुरू होती है, तो USE_SEPARATE_10_AUDIO को true करें:
-const USE_SEPARATE_10_AUDIO = false; 
-
-const purvaVerses = meghadutaData.verses.filter(v => v.khanda === "पूर्वमेघः");
-const uttaraVerses = meghadutaData.verses.filter(v => v.khanda === "उत्तरमेघः");
-
-if (USE_SEPARATE_10_AUDIO) {
-  [
-    { list: purvaVerses, prefix: "purva" },
-    { list: uttaraVerses, prefix: "uttara" }
-  ].forEach(group => {
-    let chunkBaseTime = 0;
-    group.list.forEach((v, idx) => {
-      const chunkIndex = Math.floor(idx / 10);
-      const startNum = chunkIndex * 10 + 1;
-      const endNum = (chunkIndex + 1) * 10;
-      if (idx % 10 === 0 && v.audioStart !== null) {
-        chunkBaseTime = v.audioStart;
-      }
-      v.audioFile = `audio/${group.prefix}_${startNum}_${endNum}.mp3`;
-      if (v.audioStart !== null) {
-        v.audioStart = +(v.audioStart - chunkBaseTime).toFixed(3);
-        v.audioEnd = +(v.audioEnd - chunkBaseTime).toFixed(3);
-      }
-    });
-  });
-}
-
-const meghadutamData = {
-  purvamegha: {
-    title: "मेघदूतम् — पूर्वमेघः",
-    subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
-    tikaName: meghadutaData.tikaName,
-    tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/purvamegha.mp3",
-    bhumika: meghadutaData.mangalacharanam,
-    verses: purvaVerses
-  },
-  uttaramegha: {
-    title: "मेघदूतम् — उत्तरमेघः",
-    subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
-    tikaName: meghadutaData.tikaName,
-    tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/uttaramegha.mp3",
-    verses: uttaraVerses
-  }
-};
-,
+    },
     // ==================== उत्तरमेघः (श्लोकाः १ - २५) ====================
     {
       num: "२.१",
@@ -1708,58 +1656,6 @@ const meghadutamData = {
       jivatu: `सव्यापारामिति॥ हे सखे, अहनि दिवसे सव्यापारां पूर्वोक्तबलिचित्रलेखनादिव्यापारवतीं ते सखीं मद्वियोगस्तथा न पीडयेद्यथा रात्रौ। किंतु रात्रौ निर्विनोदां ते सखीं गुरुतरशुचमतिदुर्भरदुःखां शङ्के तर्कयामि। अतो निशीथेऽर्धरात्र उन्निद्रामुत्सृष्टनिद्राम् अवनिशयनां नियमार्थं स्थण्डिलशायिनीं साध्वीं पतिव्रतां तां मत्संदेशैर्मद्वार्ताभिरलं पर्याप्तं सुखयितुमानन्दयितुं सौधवातायनस्थः सन्पश्य॥`,
       tika2: `वल्लभदेवः (पञ्जिका) — सव्यापारामिति। दिवा पूजादिव्यापारासक्तां तव सखीं मम विरहो न तथा बाधेत यथा रात्रौ निर्व्यापारां तामतिगुरुशोकां तर्कयामि। अतोऽर्धरात्रे प्रासादगवाक्षस्थः सन् मद्वाचिकैस्तरां सुखयितुं गतनिद्रां भूमिशय्यां पतिव्रतां तां पश्य।`
     }
-  ]
-};
-
-// ============================================================================
-// AUTO-BRIDGE FOR index (4).html & 10-SHLOKA SEPARATE AUDIO FILES
-// ============================================================================
-const USE_SEPARATE_10_AUDIO = false; 
-
-const purvaVerses = meghadutaData.verses.filter(v => v.khanda === "पूर्वमेघः");
-const uttaraVerses = meghadutaData.verses.filter(v => v.khanda === "उत्तरमेघः");
-
-if (USE_SEPARATE_10_AUDIO) {
-  [
-    { list: purvaVerses, prefix: "purva" },
-    { list: uttaraVerses, prefix: "uttara" }
-  ].forEach(group => {
-    let chunkBaseTime = 0;
-    group.list.forEach((v, idx) => {
-      const chunkIndex = Math.floor(idx / 10);
-      const startNum = chunkIndex * 10 + 1;
-      const endNum = (chunkIndex + 1) * 10;
-      if (idx % 10 === 0 && v.audioStart !== null) {
-        chunkBaseTime = v.audioStart;
-      }
-      v.audioFile = `audio/${group.prefix}_${startNum}_${endNum}.mp3`;
-      if (v.audioStart !== null) {
-        v.audioStart = +(v.audioStart - chunkBaseTime).toFixed(3);
-        v.audioEnd = +(v.audioEnd - chunkBaseTime).toFixed(3);
-      }
-    });
-  });
-}
-
-const meghadutamData = {
-  purvamegha: {
-    title: "मेघदूतम् — पूर्वमेघः",
-    subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
-    tikaName: meghadutaData.tikaName,
-    tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/purvamegha.mp3",
-    bhumika: meghadutaData.mangalacharanam,
-    verses: purvaVerses
-  },
-  uttaramegha: {
-    title: "मेघदूतम् — उत्तरमेघः",
-    subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
-    tikaName: meghadutaData.tikaName,
-    tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/uttaramegha.mp3",
-    verses: uttaraVerses
-  }
-};
 ,
     // ==================== उत्तरमेघः (श्लोकाः २६ - ५२) ====================
     {
