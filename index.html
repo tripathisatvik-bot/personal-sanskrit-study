@@ -1314,15 +1314,32 @@
         </div>
       `}).join('');
 
-      const masterAudioHtml = mData.audioFile ? `
-        <div style="background:var(--card-bg); border:1px solid var(--gold-muted-border); border-radius:10px; padding:20px; margin-top:26px; text-align:center;">
-          <h3 style="color:var(--sutra-gold); margin:0 0 6px; font-family:'Tiro Devanagari Sanskrit', serif; font-size:1.2rem;">
-            🎧 समग्र-सर्ग-श्रवणम् (Full Audio)
-          </h3>
-          <p style="color:#9ba3b0; font-size:0.86rem; margin-bottom:12px;">अस्मिन् सङ्गणके समग्रस्य भागस्य सस्वर-पाठं क्रमेण शृणुत</p>
-          <audio controls style="width:100%; max-width:540px;" src="${mData.audioFile}"></audio>
-        </div>
-      ` : '';
+      const masterAudioHtml = (Array.isArray(mData.audioFiles) && mData.audioFiles.length)
+        ? `
+          <div style="background:var(--card-bg); border:1px solid var(--gold-muted-border); border-radius:10px; padding:20px; margin-top:26px;">
+            <h3 style="color:var(--sutra-gold); margin:0 0 6px; text-align:center; font-family:'Tiro Devanagari Sanskrit', serif; font-size:1.2rem;">
+              🎧 पूर्वमेघस्य खण्डशः श्रवणम्
+            </h3>
+            <p style="color:#9ba3b0; font-size:0.86rem; margin:0 0 16px; text-align:center;">प्रत्येकं श्रव्यखण्डं स्वश्लोकसमूहेन सह सम्बद्धम् अस्ति।</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px;">
+              ${mData.audioFiles.map((audio, audioIndex) => `
+                <div style="padding:12px; border:1px solid var(--gold-muted-border); border-radius:8px;">
+                  <div style="color:var(--sutra-gold); font-size:0.92rem; margin-bottom:8px;">${audio.label}</div>
+                  <audio controls preload="none" style="width:100%;" src="${audio.src}"></audio>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `
+        : (mData.audioFile ? `
+          <div style="background:var(--card-bg); border:1px solid var(--gold-muted-border); border-radius:10px; padding:20px; margin-top:26px; text-align:center;">
+            <h3 style="color:var(--sutra-gold); margin:0 0 6px; font-family:'Tiro Devanagari Sanskrit', serif; font-size:1.2rem;">
+              🎧 समग्र-सर्ग-श्रवणम् (Full Audio)
+            </h3>
+            <p style="color:#9ba3b0; font-size:0.86rem; margin-bottom:12px;">अस्मिन् सङ्गणके समग्रस्य भागस्य सस्वर-पाठं क्रमेण शृणुत</p>
+            <audio controls preload="none" style="width:100%; max-width:540px;" src="${mData.audioFile}"></audio>
+          </div>
+        ` : '');
 
       container.innerHTML = cardsHtml + masterAudioHtml;
     }
