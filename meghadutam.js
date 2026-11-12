@@ -2191,34 +2191,47 @@ const meghadutaData = {
 };
 
 // ============================================================================
-// AUTO-BRIDGE FOR index (4).html & 10-SHLOKA SEPARATE AUDIO FILES
+// AUTO-BRIDGE FOR 6 SEPARATE AUDIO FILES OF PURVAMEGHA (1 to 63)
 // ============================================================================
-const USE_SEPARATE_10_AUDIO = false; 
+
+// अपनी ६ ऑडियो फ़ाइलों के नाम यहाँ रखें (audio/ फ़ोल्डर के भीतर):
+const purvaAudioFiles = [
+  "audio/purva_1.mp3", // श्लोक १ - १०
+  "audio/purva_2.mp3", // श्लोक ११ - २०
+  "audio/purva_3.mp3", // श्लोक २१ - ३०
+  "audio/purva_4.mp3", // श्लोक ३१ - ४०
+  "audio/purva_5.mp3", // श्लोक ४१ - ५०
+  "audio/purva_6.mp3"  // श्लोक ५१ - ६३
+];
 
 const purvaVerses = meghadutaData.verses.filter(v => v.khanda === "पूर्वमेघः");
 const uttaraVerses = meghadutaData.verses.filter(v => v.khanda === "उत्तरमेघः");
 
-if (USE_SEPARATE_10_AUDIO) {
-  [
-    { list: purvaVerses, prefix: "purva" },
-    { list: uttaraVerses, prefix: "uttara" }
-  ].forEach(group => {
-    let chunkBaseTime = 0;
-    group.list.forEach((v, idx) => {
-      const chunkIndex = Math.floor(idx / 10);
-      const startNum = chunkIndex * 10 + 1;
-      const endNum = (chunkIndex + 1) * 10;
-      if (idx % 10 === 0 && v.audioStart !== null) {
-        chunkBaseTime = v.audioStart;
-      }
-      v.audioFile = `audio/${group.prefix}_${startNum}_${endNum}.mp3`;
-      if (v.audioStart !== null) {
-        v.audioStart = +(v.audioStart - chunkBaseTime).toFixed(3);
-        v.audioEnd = +(v.audioEnd - chunkBaseTime).toFixed(3);
-      }
-    });
-  });
-}
+// प्रत्येक १० श्लोक के समूह (१-१०, ११-२०, २१-३०, ३१-४०, ४१-५०, ५१-६३) को 
+// उसकी अलग ऑडियो फ़ाइल से जोड़ना और प्रत्येक फ़ाइल के लिए समय 0.000 से रीसेट करना:
+let groupBaseTime = [null, null, null, null, null, null];
+
+purvaVerses.forEach((v) => {
+  // श्लोक संख्या (जैसे "१.२१" से 21) निकालना (प्रक्षिप्त श्लोकों को छोड़कर)
+  const isPrakshipta = v.num.includes("क") || v.num.includes("ख") || v.num.includes("ग");
+  const shlokaNo = parseInt(v.num.split('.')[1], 10);
+
+  if (!isPrakshipta && shlokaNo >= 1 && shlokaNo <= 63 && v.audioStart !== null) {
+    // १-१० -> 0, ११-२० -> 1, २१-३० -> 2, ३१-४० -> 3, ४१-५० -> 4, ५१-६३ -> 5
+    const fileIdx = shlokaNo > 50 ? 5 : Math.floor((shlokaNo - 1) / 10);
+
+    if (groupBaseTime[fileIdx] === null) {
+      groupBaseTime[fileIdx] = v.audioStart;
+    }
+
+    v.audioFile = purvaAudioFiles[fileIdx];
+    v.audioStart = +(v.audioStart - groupBaseTime[fileIdx]).toFixed(3);
+    v.audioEnd = +(v.audioEnd - groupBaseTime[fileIdx]).toFixed(3);
+  } else {
+    v.audioStart = null;
+    v.audioEnd = null;
+  }
+});
 
 const meghadutamData = {
   purvamegha: {
@@ -2226,7 +2239,7 @@ const meghadutamData = {
     subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
     tikaName: meghadutaData.tikaName,
     tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/purvamegha.mp3",
+    audioFile: purvaAudioFiles[0],
     bhumika: meghadutaData.mangalacharanam,
     verses: purvaVerses
   },
@@ -2235,7 +2248,7 @@ const meghadutamData = {
     subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
     tikaName: meghadutaData.tikaName,
     tika2Name: meghadutaData.tika2Name,
-    audioFile: "audio/uttaramegha.mp3",
+    audioFile: null,
     verses: uttaraVerses
   }
 };
