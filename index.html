@@ -35,6 +35,7 @@
       --sutra-gold: #d8be75;
       --anvaya-green: #82c4d4;
       --hindi-amber: #df9b7d;
+      --vallabha-teal: #76c7a5;
     }
 
     * { box-sizing: border-box; }
@@ -284,16 +285,19 @@
     /* Controls & Toggles */
     .toggle-bar {
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 10px 14px; margin-bottom: 20px; display: flex; flex-wrap: wrap;
+      padding: 10px 14px; margin-bottom: 16px; display: flex; flex-wrap: wrap;
       gap: 10px; align-items: center; justify-content: space-between; font-size: 0.88rem;
     }
-    .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
-    .toggle-bar label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .toggle-group { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .toggle-bar label { cursor: pointer; display: flex; align-items: center; gap: 5px; user-select: none; }
     .action-btn {
       background: #1c212b; border: 1px solid var(--border); color: var(--sutra-gold);
       padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.84rem;
+      transition: all 0.15s;
     }
-    .action-btn:hover { border-color: var(--gold-muted-border); background: #232a37; }
+    .action-btn:hover, .action-btn.active-tab {
+      border-color: var(--gold-accent); background: var(--gold-subtle-bg); color: #fff;
+    }
 
     /* Vedic Mantra Formatting */
     .bhumika-card {
@@ -372,6 +376,12 @@
       border-radius: 0 6px 6px 0;
     }
     .jivatu-label { color: var(--pratika-purple); font-weight: 700; display: block; margin-bottom: 5px; }
+    .vallabha-box {
+      background: #12191c; border-left: 3px solid var(--vallabha-teal);
+      padding: 13px 15px; margin-top: 10px; font-size: 1.01rem; text-align: justify;
+      border-radius: 0 6px 6px 0;
+    }
+    .vallabha-label { color: var(--vallabha-teal); font-weight: 700; display: block; margin-bottom: 5px; }
     .kavyashastra-bar {
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
       gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.88rem;
@@ -538,7 +548,7 @@
     </button>
     <div class="subcat-list open" id="cat-unit78">
       <button class="subcat-btn" onclick="toggleMenu('sub-mahakavya')">
-        <span>▸ पद्यकाव्यम् (महाकाव्यानि)</span>
+        <span>▸ पद्यकाव्यम् (महाकाव्यानि खण्डकाव्यं च)</span>
       </button>
       <div class="topic-list open" id="sub-mahakavya">
         <div class="topic-item" id="nav-naishadha" onclick="loadNaishadha(true)">
@@ -550,8 +560,10 @@
         <div class="topic-item" id="nav-raghu" onclick="loadRaghuvansham(true)">
           <span>रघुवंशम् (प्रथमः सर्गः)</span><span class="status-dot"></span>
         </div>
+        <div class="topic-item" id="nav-megha" onclick="loadMeghadutam(true, 'purva')">
+          <span>मेघदूतम् (पूर्वमेघः उत्तरमेघश्च)</span><span class="status-dot"></span>
+        </div>
         <div class="topic-item topic-pending" onclick="notifyPending('किरातार्जुनीयम् (प्रथमः सर्गः)')">किरातार्जुनीयम् (प्रथमः सर्गः)</div>
-        <div class="topic-item topic-pending" onclick="notifyPending('मेघदूतम्')">मेघदूतम् (कालिदासः)</div>
       </div>
 
       <button class="subcat-btn" onclick="toggleMenu('sub-natya')">
@@ -606,7 +618,7 @@
   <!-- Dynamic Cache-Buster & Core Application Logic -->
   <script>
     const APP_PIN = "2525";
-    const DATA_VERSION = localStorage.getItem('svadhyaya_data_ver') || '2026.11.85';
+    const DATA_VERSION = localStorage.getItem('svadhyaya_data_ver') || '2026.11.90';
 
     function checkPin() {
       if (document.getElementById('pin-input').value === APP_PIN) {
@@ -634,7 +646,8 @@
         'parjanya_sukta.js', 
         'naishadha_sarga1.js', 
         'shishupala_sarga1.js', 
-        'raghuvansham_sarga1.js', 
+        'raghuvansham_sarga1.js',
+        'meghadutam.js',
         'nirukta_adhyaya1.js'
       ];
       let loaded = 0;
@@ -700,6 +713,8 @@
     window.addEventListener('popstate', (e) => {
       const view = (e.state && e.state.view) ? e.state.view : 'home';
       if (view === 'raghu') loadRaghuvansham(false, false);
+      else if (view === 'megha_purva') loadMeghadutam(false, 'purva', false);
+      else if (view === 'megha_uttara') loadMeghadutam(false, 'uttara', false);
       else if (view === 'shishupala') loadShishupala(false, false);
       else if (view === 'naishadha') loadNaishadha(false, false);
       else if (view === 'parjanya') loadParjanya(false, false);
@@ -729,9 +744,9 @@
     function formatCommentary(text) {
       if (!text) return '';
       return text
-        .replace(/'([^']+)'/g, '<span>‘$1’</span>')
-        .replace(/\[([^\]]+)]/g, '<span>[$1]</span>')
-        .replace(/[“"]([^\s"“]+)/g, '<span>“$1</span>');
+        .replace(/'([^']+)'/g, '<span class="citation-note">‘$1’</span>')
+        .replace(/\[([^\]]+)]/g, '<span class="vyakarana-note">[$1]</span>')
+        .replace(/[“"]([^\s"“]+)/g, '<span class="pratika">“$1</span>');
     }
 
     function formatAnvaya(text) {
@@ -805,6 +820,20 @@
       return { title: "रघुवंशम् — प्रथमः सर्गः", subtitle: "महाकविकालिदासप्रणीतम् • सञ्जीवनी-टीकासमेतम्", tikaName: "मल्लिनाथसूरि-कृता ‘सञ्जीवनी’-टीका", audioFile: "audio/raghuvansham_sarga1.mp3", verses: [] };
     }
 
+    function getMeghaData(part = 'purva') {
+      if (typeof meghadutamData !== 'undefined') {
+        return part === 'uttara' ? meghadutamData.uttaramegha : meghadutamData.purvamegha;
+      }
+      return {
+        title: part === 'uttara' ? "मेघदूतम् — उत्तरमेघः" : "मेघदूतम् — पूर्वमेघः",
+        subtitle: "महाकविकालिदासप्रणीतम् • सञ्जीवनी-वल्लभदेवटीकासमेतम्",
+        tikaName: "मल्लिनाथसूरि-कृता ‘सञ्जीवनी’-टीका",
+        tika2Name: "वल्लभदेव-कृता ‘पञ्जिका’-टीका",
+        audioFile: part === 'uttara' ? "audio/uttaramegha.mp3" : "audio/purvamegha.mp3",
+        verses: []
+      };
+    }
+
     // 1. Classical Granthalaya Front Interface
     function loadHome(closeMenu, push = true) {
       if (closeMenu) toggleSidebar();
@@ -815,7 +844,6 @@
         history.pushState({ view: 'home' }, '');
       }
 
-      // Stop any playing audio when returning home
       if (currentAudio) {
         currentAudio.pause();
         clearInterval(audioCheckTimer);
@@ -828,6 +856,9 @@
       const nData = getNaishadhaData();
       const sData = getShishupalaData();
       const rData = getRaghuData();
+      const mpData = getMeghaData('purva');
+      const muData = getMeghaData('uttara');
+      const mTotal = (mpData.verses ? mpData.verses.length : 0) + (muData.verses ? muData.verses.length : 0);
 
       document.getElementById('content-container').innerHTML = `
         <div class="hero-panel">
@@ -838,7 +869,7 @@
           </p>
           <div class="search-input-wrap">
             <input type="text" id="global-search" class="search-input"
-              placeholder="समग्र-ग्रन्थालये शब्दं, मन्त्रं, सूत्रं, पद्यं वा अन्विष्यताम् (उदा. वागर्थाविव, सितच्छत्रित, जीरदानुः)..."
+              placeholder="समग्र-ग्रन्थालये शब्दं, मन्त्रं, सूत्रं, पद्यं वा अन्विष्यताम् (उदा. कश्चित्कान्ता, वागर्थाविव, जीरदानुः)..."
               oninput="runGlobalSearch(this.value)">
           </div>
           <div id="search-results" style="margin-top:14px; text-align:left;"></div>
@@ -909,6 +940,18 @@
               <span>अध्ययनं क्रियताम् ▸</span>
             </div>
           </div>
+
+          <div class="grantha-card" onclick="loadMeghadutam(false, 'purva')">
+            <div>
+              <div class="grantha-unit-tag">इकाई ८ • खण्डकाव्यम् (गीतिकाव्यम्)</div>
+              <h3>मेघदूतम् (पूर्वमेघः उत्तरमेघश्च)</h3>
+              <p>कालिदासप्रणीतम् • मल्लिनाथीया ‘सञ्जीवनी’, वल्लभदेव-पञ्जिका, अन्वयः, सस्वर-श्रव्य-संयोजनं च।</p>
+            </div>
+            <div class="grantha-footer">
+              <span>पद्यानि — ${mTotal || 115}</span>
+              <span>अध्ययनं क्रियताम् ▸</span>
+            </div>
+          </div>
         </div>
 
         <div class="section-heading">
@@ -959,6 +1002,7 @@
               <span class="unit-pill ready" onclick="loadNaishadha(false)">नैषधीयचरितम् (१)</span>
               <span class="unit-pill ready" onclick="loadShishupala(false)">शिशुपालवधम् (१)</span>
               <span class="unit-pill ready" onclick="loadRaghuvansham(false)">रघुवंशम् (१)</span>
+              <span class="unit-pill ready" onclick="loadMeghadutam(false, 'purva')">मेघदूतम्</span>
               <span class="unit-pill">किरातार्जुनीयम् (१)</span>
               <span class="unit-pill">अभिज्ञानशाकुन्तलम्</span>
               <span class="unit-pill">काव्यप्रकाशः</span>
@@ -1012,7 +1056,7 @@
         if (hay.includes(q)) {
           matches.push({
             source: `पर्जन्यसूक्तम् • मन्त्रः ${m.num}`,
-            preview: m.samhita.split('\n'),
+            preview: m.samhita.split('\n')[0],
             sub: m.hindi,
             action: `loadParjanya(false); setTimeout(() => document.getElementById('mantra-${i}').scrollIntoView({behavior:'smooth'}), 100);`
           });
@@ -1041,7 +1085,7 @@
         if (hay.includes(q)) {
           matches.push({
             source: `नैषधीयचरितम् (सर्गः १) • श्लोकः ${v.num}`,
-            preview: v.mula.split('\n'),
+            preview: v.mula.split('\n')[0],
             sub: v.hindi || '',
             action: `loadNaishadha(false); setTimeout(() => { togglePadya(${i}); document.getElementById('padya-card-${i}').scrollIntoView({behavior:'smooth'}); }, 100);`
           });
@@ -1054,7 +1098,7 @@
         if (hay.includes(q)) {
           matches.push({
             source: `शिशुपालवधम् (सर्गः १) • श्लोकः ${v.num}`,
-            preview: v.mula.split('\n'),
+            preview: v.mula.split('\n')[0],
             sub: v.hindi || '',
             action: `loadShishupala(false); setTimeout(() => { togglePadya(${i}); document.getElementById('padya-card-${i}').scrollIntoView({behavior:'smooth'}); }, 100);`
           });
@@ -1067,11 +1111,28 @@
         if (hay.includes(q)) {
           matches.push({
             source: `रघुवंशम् (सर्गः १) • श्लोकः ${v.num}`,
-            preview: v.mula.split('\n'),
+            preview: v.mula.split('\n')[0],
             sub: v.hindi || '',
             action: `loadRaghuvansham(false); setTimeout(() => { togglePadya(${i}); document.getElementById('padya-card-${i}').scrollIntoView({behavior:'smooth'}); }, 100);`
           });
         }
+      });
+
+      // 6. Meghadutam (Purva & Uttara)
+      ['purva', 'uttara'].forEach(part => {
+        const mPart = getMeghaData(part);
+        const label = part === 'uttara' ? 'मेघदूतम् (उत्तरमेघः)' : 'मेघदूतम् (पूर्वमेघः)';
+        (mPart.verses || []).forEach((v, i) => {
+          const hay = `${v.mula} ${v.prasanga || ''} ${v.padaccheda || ''} ${v.jivatu || ''} ${v.vallabha || ''} ${v.anvaya || ''} ${v.hindi || ''}`.toLowerCase();
+          if (hay.includes(q)) {
+            matches.push({
+              source: `${label} • श्लोकः ${v.num}`,
+              preview: v.mula.split('\n')[0],
+              sub: v.hindi || '',
+              action: `loadMeghadutam(false, '${part}'); setTimeout(() => { togglePadya(${i}); document.getElementById('padya-card-${i}').scrollIntoView({behavior:'smooth'}); }, 100);`
+            });
+          }
+        });
       });
 
       if (matches.length === 0) {
@@ -1088,13 +1149,15 @@
       `).join('');
     }
 
-    // Unified Mahakavya Navigation Routines
+    // Unified Mahakavya & Khandakavya Navigation Routines
     let currentMahakavyaKey = 'naishadha';
     let allExpanded = false;
 
     function getActiveMahakavya() {
       if (currentMahakavyaKey === 'raghu') return getRaghuData();
       if (currentMahakavyaKey === 'shishupala') return getShishupalaData();
+      if (currentMahakavyaKey === 'megha_purva') return getMeghaData('purva');
+      if (currentMahakavyaKey === 'megha_uttara') return getMeghaData('uttara');
       return getNaishadhaData();
     }
 
@@ -1116,30 +1179,73 @@
       renderMahakavya(closeMenu, 'nav-raghu');
     }
 
+    function loadMeghadutam(closeMenu, part = 'purva', push = true) {
+      const viewKey = part === 'uttara' ? 'megha_uttara' : 'megha_purva';
+      if (push) history.pushState({ view: viewKey }, '');
+      currentMahakavyaKey = viewKey;
+      renderMahakavya(closeMenu, 'nav-megha');
+    }
+
     function renderMahakavya(closeMenu, navId) {
       if (closeMenu) toggleSidebar();
       setActiveNav(navId);
       updateBackButtonVisibility(false);
       allExpanded = false;
 
+      if (currentAudio) {
+        currentAudio.pause();
+        clearInterval(audioCheckTimer);
+      }
+
       const mData = getActiveMahakavya();
       const tikaTitle = mData.tikaName || "मल्लिनाथसूरि-टीका";
+      const tika2Title = mData.tika2Name || "वल्लभदेव-पञ्जिका / पाठान्तर-विमर्शः";
+      const isMegha = currentMahakavyaKey === 'megha_purva' || currentMahakavyaKey === 'megha_uttara';
+      const hasSecondTika = (mData.verses || []).some(v => v.vallabha || v.tika2);
 
       document.getElementById('grantha-header-banner').style.display = 'block';
       document.getElementById('view-title').textContent = mData.title;
       document.getElementById('view-subtitle').textContent = mData.subtitle;
 
+      const meghaTabsHtml = isMegha ? `
+        <div class="toggle-bar" style="margin-bottom:12px; border-color:var(--gold-muted-border);">
+          <div class="toggle-group">
+            <strong style="color:var(--sutra-gold);">भाग-चयनम् —</strong>
+            <button class="action-btn ${currentMahakavyaKey === 'megha_purva' ? 'active-tab' : ''}" onclick="loadMeghadutam(false, 'purva')">
+              ☁ पूर्वमेघः
+            </button>
+            <button class="action-btn ${currentMahakavyaKey === 'megha_uttara' ? 'active-tab' : ''}" onclick="loadMeghadutam(false, 'uttara')">
+              ⚡ उत्तरमेघः
+            </button>
+          </div>
+          <span style="color:#9ba3b0; font-size:0.83rem;">अधःस्थैः चिह्नैः (☑) अन्वय-हिन्दी-टीकादीन् संक्षिप्तं विस्तृतं वा कुरुत</span>
+        </div>
+      ` : '';
+
+      const bhumikaHtml = mData.bhumika ? `
+        <div class="bhumika-card layer-bhumika">
+          <div class="bhumika-title">टीकाकार-मङ्गलाचरणं प्रस्तावना च</div>
+          <div style="white-space:pre-line;">${formatCommentary(mData.bhumika)}</div>
+        </div>
+      ` : '';
+
       document.getElementById('controls-container').innerHTML = `
+        ${meghaTabsHtml}
         <div class="toggle-bar">
           <div class="toggle-group">
-            <span style="color:#a8b0bd;">पद्यं स्पृष्ट्वा पदच्छेदं, अन्वयं, मल्लिनाथीयां टीकां च उद्धाटयत</span>
+            <label><input type="checkbox" checked onchange="toggleLayer('padaccheda-box')"> पदच्छेदः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('anvaya-box')"> अन्वय-शब्दार्थः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('hindi-box')"> हिन्दी-अर्थः</label>
+            <label><input type="checkbox" checked onchange="toggleLayer('jivatu-box')"> ${isMegha ? 'सञ्जीवनी-टीका' : 'मल्लिनाथ-टीका'}</label>
+            ${hasSecondTika ? `<label><input type="checkbox" checked onchange="toggleLayer('vallabha-box')"> वल्लभदेव-टीका</label>` : ''}
           </div>
           <button class="action-btn" onclick="toggleAllPadyas()" id="expand-all-btn">सर्वेषां विवरणम् उद्धाट्यताम् ▾</button>
         </div>
+        ${bhumikaHtml}
       `;
 
       const container = document.getElementById('content-container');
-      const cardsHtml = mData.verses.map((v, idx) => {
+      const cardsHtml = (mData.verses || []).map((v, idx) => {
         const cacheKey = `${currentMahakavyaKey}_ai_v_${v.num}`;
         const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
         const anvayaText = cached ? cached.anvaya : v.anvaya;
@@ -1150,10 +1256,17 @@
         const pathantaraHtml = v.pathantara
           ? `<div style="color:#8e96a2; font-size:0.85rem; margin-top:8px;"><strong>पाठान्तरम् —</strong> ${v.pathantara}</div>`
           : '';
+        const vallabhaHtml = (v.vallabha || v.tika2)
+          ? `<div class="vallabha-box">
+               <span class="vallabha-label">${tika2Title} —</span>
+               ${formatCommentary(v.vallabha || v.tika2)}
+             </div>`
+          : '';
 
-        const audioBtnHtml = (v.audioStart !== undefined && mData.audioFile)
+        const vAudioFile = v.audioFile || mData.audioFile;
+        const audioBtnHtml = (v.audioStart !== undefined && v.audioStart !== null && vAudioFile)
           ? `<button class="action-btn verse-audio-btn" id="abtn-${idx}" 
-               onclick="event.stopPropagation(); playVerseAudio('${mData.audioFile}', ${v.audioStart}, ${v.audioEnd || 0}, 'abtn-${idx}')" 
+               onclick="event.stopPropagation(); playVerseAudio('${vAudioFile}', ${v.audioStart}, ${v.audioEnd || 0}, 'abtn-${idx}')" 
                style="padding: 2px 8px; font-size: 0.76rem; margin-right: 6px; border-color: var(--gold-muted-border);">
                ▶ श्रूयताम्
              </button>`
@@ -1169,7 +1282,7 @@
             <div class="padya-meta">
               <div style="display:flex; align-items:center;">
                 ${audioBtnHtml}
-                <span class="badge">श्लोकः ${v.num} • ${v.chandas || 'अनुष्टुप्'}</span>
+                <span class="badge">श्लोकः ${v.num} • ${v.chandas || 'मन्दाक्रान्ता'}</span>
               </div>
               <span class="expand-hint" id="hint-${idx}">व्याख्या ▾</span>
             </div>
@@ -1189,9 +1302,10 @@
               ${formatCommentary(v.jivatu || v.tika)}
               ${pathantaraHtml}
             </div>
+            ${vallabhaHtml}
             <div class="kavyashastra-bar">
               <div>
-                <span class="badge">छन्दः — ${v.chandas || 'अनुष्टुप्'}</span>
+                <span class="badge">छन्दः — ${v.chandas || 'मन्दाक्रान्ता'}</span>
                 <span class="badge">अलङ्कारः — ${v.alankara || '—'}</span>
               </div>
               <button class="action-btn" id="ai-vbtn-${idx}" onclick="generateVerseAI(${idx})">अतिरिक्त-विमर्शः</button>
@@ -1200,13 +1314,12 @@
         </div>
       `}).join('');
 
-      // Render cards followed by the complete Sarga Master Audio Player
       const masterAudioHtml = mData.audioFile ? `
         <div style="background:var(--card-bg); border:1px solid var(--gold-muted-border); border-radius:10px; padding:20px; margin-top:26px; text-align:center;">
           <h3 style="color:var(--sutra-gold); margin:0 0 6px; font-family:'Tiro Devanagari Sanskrit', serif; font-size:1.2rem;">
-            🎧 समग्र-सर्ग-श्रवणम् (Full Sarga Audio)
+            🎧 समग्र-सर्ग-श्रवणम् (Full Audio)
           </h3>
-          <p style="color:#9ba3b0; font-size:0.86rem; margin-bottom:12px;">अस्मिन् सङ्गणके समग्रस्य सर्गस्य सस्वर-पाठं क्रमेण शृणुत</p>
+          <p style="color:#9ba3b0; font-size:0.86rem; margin-bottom:12px;">अस्मिन् सङ्गणके समग्रस्य भागस्य सस्वर-पाठं क्रमेण शृणुत</p>
           <audio controls style="width:100%; max-width:540px;" src="${mData.audioFile}"></audio>
         </div>
       ` : '';
@@ -1429,7 +1542,7 @@ Return strictly a valid JSON object with these exact keys (in Devanagari Hindi/S
         );
         const data = await response.json();
         if (!data.error) {
-          const rawJson = data.candidates.content.parts.text;
+          const rawJson = data.candidates[0].content.parts[0].text;
           return JSON.parse(rawJson);
         }
         lastError = data.error.message;
