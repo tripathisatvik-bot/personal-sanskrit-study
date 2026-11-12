@@ -2214,7 +2214,10 @@ let groupBaseTime = [null, null, null, null, null, null];
 purvaVerses.forEach((v) => {
   // श्लोक संख्या (जैसे "१.२१" से 21) निकालना (प्रक्षिप्त श्लोकों को छोड़कर)
   const isPrakshipta = v.num.includes("क") || v.num.includes("ख") || v.num.includes("ग");
-  const shlokaNo = parseInt(v.num.split('.')[1], 10);
+  // श्लोक-संख्याएँ देवनागरी अंकों में हैं; parseInt() उन्हें सीधे नहीं पढ़ता।
+  const devanagariDigits = "०१२३४५६७८९";
+  const shlokaPart = (v.num.split('.')[1] || "").replace(/[०-९]/g, digit => devanagariDigits.indexOf(digit));
+  const shlokaNo = parseInt(shlokaPart, 10);
 
   if (!isPrakshipta && shlokaNo >= 1 && shlokaNo <= 63 && v.audioStart !== null) {
     // १-१० -> 0, ११-२० -> 1, २१-३० -> 2, ३१-४० -> 3, ४१-५० -> 4, ५१-६३ -> 5
@@ -2239,7 +2242,12 @@ const meghadutamData = {
     subtitle: "महाकविकालिदासप्रणीतम् • मल्लिनाथकृत-सञ्जीवनी एवं वल्लभदेवकृत-पञ्जिका टीकाद्वयसमेतम्",
     tikaName: meghadutaData.tikaName,
     tika2Name: meghadutaData.tika2Name,
-    audioFile: purvaAudioFiles[0],
+    // छहों खण्डों की ऑडियो फ़ाइलें; प्रत्येक श्लोक का अपना audioFile भी निर्धारित है।
+    audioFile: null,
+    audioFiles: purvaAudioFiles.map((src, index) => ({
+      src,
+      label: ["श्लोक १–१०", "श्लोक ११–२०", "श्लोक २१–३०", "श्लोक ३१–४०", "श्लोक ४१–५०", "श्लोक ५१–६३"][index]
+    })),
     bhumika: meghadutaData.mangalacharanam,
     verses: purvaVerses
   },
@@ -2249,6 +2257,7 @@ const meghadutamData = {
     tikaName: meghadutaData.tikaName,
     tika2Name: meghadutaData.tika2Name,
     audioFile: null,
+    audioFiles: [],
     verses: uttaraVerses
   }
 };
